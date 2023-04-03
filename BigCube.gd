@@ -14,6 +14,7 @@ var cubes = []
 func _ready():
 	var colors = [col1, col2, col3, col4, col5, col6]
 	var instance: Node3D = piece.instantiate()
+	# Apply colors to faces
 	for idx in 6:
 		instance.get_child(idx).material.set_shader_parameter("color", colors[idx])
 	# Generate the cube
@@ -24,3 +25,10 @@ func _ready():
 				cube.position = Vector3(x, y, z)
 				cubes.append(cube)
 				add_child(cube)
+				# Hide unseen faces
+				cube.get_child(0).visible = y == 1
+				cube.get_child(5).visible = y == -1
+				cube.get_child(2).visible = x == 1
+				cube.get_child(4).visible = x == -1
+				cube.get_child(1).visible = z == 1
+				cube.get_child(3).visible = z == -1
