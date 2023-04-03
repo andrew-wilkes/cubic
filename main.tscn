@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkd0ebhhuayoj"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_q27mb"]
+[ext_resource type="PackedScene" uid="uid://bpe47vqdgmp5l" path="res://big_cube.tscn" id="2_us2qa"]
+[ext_resource type="Script" path="res://OrbitingCamera.gd" id="3_wsnrw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2t5a"]
+albedo_color = Color(0.223529, 0.223529, 0.223529, 1)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_q27mb")
+
+[node name="BigCube" parent="." instance=ExtResource("2_us2qa")]
+
+[node name="OrbitingCamera" type="Marker3D" parent="."]
+script = ExtResource("3_wsnrw")
+
+[node name="XAxis" type="Marker3D" parent="OrbitingCamera"]
+
+[node name="YAxis" type="Marker3D" parent="OrbitingCamera/XAxis"]
+
+[node name="Camera" type="Camera3D" parent="OrbitingCamera/XAxis/YAxis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+
+[node name="Light1" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, 0.5, 0.5, 0, 0.707107, -0.707107, -0.707107, 0.5, 0.5, 0, -2.58189, 10.3017)
+sky_mode = 1
+
+[node name="Light2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, 0.5, -0.5, -10.8961, 0, -15.4989)
+sky_mode = 1
+
+[node name="TestCube" type="CSGBox3D" parent="."]
+visible = false
+size = Vector3(3, 3, 3)
+material = SubResource("StandardMaterial3D_s2t5a")
