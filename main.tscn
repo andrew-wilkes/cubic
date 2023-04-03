@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bkd0ebhhuayoj"]
+[gd_scene load_steps=5 format=3 uid="uid://cddqpgdlp8ukg"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_q27mb"]
-[ext_resource type="PackedScene" uid="uid://bpe47vqdgmp5l" path="res://big_cube.tscn" id="2_us2qa"]
-[ext_resource type="Script" path="res://OrbitingCamera.gd" id="3_wsnrw"]
+[ext_resource type="PackedScene" path="res://big_cube.tscn" id="2_us2qa"]
+[ext_resource type="Script" path="res://orbiting_camera.gd" id="3_4qeot"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2t5a"]
 albedo_color = Color(0.223529, 0.223529, 0.223529, 1)
@@ -13,7 +13,7 @@ script = ExtResource("1_q27mb")
 [node name="BigCube" parent="." instance=ExtResource("2_us2qa")]
 
 [node name="OrbitingCamera" type="Marker3D" parent="."]
-script = ExtResource("3_wsnrw")
+script = ExtResource("3_4qeot")
 
 [node name="XAxis" type="Marker3D" parent="OrbitingCamera"]
 
