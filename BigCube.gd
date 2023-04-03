@@ -2,7 +2,6 @@ extends Node3D
 
 var shader = preload("res://assets/cube.gdshader")
 var piece = preload("res://cube.tscn")
-var cubes = []
 
 @export_color_no_alpha var col1: Color
 @export_color_no_alpha var col2: Color
@@ -17,20 +16,12 @@ func _ready():
 	# Apply colors to faces
 	for idx in 6:
 		instance.get_child(idx).material.set_shader_parameter("color", colors[idx])
-	# Init the cubes array to store groups of cubes
-	cubes.resize(9)
-	for idx in 9:
-		cubes[idx] = []
 	# Generate the cube
 	for x in [-1, 0, 1]:
 		for y in [-1, 0, 1]:
 			for z in [-1, 0, 1]:
 				var cube = instance.duplicate()
 				cube.position = Vector3(x, y, z)
-				# Add cube to group
-				cubes[x + 1].append(cube)
-				cubes[y + 4].append(cube)
-				cubes[z + 7].append(cube)
 				add_child(cube)
 				# Hide unseen faces
 				cube.get_child(0).visible = y == 1
@@ -39,4 +30,32 @@ func _ready():
 				cube.get_child(4).visible = x == -1
 				cube.get_child(1).visible = z == 1
 				cube.get_child(3).visible = z == -1
-	print(cubes)
+	var group_idx = 5
+	var group = get_group(group_idx)
+	reparent_to_pivot(group)
+	rotate_group(group_idx, group)
+
+
+func rotate_group(idx, group, dir = 1):
+	match idx:
+		0,1:
+			group[4].rotate_x(PI / 4 * dir)
+		2,3:
+			group[4].rotate_y(PI / 4 * dir)
+		4,5:
+			group[4].rotate_z(PI / 4 * dir)
+
+
+func get_group(idx):
+	var pivot_pos = [Vector3(-1,0,0),Vector3(1,0,0),Vector3(0,-1,0),Vector3(0,1,0),Vector3(0,0,-1),Vector3(0,0,1)]
+	var group = []
+	for cube in get_children():
+		if (cube.position.dot(pivot_pos[idx]) > 0.5):
+			group.append(cube)
+	return group
+
+
+func reparent_to_pivot(group):
+	var pivot = group[4]
+	for idx in [0,1,2,3,5,6,7,8]:
+		group[idx].reparent(pivot)
