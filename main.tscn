@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cddqpgdlp8ukg"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_q27mb"]
-[ext_resource type="PackedScene" path="res://big_cube.tscn" id="2_us2qa"]
+[ext_resource type="PackedScene" uid="uid://duux08b0j1brq" path="res://big_cube.tscn" id="2_us2qa"]
 [ext_resource type="Script" path="res://orbiting_camera.gd" id="3_4qeot"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2t5a"]
