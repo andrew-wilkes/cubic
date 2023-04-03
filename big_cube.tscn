@@ -4,9 +4,3 @@
 
 [node name="BigCube" type="Node3D"]
 script = ExtResource("1_sfbtr")
-col1 = Color(1, 0, 0, 1)
-col2 = Color(0, 1, 0, 1)
-col3 = Color(0, 0, 1, 1)
-col4 = Color(1, 0.505882, 0, 1)
-col5 = Color(1, 1, 0, 1)
-col6 = Color(1, 1, 1, 1)
