@@ -9,6 +9,8 @@ const PIVOT_POSITIONS = [
 	Vector3.BACK
 ]
 
+const CUBE_IDXS = [-1, 0, 1]
+
 enum FACES { UP, FRONT, RIGHT, BACK, LEFT, DOWN }
 
 var piece = preload("res://cube.tscn")
@@ -17,9 +19,9 @@ var pivot = self
 func _ready():
 	# Generate the cube
 	var instance: Node3D = piece.instantiate()
-	for x in [-1, 0, 1]:
-		for y in [-1, 0, 1]:
-			for z in [-1, 0, 1]:
+	for x in CUBE_IDXS:
+		for y in CUBE_IDXS:
+			for z in CUBE_IDXS:
 				var cube = instance.duplicate()
 				cube.position = Vector3(x, y, z)
 				add_child(cube)
