@@ -25,6 +25,7 @@ func rotate_face(idx, dir = 1):
 	var group = get_group(idx)
 	reparent_to_pivot(group)
 	rotate_group(idx, dir)
+	reparent_to_origin()
 
 
 func rotate_group(idx, dir):
@@ -36,22 +37,6 @@ func rotate_group(idx, dir):
 			pivot.rotate_y(rot_angle)
 		4,5:
 			pivot.rotate_z(rot_angle)
-	prints("Rotated", str(Time.get_ticks_msec()))
-
-
-func cubes_at_origin():
-	return get_child_count() == 27
-
-
-func cubes_at_pivot():
-	return pivot.get_node("Cubes").get_child_count() == 8
-
-
-func reparent_to_origin():
-	if pivot != self:
-		# Reparent previously rotated child cubes to self
-		for cube in pivot.get_node("Cubes").get_children():
-			cube.reparent(self)
 
 
 func get_group(idx):
@@ -70,3 +55,10 @@ func reparent_to_pivot(group):
 	for cube in group:
 		if cube != pivot:
 			cube.reparent(node)
+
+
+func reparent_to_origin():
+	if pivot != self:
+		# Reparent previously rotated child cubes to self
+		for cube in pivot.get_node("Cubes").get_children():
+			cube.reparent(self)
