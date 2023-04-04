@@ -8,8 +8,9 @@ const PIVOT_POSITIONS = [
 	Vector3.FORWARD,
 	Vector3.BACK
 ]
-
 const CUBE_IDXS = [-1, 0, 1]
+const UPPERV = CUBE_IDXS[-1]
+const LOWERV = CUBE_IDXS[0]
 
 enum FACES { UP, FRONT, RIGHT, BACK, LEFT, DOWN }
 
@@ -26,12 +27,12 @@ func _ready():
 				cube.position = Vector3(x, y, z)
 				add_child(cube)
 				# Set face visibility
-				cube.get_child(FACES.UP).visible = y == 1
-				cube.get_child(FACES.DOWN).visible = y == -1
-				cube.get_child(FACES.RIGHT).visible = x == 1
-				cube.get_child(FACES.LEFT).visible = x == -1
-				cube.get_child(FACES.FRONT).visible = z == 1
-				cube.get_child(FACES.BACK).visible = z == -1
+				cube.get_child(FACES.UP).visible = y == UPPERV
+				cube.get_child(FACES.DOWN).visible = y == LOWERV
+				cube.get_child(FACES.RIGHT).visible = x == UPPERV
+				cube.get_child(FACES.LEFT).visible = x == LOWERV
+				cube.get_child(FACES.FRONT).visible = z == UPPERV
+				cube.get_child(FACES.BACK).visible = z == LOWERV
 
 
 func solved():
