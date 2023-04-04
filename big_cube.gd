@@ -1,12 +1,12 @@
 extends Node3D
 
 const PIVOT_POSITIONS = [
-	Vector3(-1,0,0),
-	Vector3(1,0,0),
-	Vector3(0,-1,0),
-	Vector3(0,1,0),
-	Vector3(0,0,-1),
-	Vector3(0,0,1)
+	Vector3.LEFT,
+	Vector3.RIGHT,
+	Vector3.DOWN,
+	Vector3.UP,
+	Vector3.FORWARD,
+	Vector3.BACK
 ]
 
 var piece = preload("res://cube.tscn")
