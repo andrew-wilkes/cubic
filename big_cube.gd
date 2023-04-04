@@ -1,5 +1,14 @@
 extends Node3D
 
+const PIVOT_POSITIONS = [
+	Vector3(-1,0,0),
+	Vector3(1,0,0),
+	Vector3(0,-1,0),
+	Vector3(0,1,0),
+	Vector3(0,0,-1),
+	Vector3(0,0,1)
+]
+
 var piece = preload("res://cube.tscn")
 var pivot = self
 
@@ -37,27 +46,27 @@ func rotate_face(idx, dir = 1):
 	reparent_to_pivot(group)
 	rotate_group(idx, dir)
 	reparent_to_origin()
-	get_cube_state_signature()
 
 
+# TODO: Animate the rotations
 func rotate_group(idx, dir):
 	var rot_angle = PI / 2 * dir
 	match idx:
-		0,1:
+		0, 1:
 			pivot.rotate_x(rot_angle)
-		2,3:
+		2, 3:
 			pivot.rotate_y(rot_angle)
-		4,5:
+		4, 5:
 			pivot.rotate_z(rot_angle)
 
 
 func get_group(idx):
-	var pivot_pos = [Vector3(-1,0,0),Vector3(1,0,0),Vector3(0,-1,0),Vector3(0,1,0),Vector3(0,0,-1),Vector3(0,0,1)]
 	var group = []
 	for cube in get_children():
-		if pivot_pos[idx] == cube.position:
+		if PIVOT_POSITIONS[idx] == cube.position:
 			pivot = cube
-		if cube.position.dot(pivot_pos[idx]) > 0.5:
+		# Using the DOT product here
+		if cube.position.dot(PIVOT_POSITIONS[idx]) > 0.5:
 			group.append(cube)
 	return group
 
