@@ -9,6 +9,8 @@ const PIVOT_POSITIONS = [
 	Vector3.BACK
 ]
 
+enum FACES { UP, FRONT, RIGHT, BACK, LEFT, DOWN }
+
 var piece = preload("res://cube.tscn")
 var pivot = self
 
@@ -22,12 +24,12 @@ func _ready():
 				cube.position = Vector3(x, y, z)
 				add_child(cube)
 				# Set face visibility
-				cube.get_child(0).visible = y == 1
-				cube.get_child(5).visible = y == -1
-				cube.get_child(2).visible = x == 1
-				cube.get_child(4).visible = x == -1
-				cube.get_child(1).visible = z == 1
-				cube.get_child(3).visible = z == -1
+				cube.get_child(FACES.UP).visible = y == 1
+				cube.get_child(FACES.DOWN).visible = y == -1
+				cube.get_child(FACES.RIGHT).visible = x == 1
+				cube.get_child(FACES.LEFT).visible = x == -1
+				cube.get_child(FACES.FRONT).visible = z == 1
+				cube.get_child(FACES.BACK).visible = z == -1
 
 
 func solved():
