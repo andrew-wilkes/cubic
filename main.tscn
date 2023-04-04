@@ -52,4 +52,11 @@ offset_bottom = 66.0
 text = "Test
 "
 
+[node name="Label" type="Label" parent="C/UI"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 122.0
+offset_right = 190.0
+offset_bottom = 145.0
+
 [connection signal="pressed" from="C/UI/Button" to="." method="_on_button_pressed"]
