@@ -34,3 +34,22 @@ sky_mode = 1
 visible = false
 size = Vector3(3, 3, 3)
 material = SubResource("StandardMaterial3D_s2t5a")
+
+[node name="C" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="C"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="C/UI"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 35.0
+offset_right = 55.0
+offset_bottom = 66.0
+text = "Test
+"
+
+[connection signal="pressed" from="C/UI/Button" to="." method="_on_button_pressed"]

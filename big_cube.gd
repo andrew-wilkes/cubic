@@ -1,6 +1,7 @@
 extends Node3D
 
 var piece = preload("res://cube.tscn")
+var pivot = self
 
 func _ready():
 	# Generate the cube
@@ -18,44 +19,54 @@ func _ready():
 				cube.get_child(4).visible = x == -1
 				cube.get_child(1).visible = z == 1
 				cube.get_child(3).visible = z == -1
-	
-	# Test
-	var group_idx = 0
-	var group = get_group(group_idx)
+
+
+func rotate_face(idx, dir = 1):
+	var group = get_group(idx)
 	reparent_to_pivot(group)
-	rotate_group(group_idx, group)
-	for cube in get_children():
-		print(cube.position)
-	#group_idx = 5
-	#group = get_group(group_idx)
-	#reparent_to_pivot(group)
-	#rotate_group(group_idx, group)
+	rotate_group(idx, dir)
 
 
-func rotate_group(idx, group, dir = 1):
+func rotate_group(idx, dir):
 	var rot_angle = PI / 2 * dir
 	match idx:
 		0,1:
-			group[4].rotate_x(rot_angle)
+			pivot.rotate_x(rot_angle)
 		2,3:
-			group[4].rotate_y(rot_angle)
+			pivot.rotate_y(rot_angle)
 		4,5:
-			group[4].rotate_z(rot_angle)
+			pivot.rotate_z(rot_angle)
+	prints("Rotated", str(Time.get_ticks_msec()))
+
+
+func cubes_at_origin():
+	return get_child_count() == 27
+
+
+func cubes_at_pivot():
+	return pivot.get_node("Cubes").get_child_count() == 8
+
+
+func reparent_to_origin():
+	if pivot != self:
+		# Reparent previously rotated child cubes to self
+		for cube in pivot.get_node("Cubes").get_children():
+			cube.reparent(self)
 
 
 func get_group(idx):
 	var pivot_pos = [Vector3(-1,0,0),Vector3(1,0,0),Vector3(0,-1,0),Vector3(0,1,0),Vector3(0,0,-1),Vector3(0,0,1)]
 	var group = []
 	for cube in get_children():
-		cube.reparent(self)
-		print(cube.position)
-		if (cube.position.dot(pivot_pos[idx]) > 0.5):
+		if pivot_pos[idx] == cube.position:
+			pivot = cube
+		if cube.position.dot(pivot_pos[idx]) > 0.5:
 			group.append(cube)
-	print("---")
 	return group
 
 
 func reparent_to_pivot(group):
-	var pivot = group[4]
-	for idx in [0,1,2,3,5,6,7,8]:
-		group[idx].reparent(pivot)
+	var node = pivot.get_node("Cubes")
+	for cube in group:
+		if cube != pivot:
+			cube.reparent(node)

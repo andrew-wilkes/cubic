@@ -54,3 +54,5 @@ material = SubResource("StandardMaterial3D_qlh4n")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.53, 0)
 size = Vector3(0.8, 0.06, 0.8)
 material = SubResource("StandardMaterial3D_xb2pd")
+
+[node name="Cubes" type="Node3D" parent="."]
