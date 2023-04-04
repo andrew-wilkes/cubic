@@ -19,13 +19,25 @@ func _ready():
 				cube.get_child(4).visible = x == -1
 				cube.get_child(1).visible = z == 1
 				cube.get_child(3).visible = z == -1
+	get_cube_state_signature()
 
+
+func solved():
+	pass
+
+
+func get_cube_state_signature():
+	var sum = Vector3.ZERO
+	for cube in get_children():
+		sum = cube.rotation + sum
+	print(sum.length_squared())
 
 func rotate_face(idx, dir = 1):
 	var group = get_group(idx)
 	reparent_to_pivot(group)
 	rotate_group(idx, dir)
 	reparent_to_origin()
+	get_cube_state_signature()
 
 
 func rotate_group(idx, dir):
