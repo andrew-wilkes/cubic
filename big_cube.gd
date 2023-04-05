@@ -1,21 +1,30 @@
 extends Node3D
 
+enum FACES { UP, FRONT, RIGHT, BACK, LEFT, DOWN }
+
 const PIVOT_POSITIONS = [
-	Vector3.LEFT,
-	Vector3.RIGHT,
-	Vector3.DOWN,
 	Vector3.UP,
+	Vector3.BACK,
+	Vector3.RIGHT,
 	Vector3.FORWARD,
-	Vector3.BACK
+	Vector3.LEFT,
+	Vector3.DOWN
 ]
+const face_map = {
+	16: FACES.UP,
+	22: FACES.FRONT,
+	14: FACES.RIGHT,
+	4: FACES.BACK,
+	12: FACES.LEFT,
+	10: FACES.DOWN
+}
 const CUBE_IDXS = [-1, 0, 1]
 const UPPERV = CUBE_IDXS[-1]
 const LOWERV = CUBE_IDXS[0]
 
-enum FACES { UP, FRONT, RIGHT, BACK, LEFT, DOWN }
-
 var piece = preload("res://cube.tscn")
 var pivot = self
+var current_face = FACES.FRONT
 
 func _ready():
 	# Generate the cube
@@ -57,11 +66,11 @@ func rotate_face(idx, dir = 1):
 func rotate_group(idx, dir):
 	var rot_angle = PI / 2 * dir
 	match idx:
-		0, 1:
+		FACES.LEFT, FACES.RIGHT:
 			pivot.rotate_x(rot_angle)
-		2, 3:
+		FACES.UP, FACES.DOWN:
 			pivot.rotate_y(rot_angle)
-		4, 5:
+		FACES.FRONT, FACES.BACK:
 			pivot.rotate_z(rot_angle)
 
 
@@ -88,3 +97,17 @@ func reparent_to_origin():
 		# Reparent previously rotated child cubes to self
 		for cube in pivot.get_node("Cubes").get_children():
 			cube.reparent(self)
+
+
+func get_face(vec):
+	var sector = get_sector(vec.x) + 3 * get_sector(vec.y) + 9 * get_sector(vec.z)
+	# There is a grey zone at cube edges so ignore spurious values
+	if face_map.has(sector):
+		current_face = face_map[sector]
+	return current_face
+
+
+func get_sector(x):
+	if x < -0.7: return 0
+	if x <= 0.7: return 1
+	return 2

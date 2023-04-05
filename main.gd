@@ -7,10 +7,6 @@ func _on_button_pressed():
 	face = (face + 1) % 6
 
 
-func camera_pos():
-	pass
-
-
 func _process(_delta):
-	var vec = Vector3i($OrbitingCamera/XAxis/YAxis.global_rotation / PI * 8) # + Vector3(1,1,1)) / 2) 
-	$C/UI/Label.text = str(vec)
+	var vec = $OrbitingCamera/XAxis/YAxis/Camera.global_position.normalized()
+	$C/UI/Label.text = str($BigCube.get_face(vec))
