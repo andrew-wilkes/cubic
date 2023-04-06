@@ -30,12 +30,11 @@ var piece = preload("res://cube.tscn")
 var pivot = self
 var current_face = FACES.FRONT
 
-# Keep a record of which of the 4 positions each face it at
+# Keep a record of which of the 4 positions each face is at
 var face_rotations = [0, 0, 0, 0, 0, 0]
 var face_rotating_idx := -1
 var face_rotation_angle = 0
 var face_rotation_direction := 1
-var face_rotation_steps = 1
 
 func _ready():
 	# Generate the cube
@@ -60,7 +59,7 @@ func _process(delta):
 		var offset = face_rotations[face_rotating_idx]
 		face_rotation_angle = clamp(face_rotation_angle + delta * rotation_speed, 0, PI / 2)
 		rotate_group(face_rotating_idx, face_rotation_angle * face_rotation_direction + offset * PI / 2)
-		if face_rotation_angle >= PI * face_rotation_steps / 2:
+		if face_rotation_angle >= PI / 2:
 			# Rotation complete
 			face_rotation_angle = 0
 			face_rotations[face_rotating_idx] = (offset + face_rotation_direction) % 4
