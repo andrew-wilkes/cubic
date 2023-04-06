@@ -24,9 +24,18 @@ const CUBE_IDXS = [-1, 0, 1]
 const UPPERV = CUBE_IDXS[-1]
 const LOWERV = CUBE_IDXS[0]
 
+@export var rotation_speed = 3.0
+
 var piece = preload("res://cube.tscn")
 var pivot = self
 var current_face = FACES.FRONT
+
+# Keep a record of which of the 4 positions each face it at
+var face_rotations = [0, 0, 0, 0, 0, 0]
+var face_rotating_idx := -1
+var face_rotation_angle = 0
+var face_rotation_direction := 1
+var face_rotation_steps = 1
 
 func _ready():
 	# Generate the cube
@@ -46,6 +55,19 @@ func _ready():
 				cube.get_child(FACES.BACK).visible = z == LOWERV
 
 
+func _process(delta):
+	if face_rotating_idx > -1:
+		var offset = face_rotations[face_rotating_idx]
+		face_rotation_angle = clamp(face_rotation_angle + delta * rotation_speed, 0, PI / 2)
+		rotate_group(face_rotating_idx, face_rotation_angle * face_rotation_direction + offset * PI / 2)
+		if face_rotation_angle >= PI * face_rotation_steps / 2:
+			# Rotation complete
+			face_rotation_angle = 0
+			face_rotations[face_rotating_idx] = (offset + face_rotation_direction) % 4
+			face_rotating_idx = -1
+			reparent_to_origin()
+
+
 func solved():
 	return get_cube_state_signature() < 0.1
 
@@ -58,15 +80,15 @@ func get_cube_state_signature():
 
 
 func rotate_face(idx, dir = 1):
-	var group = get_group(idx)
-	reparent_to_pivot(group)
-	rotate_group(idx, dir)
-	reparent_to_origin()
+	if face_rotating_idx < 0:
+		var group = get_group(idx)
+		reparent_to_pivot(group)
+		face_rotating_idx = idx
+		face_rotation_direction = dir
 
 
-# TODO: Animate the rotations
-func rotate_group(idx, dir):
-	var rot_angle = PI / 2 * dir
+func rotate_group(idx, rot_angle):
+	pivot.transform.basis = Basis() # reset rotation
 	match idx:
 		FACES.LEFT, FACES.RIGHT:
 			pivot.rotate_x(rot_angle)
