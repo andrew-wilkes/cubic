@@ -1,5 +1,7 @@
 extends Node3D
 
+class_name BigCube
+
 enum FACES { UP, FRONT, RIGHT, BACK, LEFT, DOWN }
 
 const PIVOT_POSITIONS = [
@@ -10,7 +12,7 @@ const PIVOT_POSITIONS = [
 	Vector3.LEFT,
 	Vector3.DOWN
 ]
-const face_map = {
+const FACE_MAP = {
 	16: FACES.UP,
 	22: FACES.FRONT,
 	14: FACES.RIGHT,
@@ -102,8 +104,8 @@ func reparent_to_origin():
 func get_face(vec):
 	var sector = get_sector(vec.x) + 3 * get_sector(vec.y) + 9 * get_sector(vec.z)
 	# There is a grey zone at cube edges so ignore spurious values
-	if face_map.has(sector):
-		current_face = face_map[sector]
+	if FACE_MAP.has(sector):
+		current_face = FACE_MAP[sector]
 	return current_face
 
 
