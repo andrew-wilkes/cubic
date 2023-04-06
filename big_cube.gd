@@ -54,6 +54,7 @@ func _ready():
 				cube.get_child(FACES.BACK).visible = z == LOWERV
 
 
+# Animate the cube group rotation
 func _process(delta):
 	if face_rotating_idx > -1:
 		var offset = face_rotations[face_rotating_idx]
@@ -102,7 +103,7 @@ func get_group(idx):
 	for cube in get_children():
 		if PIVOT_POSITIONS[idx] == cube.position:
 			pivot = cube
-		# Using the DOT product here
+		# Using the DOT product here to find cubes on the same face as the pivot cube
 		if cube.position.dot(PIVOT_POSITIONS[idx]) > 0.5:
 			group.append(cube)
 	return group
@@ -122,8 +123,10 @@ func reparent_to_origin():
 			cube.reparent(self)
 
 
-func get_face(vec):
-	var sector = get_sector(vec.x) + 3 * get_sector(vec.y) + 9 * get_sector(vec.z)
+# Get the face that the camera is looking at
+func get_face(cam_pos):
+	# Calculate a number (used as a key for the face map) based off the x/y/z sector values
+	var sector = get_sector(cam_pos.x) + 3 * get_sector(cam_pos.y) + 9 * get_sector(cam_pos.z)
 	# There is a grey zone at cube edges so ignore spurious values
 	if FACE_MAP.has(sector):
 		current_face = FACE_MAP[sector]
@@ -131,6 +134,7 @@ func get_face(vec):
 
 
 func get_sector(x):
+	# The mid coordinate of an arc is at sqrt(0.5)
 	if x < -0.7: return 0
 	if x <= 0.7: return 1
 	return 2
