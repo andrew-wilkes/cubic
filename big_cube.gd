@@ -69,7 +69,14 @@ func _process(delta):
 
 
 func solved():
-	return face_rotations.count(0) == 6
+	return get_cube_state_signature() < 0.1
+
+
+func get_cube_state_signature():
+	var sum = Vector3.ZERO
+	for cube in get_children():
+		sum = cube.rotation + sum
+	return sum.length_squared()
 
 
 func rotate_face(idx, dir = 1):
