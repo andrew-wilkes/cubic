@@ -123,10 +123,10 @@ func reparent_to_origin():
 			cube.reparent(self)
 
 
-# Get the face that the camera is looking at
-func get_face(cam_pos):
+# Get the face that a vector is looking at
+func get_face(vec):
 	# Calculate a number (used as a key for the face map) based off the x/y/z sector values
-	var sector = get_sector(cam_pos.x) + 3 * get_sector(cam_pos.y) + 9 * get_sector(cam_pos.z)
+	var sector = get_sector(vec.x) + 3 * get_sector(vec.y) + 9 * get_sector(vec.z)
 	# There is a grey zone at cube edges so ignore spurious values
 	if FACE_MAP.has(sector):
 		current_face = FACE_MAP[sector]

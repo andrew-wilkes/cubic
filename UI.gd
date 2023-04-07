@@ -1,6 +1,7 @@
 extends Control
 
 signal button_pressed(id, shift)
+
 func _ready():
 	var nodes = $Grid.get_children()
 	nodes.append_array(self.get_children())
