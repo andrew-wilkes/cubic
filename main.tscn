@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cddqpgdlp8ukg"]
+[gd_scene load_steps=6 format=3 uid="uid://cddqpgdlp8ukg"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_q27mb"]
 [ext_resource type="PackedScene" uid="uid://duux08b0j1brq" path="res://big_cube.tscn" id="2_us2qa"]
 [ext_resource type="Script" path="res://orbiting_camera.gd" id="3_4qeot"]
+[ext_resource type="Script" path="res://UI.gd" id="4_ci4eu"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2t5a"]
 albedo_color = Color(0.223529, 0.223529, 0.223529, 1)
@@ -37,26 +38,87 @@ material = SubResource("StandardMaterial3D_s2t5a")
 
 [node name="C" type="CanvasLayer" parent="."]
 
-[node name="UI" type="Control" parent="C"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="UI" type="VBoxContainer" parent="C"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 305.0
+offset_top = -470.0
+offset_right = 411.0
+offset_bottom = -204.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
+script = ExtResource("4_ci4eu")
 
-[node name="Button" type="Button" parent="C/UI"]
-layout_mode = 0
-offset_left = 14.0
-offset_top = 35.0
-offset_right = 55.0
-offset_bottom = 66.0
-text = "Test
+[node name="Grid" type="GridContainer" parent="C/UI"]
+layout_mode = 2
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
+columns = 3
+
+[node name="Sp" type="Control" parent="C/UI/Grid"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="U" type="Button" parent="C/UI/Grid"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "U"
+
+[node name="Sp2" type="Control" parent="C/UI/Grid"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="L" type="Button" parent="C/UI/Grid"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "L"
+
+[node name="F" type="Button" parent="C/UI/Grid"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "F"
+
+[node name="R" type="Button" parent="C/UI/Grid"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "R"
+
+[node name="Sp3" type="Control" parent="C/UI/Grid"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="D" type="Button" parent="C/UI/Grid"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "D"
+
+[node name="Sp4" type="Control" parent="C/UI/Grid"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="Sp5" type="Control" parent="C/UI/Grid"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="B" type="Button" parent="C/UI/Grid"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "B
 "
 
-[node name="Label" type="Label" parent="C/UI"]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 122.0
-offset_right = 190.0
-offset_bottom = 145.0
+[node name="Reset" type="Button" parent="C/UI"]
+layout_mode = 2
+text = "Reset"
 
-[connection signal="pressed" from="C/UI/Button" to="." method="_on_button_pressed"]
+[node name="Scramble" type="Button" parent="C/UI"]
+layout_mode = 2
+text = "Scramble"
+
+[node name="Solve" type="Button" parent="C/UI"]
+layout_mode = 2
+text = "Solve"
