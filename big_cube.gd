@@ -12,14 +12,14 @@ const PIVOT_POSITIONS = [
 	Vector3.LEFT,
 	Vector3.DOWN
 ]
-const FACE_MAP = {
-	16: FACES.UP,
-	22: FACES.FRONT,
-	14: FACES.RIGHT,
-	4: FACES.BACK,
-	12: FACES.LEFT,
-	10: FACES.DOWN
-}
+const INITIAL_FACE_MAP = [
+	FACES.UP,
+	FACES.FRONT,
+	FACES.RIGHT,
+	FACES.BACK,
+	FACES.LEFT,
+	FACES.DOWN
+]
 const CUBE_IDXS = [-1, 0, 1]
 const UPPERV = CUBE_IDXS[-1]
 const LOWERV = CUBE_IDXS[0]
@@ -30,11 +30,28 @@ var piece = preload("res://cube.tscn")
 var pivot = self
 var current_face = FACES.FRONT
 
-# Keep a record of which of the 4 positions each face is at
+# Keep a record of which of the 4 rotation positions each face is at
 var face_rotations = [0, 0, 0, 0, 0, 0]
 var face_rotating_idx := -1
 var face_rotation_angle = 0
 var face_rotation_direction := 1
+var face_map = INITIAL_FACE_MAP
+
+func rotate_face_map_up():
+	face_map = [face_map[1], face_map[5], face_map[2], face_map[0], face_map[4], face_map[3]]
+
+
+func rotate_face_map_down():
+	face_map = [face_map[3], face_map[0], face_map[2], face_map[5], face_map[4], face_map[1]]
+
+
+func rotate_face_map_right():
+	face_map = [face_map[0], face_map[2], face_map[3], face_map[4], face_map[1], face_map[5]]
+
+
+func rotate_face_map_left():
+	face_map = [face_map[0], face_map[4], face_map[1], face_map[2], face_map[3], face_map[5]]
+
 
 func _ready():
 	# Generate the cube
@@ -121,20 +138,3 @@ func reparent_to_origin():
 		# Reparent previously rotated child cubes to self
 		for cube in pivot.get_node("Cubes").get_children():
 			cube.reparent(self)
-
-
-# Get the face that a vector is looking at
-func get_face(vec):
-	# Calculate a number (used as a key for the face map) based off the x/y/z sector values
-	var sector = get_sector(vec.x) + 3 * get_sector(vec.y) + 9 * get_sector(vec.z)
-	# There is a grey zone at cube edges so ignore spurious values
-	if FACE_MAP.has(sector):
-		current_face = FACE_MAP[sector]
-	return current_face
-
-
-func get_sector(x):
-	# The mid coordinate of an arc is at sqrt(0.5)
-	if x < -0.7: return 0
-	if x <= 0.7: return 1
-	return 2
