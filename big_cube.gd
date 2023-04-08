@@ -28,7 +28,6 @@ const LOWERV = CUBE_IDXS[0]
 
 var piece = preload("res://cube.tscn")
 var pivot = self
-var current_face = FACES.FRONT
 
 # Keep a record of which of the 4 rotation positions each face is at
 var face_rotations = [0, 0, 0, 0, 0, 0]

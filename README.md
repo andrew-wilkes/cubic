@@ -2,3 +2,37 @@
 Godot 4 Rubik Cube Simulator
 
 ![Cube](media/cube1.png)
+
+## Camera Control
+
+Move around the cube by holding the left mouse button and moving the mouse.
+
+The camera is rotated around its x-axis followed by its y-axis.
+
+Hold down the CTRL key and left mouse button to zoom when moving the mouse.
+
+Hold down the Shift key and left mouse button to pan when moving the mouse. *This feature may be removed in the future*.
+
+## UI Control Panel
+
+![Control Panel](media/control-panel.png)
+
+The various faces of the cube are related as per the forward view on the screen. So the side to the left is the left side of the cube whatever the rotation of the camera view. So the L button rotates the left side of the cube.
+
+Left-click a button to rotate the related face of the cube by 90 degrees in the clockwise direction.
+
+Shift-left-click to rotate the face in the counter-clockwise direction. Or hold the shift key and left-click the button.
+
+The *Reset* button restores the faces of the cube to the *solved* positions.
+
+The *Scramble* button causes the cube faces to be rotated randomly to scramble the puzzle.
+
+The *Solve* button is intended to initiate a solving animation at a later date.
+
+## Color Map
+
+This will be used to edit and track the state of the faces of the cube. For example: to copy the state of a Rubik Cube in order to run the solver on it.
+
+![Color Map](media/color-map.png)
+
+Click on a cell (it is shaded darker), then click on another cell to try to swap positions of the cells. If the move is valid, other cells will also be updated to reflect the changed positions of the puzzle pieces.
