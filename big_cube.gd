@@ -35,23 +35,6 @@ var face_rotations = [0, 0, 0, 0, 0, 0]
 var face_rotating_idx := -1
 var face_rotation_angle = 0
 var face_rotation_direction := 1
-var face_map = INITIAL_FACE_MAP
-
-func rotate_face_map_up():
-	face_map = [face_map[1], face_map[5], face_map[2], face_map[0], face_map[4], face_map[3]]
-
-
-func rotate_face_map_down():
-	face_map = [face_map[3], face_map[0], face_map[2], face_map[5], face_map[4], face_map[1]]
-
-
-func rotate_face_map_right():
-	face_map = [face_map[0], face_map[2], face_map[3], face_map[4], face_map[1], face_map[5]]
-
-
-func rotate_face_map_left():
-	face_map = [face_map[0], face_map[4], face_map[1], face_map[2], face_map[3], face_map[5]]
-
 
 func _ready():
 	# Generate the cube
@@ -96,8 +79,22 @@ func get_cube_state_signature():
 	return sum.length_squared()
 
 
-func rotate_face(idx, dir = 1):
+func rotate_faces_in_map(old_map, faces, offset):
+	var new_map = old_map.duplicate()
+	if offset > 0:
+		for idx in faces.size():
+			new_map[faces[idx]] = old_map[faces[(idx + offset) % 4]]
+	return new_map
+
+
+func rotate_face(idx, dir, x_rot, y_rot):
 	if face_rotating_idx < 0:
+		# Match the face map with the camera rotation
+		var face_map = rotate_faces_in_map(INITIAL_FACE_MAP, [FACES.UP, FACES.FRONT, FACES.DOWN, FACES.BACK], x_rot) 
+		face_map = rotate_faces_in_map(face_map, [FACES.LEFT, FACES.FRONT, FACES.RIGHT, FACES.BACK], y_rot)
+		idx = face_map[idx]
+		# Correct the rotation direction according to the front face
+		dir *= [-1, -1, -1, 1, 1, 1][idx]
 		var group = get_group(idx)
 		reparent_to_pivot(group)
 		face_rotating_idx = idx
