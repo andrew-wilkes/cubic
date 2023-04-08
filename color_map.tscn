@@ -1,0 +1,74 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfknx5u3yhl8y"]
+
+[ext_resource type="Script" path="res://color_map.gd" id="1_fik5c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s3ton"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="ColorMap" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s3ton")
+script = ExtResource("1_fik5c")
+
+[node name="Grid" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 3
+
+[node name="Sp1" type="Control" parent="Grid"]
+layout_mode = 2
+
+[node name="U" type="GridContainer" parent="Grid"]
+layout_mode = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Sp2" type="Control" parent="Grid"]
+layout_mode = 2
+
+[node name="L" type="GridContainer" parent="Grid"]
+layout_mode = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="F" type="GridContainer" parent="Grid"]
+layout_mode = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="R" type="GridContainer" parent="Grid"]
+layout_mode = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Sp3" type="Control" parent="Grid"]
+layout_mode = 2
+
+[node name="D" type="GridContainer" parent="Grid"]
+layout_mode = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Sp4" type="Control" parent="Grid"]
+layout_mode = 2
+
+[node name="Sp5" type="Control" parent="Grid"]
+layout_mode = 2
+
+[node name="B" type="GridContainer" parent="Grid"]
+layout_mode = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
