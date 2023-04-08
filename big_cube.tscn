@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://duux08b0j1brq"]
-
-[ext_resource type="Script" path="res://big_cube.gd" id="1_xkslp"]
-
-[node name="BigCube" type="Node3D"]
-script = ExtResource("1_xkslp")

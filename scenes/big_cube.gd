@@ -26,7 +26,7 @@ const LOWERV = CUBE_IDXS[0]
 
 @export var rotation_speed = 3.0
 
-var piece = preload("res://cube.tscn")
+var piece = preload("res://scenes/cube.tscn")
 var pivot = self
 
 # Keep a record of which of the 4 rotation positions each face is at
