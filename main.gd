@@ -14,7 +14,7 @@ func _on_button_pressed(bname, shift):
 		$BigCube.rotate_face(FACE_BUTTONS.find(bname), direction, x_rot, y_rot)
 	match bname:
 		"Reset":
-			pass
+			$BigCube.reset()
 		"Scramble":
 			pass
 		"Solve":

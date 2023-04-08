@@ -54,6 +54,19 @@ func _ready():
 				cube.get_child(FACES.BACK).visible = z == LOWERV
 
 
+func reset():
+	var idx = 0
+	var cubes = get_children()
+	cubes.sort_custom(func(a, b): return a.get_instance_id() < b.get_instance_id())
+	for x in CUBE_IDXS:
+		for y in CUBE_IDXS:
+			for z in CUBE_IDXS:
+				var cube = cubes[idx]
+				cube.transform.basis = Basis()
+				cube.position = Vector3(x, y, z)
+				idx += 1
+
+
 # Animate the cube group rotation
 func _process(delta):
 	if face_rotating_idx > -1:
