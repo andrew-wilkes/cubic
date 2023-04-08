@@ -31,8 +31,8 @@ The *Solve* button is intended to initiate a solving animation at a later date.
 
 ## Color Map
 
-This will be used to edit and track the state of the faces of the cube. For example: to copy the state of a Rubik Cube in order to run the solver on it.
+This will be used to edit and track the state of the faces of the cube. For example: to copy the state of a physical Rubik Cube in order to run the solver on it. Or to copy the image for reference.
 
 ![Color Map](media/color-map.png)
 
-Click on a cell (it is shaded darker), then click on another cell to try to swap positions of the cells. If the move is valid, other cells will also be updated to reflect the changed positions of the puzzle pieces.
+Click on a cell (it is shaded darker), then click on another cell to try to move the first cell to the new position. If the move is valid, other cells will also be updated to reflect the changed positions of the puzzle pieces.
