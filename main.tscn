@@ -68,6 +68,7 @@ layout_mode = 2
 [node name="U" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+button_mask = 3
 text = "U"
 
 [node name="Sp2" type="Control" parent="C/UI/Grid"]
@@ -77,16 +78,19 @@ layout_mode = 2
 [node name="L" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+button_mask = 3
 text = "L"
 
 [node name="F" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+button_mask = 3
 text = "F"
 
 [node name="R" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+button_mask = 3
 text = "R"
 
 [node name="Sp3" type="Control" parent="C/UI/Grid"]
@@ -96,6 +100,7 @@ layout_mode = 2
 [node name="D" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+button_mask = 3
 text = "D"
 
 [node name="Sp4" type="Control" parent="C/UI/Grid"]
@@ -109,6 +114,7 @@ layout_mode = 2
 [node name="B" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+button_mask = 3
 text = "B
 "
 

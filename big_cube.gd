@@ -106,12 +106,11 @@ func rotate_face(idx, dir, x_rot, y_rot):
 		var face_map = rotate_faces_in_map(INITIAL_FACE_MAP, [FACES.UP, FACES.FRONT, FACES.DOWN, FACES.BACK], x_rot) 
 		face_map = rotate_faces_in_map(face_map, [FACES.LEFT, FACES.FRONT, FACES.RIGHT, FACES.BACK], y_rot)
 		idx = face_map[idx]
-		# Correct the rotation direction according to the front face
-		dir *= [-1, -1, -1, 1, 1, 1][idx]
 		var group = get_group(idx)
 		reparent_to_pivot(group)
 		face_rotating_idx = idx
-		face_rotation_direction = dir
+		# Correct the rotation direction according to the front face orientation
+		face_rotation_direction = dir if idx > FACES.RIGHT else -dir
 
 
 func rotate_face_immediate(idx, dir):
