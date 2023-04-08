@@ -23,6 +23,8 @@ const INITIAL_FACE_MAP = [
 const CUBE_IDXS = [-1, 0, 1]
 const UPPERV = CUBE_IDXS[-1]
 const LOWERV = CUBE_IDXS[0]
+const X_AXIS_FACES = [FACES.UP, FACES.FRONT, FACES.DOWN, FACES.BACK]
+const Y_AXIS_FACES = [FACES.LEFT, FACES.FRONT, FACES.RIGHT, FACES.BACK]
 
 @export var rotation_speed = 3.0
 
@@ -102,8 +104,8 @@ func rotate_faces_in_map(old_map, faces, offset):
 func rotate_face(idx, dir, x_rot, y_rot):
 	if face_rotating_idx < 0:
 		# Match the face map with the camera rotation
-		var face_map = rotate_faces_in_map(INITIAL_FACE_MAP, [FACES.UP, FACES.FRONT, FACES.DOWN, FACES.BACK], x_rot) 
-		face_map = rotate_faces_in_map(face_map, [FACES.LEFT, FACES.FRONT, FACES.RIGHT, FACES.BACK], y_rot)
+		var face_map = rotate_faces_in_map(INITIAL_FACE_MAP, X_AXIS_FACES, x_rot) 
+		face_map = rotate_faces_in_map(face_map, Y_AXIS_FACES, y_rot)
 		idx = face_map[idx]
 		var group = get_group(idx)
 		reparent_to_pivot(group)
