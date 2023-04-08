@@ -114,6 +114,13 @@ func rotate_face(idx, dir, x_rot, y_rot):
 		face_rotation_direction = dir
 
 
+func rotate_face_immediate(idx, dir):
+	var group = get_group(idx)
+	reparent_to_pivot(group)
+	rotate_group(idx, PI / 2 * dir)
+	reparent_to_origin()
+
+
 func rotate_group(idx, rot_angle):
 	pivot.transform.basis = Basis() # reset rotation
 	match idx:

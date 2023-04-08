@@ -16,7 +16,8 @@ func _on_button_pressed(bname, shift):
 		"Reset":
 			$BigCube.reset()
 		"Scramble":
-			pass
+			for n in randi_range(10, 15):
+				$BigCube.rotate_face_immediate(randi() % 6, 1 if randf() > 0.5 else -1)
 		"Solve":
 			pass
 
