@@ -36,3 +36,9 @@ This will be used to edit and track the state of the faces of the cube. For exam
 ![Color Map](media/color-map.png)
 
 Click on a cell (it is shaded darker), then click on another cell to try to move the first cell to the new position. If the move is valid, other cells will also be updated to reflect the changed positions of the puzzle pieces.
+
+## Coordinate System
+
+This is used to assign index values to the various faces, edges, and corners for use when programming the code.
+
+![coordinates](media/coordinates.png)
