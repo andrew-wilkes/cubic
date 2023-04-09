@@ -45,6 +45,7 @@ func _ready():
 			for z in CUBE_IDXS:
 				var cube = instance.duplicate()
 				cube.position = Vector3(x, y, z)
+				cube.set_meta("initial_position", cube.position) # Useful when resetting
 				add_child(cube)
 				# Set face visibility
 				cube.get_child(FACES.UP).visible = y == UPPERV
@@ -56,16 +57,9 @@ func _ready():
 
 
 func reset():
-	var idx = 0
-	var cubes = get_children()
-	cubes.sort_custom(func(a, b): return a.get_instance_id() < b.get_instance_id())
-	for x in CUBE_IDXS:
-		for y in CUBE_IDXS:
-			for z in CUBE_IDXS:
-				var cube = cubes[idx]
-				cube.transform.basis = Basis()
-				cube.position = Vector3(x, y, z)
-				idx += 1
+	for cube in get_children():
+		cube.transform.basis = Basis()
+		cube.position = cube.get_meta("initial_position")
 
 
 # Animate the cube group rotation
