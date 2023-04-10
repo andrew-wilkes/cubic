@@ -142,3 +142,25 @@ func set_corner_color(corner_idx, face_idx):
 
 func set_tile_color(face_idx, tile_idx, color_idx):
 	$Grid.get_child(GRID_FACE_MAP[face_idx]).get_child(tile_idx).color = COLORS[color_idx]
+
+
+# Input array of arrays of cube face colors
+func set_edge_colors(edge_cube_colors):
+	var idx = 0
+	for ec in edge_cube_colors:
+		edges[idx] = []
+		for n in 2:
+			edges[idx].append(ec[EDGE_FACE_MAP[idx][n]])
+			set_edge_color(idx, n)
+		idx += 1
+
+
+# Input array of arrays of cube face colors
+func set_corner_colors(corner_cube_colors):
+	var idx = 0
+	for cc in corner_cube_colors:
+		corners[idx] = []
+		for n in 3:
+			corners[idx].append(CORNER_FACE_MAP[idx][n])
+			set_corner_color(idx, n)
+		idx += 1
