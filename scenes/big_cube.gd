@@ -179,7 +179,9 @@ func get_colors_of_cube(node):
 	var colors = []
 	for color_idx in 6:
 		var pos = get_tile_position(node, color_idx)
-		colors.append(PIVOT_POSITIONS.find(pos))
+		for idx in 6:
+			if pos.dot(PIVOT_POSITIONS[idx]) > 0.5:
+				colors.append(idx)
 	return colors
 
 
@@ -187,6 +189,7 @@ func get_tile_position(node, color_idx):
 	return (node.get_child(color_idx).global_position - node.global_position).normalized()
 
 
+# Test code
 func _unhandled_key_input(event):
 	if event.is_pressed():
 		print(get_colors_of_cube(get_node("Cube")))
