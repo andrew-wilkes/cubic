@@ -26,6 +26,9 @@ const LOWERV = CUBE_IDXS[0]
 const X_AXIS_FACES = [FACES.UP, FACES.FRONT, FACES.DOWN, FACES.BACK]
 const Y_AXIS_FACES = [FACES.LEFT, FACES.FRONT, FACES.RIGHT, FACES.BACK]
 
+const EDGE_POSITIONS = [[0,1,-1],[-1,1,0],[1,1,0],[0,1,1],[-1,0,-1],[-1,0,1],[1,0,1],[1,0,-1],[-1,-1,0],[0,-1,1],[1,-1,0],[0,-1,-1]]
+const CORNER_POSITIONS = [[-1,1,-1],[1,1,-1],[-1,1,1],[1,1,1],[-1,-1,-1],[-1,-1,1],[1,-1,1],[1,-1,-1]]
+
 @export var rotation_speed = 3.0
 
 var piece = preload("res://scenes/cube.tscn")
@@ -54,6 +57,7 @@ func _ready():
 				cube.get_child(FACES.LEFT).visible = x == LOWERV
 				cube.get_child(FACES.FRONT).visible = z == UPPERV
 				cube.get_child(FACES.BACK).visible = z == LOWERV
+	print(get_corner_nodes())
 
 
 func reset():
@@ -149,3 +153,40 @@ func reparent_to_origin():
 		# Reparent previously rotated child cubes to self
 		for cube in pivot.get_node("Cubes").get_children():
 			cube.reparent(self)
+
+###################################################
+# Functions to use with mapping colors to/from cube
+
+func get_edge_nodes():
+	var edge_nodes = []
+	for pos in EDGE_POSITIONS:
+		for node in get_children():
+			if node.position == Vector3(pos[0], pos[1], pos[2]):
+				edge_nodes.append(node)
+	return edge_nodes
+
+
+func get_corner_nodes():
+	var corner_nodes = []
+	for pos in CORNER_POSITIONS:
+		for node in get_children():
+			if node.position == Vector3(pos[0], pos[1], pos[2]):
+				corner_nodes.append(node)
+	return corner_nodes
+
+
+func get_colors_of_cube(node):
+	var colors = []
+	for color_idx in 6:
+		var pos = get_tile_position(node, color_idx)
+		colors.append(PIVOT_POSITIONS.find(pos))
+	return colors
+
+
+func get_tile_position(node, color_idx):
+	return (node.get_child(color_idx).global_position - node.global_position).normalized()
+
+
+func _unhandled_key_input(event):
+	if event.is_pressed():
+		print(get_colors_of_cube(get_node("Cube")))
