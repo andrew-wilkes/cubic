@@ -20,6 +20,9 @@ func _on_button_pressed(bname, shift):
 				$BigCube.rotate_face_immediate(randi() % 6, 1 if randf() > 0.5 else -1)
 		"Solve":
 			pass
+		"CopyCube":
+			$C/ColorMap.set_edge_colors($BigCube.get_edge_colors())
+			$C/ColorMap.set_corner_colors($BigCube.get_corner_colors())
 
 
 func get_rounded_rotation_value(angle):

@@ -161,6 +161,6 @@ func set_corner_colors(corner_cube_colors):
 	for cc in corner_cube_colors:
 		corners[idx] = []
 		for n in 3:
-			corners[idx].append(CORNER_FACE_MAP[idx][n])
+			corners[idx].append(cc[CORNER_FACE_MAP[idx][n]])
 			set_corner_color(idx, n)
 		idx += 1

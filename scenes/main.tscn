@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cs7xrk28v8act"]
+[gd_scene load_steps=7 format=3 uid="uid://cs7xrk28v8act"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_lbbsj"]
 [ext_resource type="PackedScene" uid="uid://duux08b0j1brq" path="res://scenes/big_cube.tscn" id="2_vrqpa"]
 [ext_resource type="Script" path="res://scenes/orbiting_camera.gd" id="3_imujc"]
 [ext_resource type="Script" path="res://scenes/UI.gd" id="4_g6qdy"]
+[ext_resource type="PackedScene" uid="uid://dfknx5u3yhl8y" path="res://scenes/color_map.tscn" id="5_3m2rh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2t5a"]
 albedo_color = Color(0.223529, 0.223529, 0.223529, 1)
@@ -129,3 +130,13 @@ text = "Scramble"
 [node name="Solve" type="Button" parent="C/UI"]
 layout_mode = 2
 text = "Solve"
+
+[node name="CopyCube" type="Button" parent="C/UI"]
+layout_mode = 2
+text = "Copy Cube"
+
+[node name="ColorMap" parent="C" instance=ExtResource("5_3m2rh")]
+offset_left = 64.0
+offset_top = 108.0
+offset_right = -828.0
+offset_bottom = -81.0
