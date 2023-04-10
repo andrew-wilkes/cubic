@@ -1,6 +1,6 @@
 extends Node3D
 
-const FACE_BUTTONS = ["U", "F", "R", "B", "L", "D"]
+const FACE_BUTTONS = ["U", "L", "F", "R", "D", "B"]
 
 func _ready():
 	$C/UI.button_pressed.connect(_on_button_pressed)

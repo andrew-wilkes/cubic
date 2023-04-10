@@ -2,23 +2,23 @@ extends Node3D
 
 class_name BigCube
 
-enum FACES { UP, FRONT, RIGHT, BACK, LEFT, DOWN }
+enum FACES { UP, LEFT, FRONT, RIGHT, DOWN, BACK }
 
 const PIVOT_POSITIONS = [
 	Vector3.UP,
+	Vector3.LEFT,
 	Vector3.BACK,
 	Vector3.RIGHT,
-	Vector3.FORWARD,
-	Vector3.LEFT,
-	Vector3.DOWN
+	Vector3.DOWN,
+	Vector3.FORWARD
 ]
 const INITIAL_FACE_MAP = [
 	FACES.UP,
+	FACES.LEFT,
 	FACES.FRONT,
 	FACES.RIGHT,
-	FACES.BACK,
-	FACES.LEFT,
-	FACES.DOWN
+	FACES.DOWN,
+	FACES.BACK
 ]
 const CUBE_IDXS = [-1, 0, 1]
 const UPPERV = CUBE_IDXS[-1]
