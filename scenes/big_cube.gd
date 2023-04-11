@@ -108,7 +108,7 @@ func rotate_face(idx, dir, x_rot, y_rot):
 		reparent_to_pivot(group)
 		face_rotating_idx = idx
 		# Correct the rotation direction according to the front face orientation
-		face_rotation_direction = dir if idx > FACES.RIGHT else -dir
+		face_rotation_direction = dir if idx in [FACES.BACK, FACES.DOWN, FACES.LEFT] else -dir
 
 
 func rotate_face_immediate(idx, dir):
