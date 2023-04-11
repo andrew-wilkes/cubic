@@ -26,8 +26,8 @@ const LOWERV = CUBE_IDXS[0]
 const X_AXIS_FACES = [FACES.UP, FACES.FRONT, FACES.DOWN, FACES.BACK]
 const Y_AXIS_FACES = [FACES.LEFT, FACES.FRONT, FACES.RIGHT, FACES.BACK]
 
-const EDGE_POSITIONS = [[0,-1,-1],[-1,0,-1],[1,0,-1],[0,1,-1],[-1,-1,0],[-1,1,0],[1,1,0],[1,-1,0],[-1,0,1],[0,1,1],[1,0,1],[0,-1,1]]
-const CORNER_POSITIONS = [[-1,-1,-1],[1,-1,-1],[-1,1,-1],[1,1,-1],[-1,-1,1],[-1,1,1],[1,1,1],[1,-1,1]]
+const EDGE_POSITIONS = [[0,1,-1],[-1,1,0],[1,1,0],[0,1,1],[-1,0,-1],[-1,0,1],[1,0,1],[1,0,-1],[-1,-1,0],[0,-1,1],[1,-1, 0],[0,-1,-1]]
+const CORNER_POSITIONS = [[-1,1,-1],[1,1,-1],[-1,1,1],[1,1,1],[-1,-1,-1],[-1,-1,1],[1,-1,1],[1,-1,-1]]
 
 @export var rotation_speed = 3.0
 
@@ -190,19 +190,14 @@ func get_corner_nodes():
 
 func get_colors_of_cube(node):
 	var colors = []
-	for color_idx in 6:
-		var pos = get_tile_position(node, color_idx)
-		for idx in 6:
-			if pos.dot(PIVOT_POSITIONS[idx]) > 0.5:
-				colors.append(idx)
+	for tile_idx in 6:
+		var tile_pos = PIVOT_POSITIONS[tile_idx]
+		for color_idx in 6:
+			var pos = get_tile_position(node, color_idx)
+			if pos.dot(tile_pos) > 0.5:
+				colors.append(color_idx)
 	return colors
 
 
 func get_tile_position(node, color_idx):
 	return (node.get_child(color_idx).global_position - node.global_position).normalized()
-
-
-# Test code
-func _unhandled_key_input(event):
-	if event.is_pressed():
-		print(get_colors_of_cube(get_node("Cube")))
