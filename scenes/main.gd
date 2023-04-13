@@ -23,6 +23,8 @@ func _on_button_pressed(bname, shift):
 		"CopyCube":
 			$C/ColorMap.set_edge_colors($BigCube.get_edge_colors())
 			$C/ColorMap.set_corner_colors($BigCube.get_corner_colors())
+		"CopyMap":
+			$BigCube.apply_map($C/ColorMap.get_data())
 
 
 func get_rounded_rotation_value(angle):

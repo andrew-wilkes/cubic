@@ -38,12 +38,12 @@ func reset():
 	# Need deep copy so that inner arrays may be modified
 	edges = EDGE_FACE_MAP.duplicate(true)
 	corners = CORNER_FACE_MAP.duplicate(true)
-	var idx = 0
+	var color_idx = 0
 	for node in $Grid.get_children():
 		if node is GridContainer:
 			for tile in node.get_children():
-				tile.color = COLORS[idx]
-			idx += 1
+				tile.color = COLORS[color_idx]
+			color_idx += 1
 
 
 func handle_click(ev: InputEvent, clicked_tile):
@@ -144,10 +144,11 @@ func set_tile_color(face_idx, tile_idx, color_idx):
 	$Grid.get_child(GRID_FACE_MAP[face_idx]).get_child(tile_idx).color = COLORS[color_idx]
 
 
-# Input array of arrays of cube face colors
+# Input array of arrays of 6 cube face colors
 func set_edge_colors(edge_cube_colors):
 	var idx = 0
 	for ec in edge_cube_colors:
+		# We want to extract the 2 face colors of the edge from the 6 faces of the cube
 		edges[idx] = []
 		for n in 2:
 			edges[idx].append(ec[EDGE_FACE_MAP[idx][n]])
@@ -155,12 +156,46 @@ func set_edge_colors(edge_cube_colors):
 		idx += 1
 
 
-# Input array of arrays of cube face colors
+# Input array of arrays of 6 cube face colors
 func set_corner_colors(corner_cube_colors):
 	var idx = 0
 	for cc in corner_cube_colors:
 		corners[idx] = []
+		# Extract 3 face colors for the corner
 		for n in 3:
 			corners[idx].append(cc[CORNER_FACE_MAP[idx][n]])
 			set_corner_color(idx, n)
 		idx += 1
+
+
+# Search for the matching sets of colors to identify the edges
+# The index of the initial edge position is stored in the new position
+func get_edge_positions():
+	var positions = []
+	for n in 12:
+		var cols = edges[n]
+		if !EDGE_FACE_MAP.has(cols):
+			cols = [cols[1], cols[0]]
+		positions.append(EDGE_FACE_MAP.find(cols))
+	return positions
+
+
+func get_corner_positions():
+	var positions = []
+	for n in 8:
+		var cols = corners[n]
+		if !CORNER_FACE_MAP.has(cols):
+			cols = [cols[2], cols[0], cols[1]]
+			if !CORNER_FACE_MAP.has(cols):
+				cols = [cols[2], cols[0], cols[1]]
+		positions.append(CORNER_FACE_MAP.find(cols))
+	return positions
+
+
+func get_data():
+	return {
+		"edge_positions": get_edge_positions(),
+		"edge_colors": edges,
+		"corner_positions": get_corner_positions(),
+		"corner_colors": corners
+	}

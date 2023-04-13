@@ -201,3 +201,25 @@ func get_colors_of_cube(node):
 
 func get_tile_position(node, color_idx):
 	return (node.get_child(color_idx).global_position - node.global_position).normalized()
+
+
+func set_edges(edge_indxs):
+	var idx = 0
+	for node in get_edge_nodes():
+		var pos = EDGE_POSITIONS[edge_indxs[idx]]
+		node.position = Vector3(pos[0], pos[1], pos[2])
+		idx += 1
+
+
+func set_corners(corner_indxs):
+	var idx = 0
+	for node in get_corner_nodes():
+		var pos = CORNER_POSITIONS[corner_indxs[idx]]
+		node.position = Vector3(pos[0], pos[1], pos[2])
+		idx += 1
+
+
+func apply_map(map_data):
+	set_edges(map_data.edge_positions)
+	set_corners(map_data.corner_positions)
+	# Rotate the cubes to align the colors
