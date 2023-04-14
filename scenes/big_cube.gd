@@ -29,6 +29,8 @@ const Y_AXIS_FACES = [FACES.LEFT, FACES.FRONT, FACES.RIGHT, FACES.BACK]
 const EDGE_POSITIONS = [[0,1,-1],[-1,1,0],[1,1,0],[0,1,1],[-1,0,-1],[-1,0,1],[1,0,1],[1,0,-1],[-1,-1,0],[0,-1,1],[1,-1, 0],[0,-1,-1]]
 const CORNER_POSITIONS = [[-1,1,-1],[1,1,-1],[-1,1,1],[1,1,1],[-1,-1,-1],[-1,-1,1],[1,-1,1],[1,-1,-1]]
 
+const ROTATIONS = [0, 1, 2, -1]
+
 @export var rotation_speed = 3.0
 
 var piece = preload("res://scenes/cube.tscn")
@@ -39,14 +41,15 @@ var face_rotations = [0, 0, 0, 0, 0, 0]
 var face_rotating_idx := -1
 var face_rotation_angle = 0
 var face_rotation_direction := 1
+var rotation_dict = {}
 
 func _ready():
 	# Generate the cube
-	var instance: Node3D = piece.instantiate()
+	var cube_instance: Node3D = piece.instantiate()
 	for x in CUBE_IDXS:
 		for y in CUBE_IDXS:
 			for z in CUBE_IDXS:
-				var cube = instance.duplicate()
+				var cube = cube_instance.duplicate()
 				cube.position = Vector3(x, y, z)
 				cube.set_meta("initial_position", cube.position) # Useful when resetting
 				add_child(cube)
@@ -57,9 +60,11 @@ func _ready():
 				cube.get_child(FACES.LEFT).visible = x == LOWERV
 				cube.get_child(FACES.FRONT).visible = z == UPPERV
 				cube.get_child(FACES.BACK).visible = z == LOWERV
+	fill_rotation_dict(cube_instance)
 
 
 func reset():
+	face_rotations = [0, 0, 0, 0, 0, 0]
 	for cube in get_children():
 		cube.transform.basis = Basis()
 		cube.position = cube.get_meta("initial_position")
@@ -203,23 +208,61 @@ func get_tile_position(node, color_idx):
 	return (node.get_child(color_idx).global_position - node.global_position).normalized()
 
 
-func set_edges(edge_indxs):
+func set_edges(map_data):
 	var idx = 0
 	for node in get_edge_nodes():
-		var pos = EDGE_POSITIONS[edge_indxs[idx]]
+		# Find out where this node should be moved to
+		var edge_idx = map_data.edge_positions.find(idx)
+		var pos = EDGE_POSITIONS[edge_idx]
+		node.transform.basis = Basis()
 		node.position = Vector3(pos[0], pos[1], pos[2])
+		# Rotate the cube to align the faces correctly
+		rotate_cube(node, map_data.edge_colors[edge_idx], map_data.edge_face_map[edge_idx])
 		idx += 1
 
 
-func set_corners(corner_indxs):
+func rotate_cube(node, colors, faces):
+	# Form the key array
+	# Loopkup the rotation info
+	# Rotate the node
+	pass
+
+
+func set_corners(map_data):
 	var idx = 0
 	for node in get_corner_nodes():
-		var pos = CORNER_POSITIONS[corner_indxs[idx]]
+		var pos = CORNER_POSITIONS[map_data.corner_positions[idx]]
 		node.position = Vector3(pos[0], pos[1], pos[2])
 		idx += 1
 
 
 func apply_map(map_data):
-	set_edges(map_data.edge_positions)
-	set_corners(map_data.corner_positions)
+	set_edges(map_data)
+	set_corners(map_data)
 	# Rotate the cubes to align the colors
+
+
+func get_face_color(node, face_idx):
+	var face_normal = (node.get_child(face_idx).global_position - node.global_position).normalized()
+	for idx in 6:
+		if face_normal.dot(PIVOT_POSITIONS[idx]) > 0.5:
+			return idx
+
+
+# Make lookup dictionary of face orientations vs rotations (in XYZ order)
+# There are 24 possible permutations of cube faces
+func fill_rotation_dict(cube):
+	add_child(cube)
+	for x in ROTATIONS:
+		for y in ROTATIONS:
+			for z in ROTATIONS:
+				cube.transform.basis = Basis() # reset rotation
+				cube.rotate_x(x * PI/2)
+				cube.rotate_y(y * PI/2)
+				cube.rotate_z(z * PI/2)
+				var faces = []
+				for idx in 6:
+					faces.append(get_face_color(cube, idx))
+				if not rotation_dict.has(faces):
+					rotation_dict[faces] = [x,y,z]
+	remove_child(cube)
