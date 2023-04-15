@@ -227,12 +227,9 @@ func set_edges(map_data):
 func rotate_cube(node, face_map, tile_colors):
 	var key = get_rotation_key(face_map, tile_colors)
 	var xyz = rotation_dict[key]
-	if xyz[0] != 0:
-		node.rotate_x(xyz[0] * PI/2)
-	if xyz[1] != 0:
-		node.rotate_y(xyz[1] * PI/2)
-	if xyz[2] != 0:
-		node.rotate_z(xyz[2] * PI/2)
+	node.rotate_x(xyz[0] * PI/2)
+	node.rotate_y(xyz[1] * PI/2)
+	node.rotate_z(xyz[2] * PI/2)
 
 
 func get_rotation_key(face_map, tile_colors):
