@@ -31,6 +31,8 @@ const CORNER_POSITIONS = [[-1,1,-1],[1,1,-1],[-1,1,1],[1,1,1],[-1,-1,-1],[-1,-1,
 
 const ROTATIONS = [0, 1, 2, -1]
 
+const PI2 = PI / 2
+
 @export var rotation_speed = 3.0
 
 var piece = preload("res://scenes/cube.tscn")
@@ -227,9 +229,9 @@ func set_edges(map_data):
 func rotate_cube(node, face_map, tile_colors):
 	var key = get_rotation_key(face_map, tile_colors)
 	var xyz = rotation_dict[key]
-	node.rotate_x(xyz[0] * PI/2)
-	node.rotate_y(xyz[1] * PI/2)
-	node.rotate_z(xyz[2] * PI/2)
+	node.rotate_x(xyz[0] * PI2)
+	node.rotate_y(xyz[1] * PI2)
+	node.rotate_z(xyz[2] * PI2)
 
 
 func get_rotation_key(face_map, tile_colors):
@@ -240,7 +242,7 @@ func get_rotation_key(face_map, tile_colors):
 				found = false
 				break # Try the next key
 		if found: return key
-			
+
 
 func set_corners(map_data):
 	var idx = 0
@@ -283,9 +285,9 @@ func fill_rotation_dict(cube):
 
 func rotate_small_cube(cube, x, y, z):
 	cube.transform.basis = Basis() # reset rotation
-	cube.rotate_x(x * PI/2)
-	cube.rotate_y(y * PI/2)
-	cube.rotate_z(z * PI/2)
+	cube.rotate_x(x * PI2)
+	cube.rotate_y(y * PI2)
+	cube.rotate_z(z * PI2)
 
 
 func get_faces_of_rotated_cube(cube):
