@@ -21,13 +21,19 @@ The various faces of the cube are related as per the forward view on the screen.
 
 Left-click a button to rotate the related face of the cube by 90 degrees in the clockwise direction.
 
-Shift-left-click to rotate the face in the counter-clockwise direction. Or hold the shift key and left-click the button.
+Shift-left-click to rotate the face in the counter-clockwise direction. Or right-click the button.
+
+Ctrl-click on a face button to make the camera look at that face.
 
 The *Reset* button restores the faces of the cube to the *solved* positions.
 
 The *Scramble* button causes the cube faces to be rotated randomly to scramble the puzzle.
 
 The *Solve* button is intended to initiate a solving animation at a later date.
+
+*Copy Cube* copies that tile colors of the cube to the map.
+
+*Copy Map* aligns the tiles to match the pattern on the map.
 
 ## Color Map
 
