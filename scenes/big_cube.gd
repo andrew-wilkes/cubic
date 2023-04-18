@@ -60,6 +60,7 @@ func _ready():
 
 
 func reset():
+	face_rotations = [0, 0, 0, 0, 0, 0]
 	for cube in get_children():
 		cube.transform.basis = Basis()
 		cube.position = cube.get_meta("initial_position")

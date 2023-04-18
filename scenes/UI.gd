@@ -1,6 +1,6 @@
 extends Control
 
-signal button_pressed(id, shift)
+signal button_pressed(id, shift, ctrl)
 
 # Connect the signal to all of the buttons
 func _ready():
@@ -14,4 +14,6 @@ func _ready():
 func _on_button_down(bname: String):
 	# Shift will be used to indicate a reverse rotation direction request
 	var shift = Input.is_key_pressed(KEY_SHIFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
-	emit_signal("button_pressed", bname, shift)
+	# Ctrl is used to change the function of buttons to align the cube with a face
+	var ctrl = Input.is_key_pressed(KEY_CTRL) or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)
+	emit_signal("button_pressed", bname, shift, ctrl)

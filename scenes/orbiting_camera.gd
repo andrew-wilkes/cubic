@@ -9,6 +9,7 @@ enum { ROTATING, PANNING, ZOOMING }
 var moving = false
 
 func _process(delta):
+	delta *= 4
 	if (Input.is_key_pressed(KEY_DOWN)):
 		$XAxis.rotate_x(delta)
 	if (Input.is_key_pressed(KEY_UP)):
