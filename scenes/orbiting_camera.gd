@@ -52,3 +52,23 @@ func _unhandled_input(event):
 				$XAxis/YAxis.rotate_y(event.relative.x * ROTATION_SPEED)
 			ZOOMING:
 				$XAxis/YAxis/Camera.position.z += event.relative.y * ZOOMING_SPEED
+
+
+func reset():
+	$XAxis.transform.basis = Basis()
+	$XAxis/YAxis.transform.basis = Basis()
+
+
+func rotate_to_face(face_idx):
+	reset()
+	match face_idx:
+		0:
+			$XAxis.rotate_x(-PI/2)
+		1:
+			$XAxis/YAxis.rotate_y(-PI/2)
+		3:
+			$XAxis/YAxis.rotate_y(PI/2)
+		4:
+			$XAxis.rotate_x(PI/2)
+		5:
+			$XAxis/YAxis.rotate_y(PI)
