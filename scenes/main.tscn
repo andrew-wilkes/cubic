@@ -23,7 +23,7 @@ script = ExtResource("3_imujc")
 
 [node name="Camera" type="Camera3D" parent="OrbitingCamera/XAxis/YAxis"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 6)
 
 [node name="Light1" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.707107, 0.5, 0.5, 0, 0.707107, -0.707107, -0.707107, 0.5, 0.5, 0, -2.58189, 10.3017)
@@ -38,20 +38,29 @@ visible = false
 size = Vector3(3, 3, 3)
 material = SubResource("StandardMaterial3D_s2t5a")
 
-[node name="C" type="CanvasLayer" parent="."]
+[node name="C" type="HBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 17.0
+offset_top = 20.0
+offset_right = -23.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="ColorMap" parent="C" instance=ExtResource("5_3m2rh")]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Spacer" type="Control" parent="C"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="UI" type="VBoxContainer" parent="C"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 305.0
-offset_top = -470.0
-offset_right = 411.0
-offset_bottom = -204.0
-grow_horizontal = 2
-grow_vertical = 0
+layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 10
 script = ExtResource("4_g6qdy")
@@ -129,6 +138,7 @@ text = "Scramble"
 
 [node name="Solve" type="Button" parent="C/UI"]
 layout_mode = 2
+disabled = true
 text = "Solve"
 
 [node name="CopyCube" type="Button" parent="C/UI"]
@@ -138,9 +148,3 @@ text = "Copy Cube"
 [node name="CopyMap" type="Button" parent="C/UI"]
 layout_mode = 2
 text = "Copy Map"
-
-[node name="ColorMap" parent="C" instance=ExtResource("5_3m2rh")]
-offset_left = 64.0
-offset_top = 108.0
-offset_right = -828.0
-offset_bottom = -81.0
