@@ -14,18 +14,13 @@ script = ExtResource("1_lbbsj")
 
 [node name="BigCube" parent="." instance=ExtResource("2_vrqpa")]
 
-[node name="OrbitingCamera" type="Marker3D" parent="."]
+[node name="Pivot" type="Marker3D" parent="BigCube"]
+rotation_edit_mode = 2
 script = ExtResource("3_imujc")
 
-[node name="XAxis" type="Marker3D" parent="OrbitingCamera"]
-transform = Transform3D(1, 0, 0, 0, 0.819152, 0.573576, 0, -0.573576, 0.819152, 0, 0, 0)
-
-[node name="YAxis" type="Marker3D" parent="OrbitingCamera/XAxis"]
-transform = Transform3D(0.927184, 0, -0.374607, 0, 1, 0, 0.374607, 0, 0.927184, 0, 0, 0)
-
-[node name="Camera" type="Camera3D" parent="OrbitingCamera/XAxis/YAxis"]
+[node name="Camera" type="Camera3D" parent="BigCube/Pivot"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
 
 [node name="Light1" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.707107, 0.5, 0.5, 0, 0.707107, -0.707107, -0.707107, 0.5, 0.5, 0, -2.58189, 10.3017)
@@ -140,7 +135,6 @@ text = "Scramble"
 
 [node name="Solve" type="Button" parent="C/UI"]
 layout_mode = 2
-disabled = true
 text = "Solve"
 
 [node name="CopyCube" type="Button" parent="C/UI"]

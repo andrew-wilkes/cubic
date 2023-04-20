@@ -10,26 +10,20 @@ var moving = false
 
 func _process(delta):
 	delta *= 4
+	var b = transform.basis
 	if (Input.is_key_pressed(KEY_DOWN)):
-		$XAxis.rotate_x(delta)
+		rotate(b.x.normalized(), delta)
 	if (Input.is_key_pressed(KEY_UP)):
-		$XAxis.rotate_x(-delta)
+		rotate(b.x.normalized(), -delta)
 	if (Input.is_key_pressed(KEY_RIGHT)):
-		$XAxis/YAxis.rotate_y(delta)
+		rotate(b.y.normalized(), delta)
 	if (Input.is_key_pressed(KEY_LEFT)):
-		$XAxis/YAxis.rotate_y(-delta)
+		rotate(b.y.normalized(), -delta)
 	if (Input.is_key_pressed(KEY_Z)):
-		$XAxis/YAxis/Camera.position.z += delta
+		$Camera.position.z += delta
 	if (Input.is_key_pressed(KEY_X)):
-		$XAxis/YAxis/Camera.position.z -= delta
-	if (Input.is_key_pressed(KEY_W)):
-		$XAxis/YAxis/Camera.position.y -= delta
-	if (Input.is_key_pressed(KEY_A)):
-		$XAxis/YAxis/Camera.position.x += delta
-	if (Input.is_key_pressed(KEY_S)):
-		$XAxis/YAxis/Camera.position.y += delta
-	if (Input.is_key_pressed(KEY_D)):
-		$XAxis/YAxis/Camera.position.x -= delta
+		$Camera.position.z -= delta
+
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -39,36 +33,31 @@ func _unhandled_input(event):
 			moving = false
 	if event is InputEventMouseMotion and moving:
 		var mode = ROTATING
-		if Input.is_key_pressed(KEY_SHIFT):
-			mode = PANNING
 		if Input.is_key_pressed(KEY_CTRL):
 			mode = ZOOMING
 		match mode:
-			PANNING:
-				$XAxis/YAxis/Camera.position.x += event.relative.x * PANNING_SPEED
-				$XAxis/YAxis/Camera.position.y += event.relative.y * PANNING_SPEED
 			ROTATING:
-				$XAxis.rotate_x(event.relative.y * ROTATION_SPEED)
-				$XAxis/YAxis.rotate_y(event.relative.x * ROTATION_SPEED)
+				var b = transform.basis
+				rotate(b.x.normalized(), event.relative.y * ROTATION_SPEED)
+				rotate(b.y.normalized(), event.relative.x * ROTATION_SPEED)
 			ZOOMING:
-				$XAxis/YAxis/Camera.position.z += event.relative.y * ZOOMING_SPEED
+				$Camera.position.z += event.relative.y * ZOOMING_SPEED
 
 
 func reset():
-	$XAxis.transform.basis = Basis()
-	$XAxis/YAxis.transform.basis = Basis()
+	transform.basis = Basis()
 
 
 func rotate_to_face(face_idx):
 	reset()
 	match face_idx:
 		0:
-			$XAxis.rotate_x(-PI/2)
+			rotate_x(-PI/2)
 		1:
-			$XAxis/YAxis.rotate_y(-PI/2)
+			rotate_y(-PI/2)
 		3:
-			$XAxis/YAxis.rotate_y(PI/2)
+			rotate_y(PI/2)
 		4:
-			$XAxis.rotate_x(PI/2)
+			rotate_x(PI/2)
 		5:
-			$XAxis/YAxis.rotate_y(PI)
+			rotate_y(PI)

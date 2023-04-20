@@ -44,6 +44,7 @@ var face_rotating_idx := -1
 var face_rotation_angle = 0
 var face_rotation_direction := 1
 var rotation_dict = {}
+var faces_dict = {}
 
 func _ready():
 	var cube_instance: Node3D = piece.instantiate()
@@ -72,8 +73,9 @@ func build_cube(cube_instance):
 func reset():
 	face_rotations = [0, 0, 0, 0, 0, 0]
 	for cube in get_children():
-		cube.transform.basis = Basis()
-		cube.position = cube.get_meta("initial_position")
+		if cube is CSGBox3D:
+			cube.transform.basis = Basis()
+			cube.position = cube.get_meta("initial_position")
 
 
 # Animate the cube group rotation
@@ -109,11 +111,9 @@ func rotate_faces_in_map(old_map, faces, offset):
 	return new_map
 
 
-func rotate_face(idx, dir, x_rot, y_rot):
+func rotate_face(idx, dir, bas):
 	if face_rotating_idx < 0:
-		# Match the face map with the camera rotation
-		var face_map = rotate_faces_in_map(INITIAL_FACE_MAP, X_AXIS_FACES, x_rot) 
-		face_map = rotate_faces_in_map(face_map, Y_AXIS_FACES, y_rot)
+		var face_map = get_face_map_from_basis(bas)
 		idx = face_map[idx]
 		var group = get_group(idx)
 		reparent_to_pivot(group)
@@ -276,10 +276,11 @@ func fill_rotation_dict(cube):
 	for z in ROTATIONS:
 		for y in ROTATIONS:
 			for x in ROTATIONS:
-				rotate_small_cube(cube, x, y, z)
+				var bcode = rotate_small_cube(cube, x, y, z)
 				var faces = get_faces_of_rotated_cube(cube)
 				if not rotation_dict.has(faces):
 					rotation_dict[faces] = [x,y,z]
+					faces_dict[bcode] = faces
 	remove_child(cube)
 
 
@@ -288,6 +289,7 @@ func rotate_small_cube(cube, x, y, z):
 	cube.rotate_x(x * PI2)
 	cube.rotate_y(y * PI2)
 	cube.rotate_z(z * PI2)
+	return encode_basis(cube.transform.basis)
 
 
 func get_faces_of_rotated_cube(cube):
@@ -296,3 +298,24 @@ func get_faces_of_rotated_cube(cube):
 	for idx in 6:
 		faces[get_face_position(cube, idx)] = idx
 	return faces
+
+
+func encode_basis(b):
+	return get_sector(b.x.normalized())\
+		+ 6 * get_sector(b.y.normalized())\
+		+ 36 * get_sector(b.z.normalized())
+
+
+func get_sector(v):
+	const th = sqrt(0.5)
+	var n = 0
+	if v.x > th: n = 1
+	if v.y < -th: n = 2
+	if v.y > th: n = 3
+	if v.z < -th: n = 4
+	if v.z > th: n = 5
+	return n
+
+
+func get_face_map_from_basis(b):
+	return faces_dict[encode_basis(b)]
