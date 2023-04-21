@@ -50,6 +50,7 @@ var last_face_key = 0
 func _ready():
 	var cube_instance: Node3D = piece.instantiate()
 	fill_rotation_dict(cube_instance)
+	last_face_key = rotation_dict.keys()[0]
 	build_cube(cube_instance)
 	reset()
 
@@ -309,7 +310,7 @@ func encode_basis(b):
 
 
 func get_sector(v):
-	const th = 0.6
+	const th = 0.6 # This affects sensitivity around the edges/corners
 	var n = 0
 	if v.x < th: n += 1
 	if v.x > th: n += 2
