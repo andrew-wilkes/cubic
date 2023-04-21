@@ -23,6 +23,7 @@ albedo_color = Color(0, 0, 1, 1)
 albedo_color = Color(1, 0.517647, 0, 1)
 
 [node name="Cube" type="CSGBox3D"]
+rotation_edit_mode = 2
 material = SubResource("StandardMaterial3D_ln8s7")
 
 [node name="Up" type="CSGBox3D" parent="."]

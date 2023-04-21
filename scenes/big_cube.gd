@@ -45,6 +45,7 @@ var face_rotation_angle = 0
 var face_rotation_direction := 1
 var rotation_dict = {}
 var faces_dict = {}
+var last_face_key = 0
 
 func _ready():
 	var cube_instance: Node3D = piece.instantiate()
@@ -113,6 +114,7 @@ func rotate_faces_in_map(old_map, faces, offset):
 
 func rotate_face(idx, dir, bas):
 	if face_rotating_idx < 0:
+		bas = bas.inverse()
 		var face_map = get_face_map_from_basis(bas)
 		idx = face_map[idx]
 		var group = get_group(idx)
@@ -302,20 +304,24 @@ func get_faces_of_rotated_cube(cube):
 
 func encode_basis(b):
 	return get_sector(b.x.normalized())\
-		+ 6 * get_sector(b.y.normalized())\
-		+ 36 * get_sector(b.z.normalized())
+		+ 13 * get_sector(b.y.normalized())\
+		+ 169 * get_sector(b.z.normalized())
 
 
 func get_sector(v):
-	const th = sqrt(0.5)
+	const th = 0.6
 	var n = 0
-	if v.x > th: n = 1
-	if v.y < -th: n = 2
-	if v.y > th: n = 3
-	if v.z < -th: n = 4
-	if v.z > th: n = 5
+	if v.x < th: n += 1
+	if v.x > th: n += 2
+	if v.y < -th: n += 3
+	if v.y > th: n += 4
+	if v.z < -th: n += 5
+	if v.z > th: n += 6
 	return n
 
 
 func get_face_map_from_basis(b):
-	return faces_dict[encode_basis(b)]
+	var key = encode_basis(b)
+	if faces_dict.has(key):
+		last_face_key = key
+	return faces_dict[last_face_key]
