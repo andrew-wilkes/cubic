@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cs7xrk28v8act"]
+[gd_scene load_steps=8 format=3 uid="uid://cs7xrk28v8act"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_lbbsj"]
 [ext_resource type="PackedScene" uid="uid://duux08b0j1brq" path="res://scenes/big_cube.tscn" id="2_vrqpa"]
 [ext_resource type="Script" path="res://scenes/orbiting_camera.gd" id="3_imujc"]
 [ext_resource type="Script" path="res://scenes/UI.gd" id="4_g6qdy"]
 [ext_resource type="PackedScene" uid="uid://dfknx5u3yhl8y" path="res://scenes/color_map.tscn" id="5_3m2rh"]
+[ext_resource type="Script" path="res://scenes/Support.gd" id="6_yx4e8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h34t6"]
 content_margin_left = 5.0
@@ -159,3 +160,27 @@ Click on face button to rotate face clockwise.
 Shift click or right mouse button for anti-clockwise rotation.
 Crtl click or middle mouse button to align the cube with face forward.
 Esc to quit."
+
+[node name="Support" type="PopupPanel" parent="."]
+title = "Extra Features"
+size = Vector2i(552, 300)
+theme_override_styles/panel = SubResource("StyleBoxFlat_h34t6")
+script = ExtResource("6_yx4e8")
+
+[node name="Text" type="RichTextLabel" parent="Support"]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 547.0
+offset_bottom = 295.0
+bbcode_enabled = true
+text = "Solving
+
+This is a feature that I am yet to add. The idea is to animate how to solve the cube puzzle in stages to teach how to do it.
+
+But, in the meantime: how about supporting the development of this project by [url]Buying me a Coffee[/url]?
+
+Best regards,
+
+Andrew Wilkes"
+
+[connection signal="meta_clicked" from="Support/Text" to="Support" method="_on_text_meta_clicked"]
