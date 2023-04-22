@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://cs7xrk28v8act"]
+[gd_scene load_steps=7 format=3 uid="uid://cs7xrk28v8act"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_lbbsj"]
 [ext_resource type="PackedScene" uid="uid://duux08b0j1brq" path="res://scenes/big_cube.tscn" id="2_vrqpa"]
 [ext_resource type="Script" path="res://scenes/orbiting_camera.gd" id="3_imujc"]
 [ext_resource type="Script" path="res://scenes/UI.gd" id="4_g6qdy"]
 [ext_resource type="PackedScene" uid="uid://dfknx5u3yhl8y" path="res://scenes/color_map.tscn" id="5_3m2rh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h34t6"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.141176, 0.141176, 0.141176, 1)
 
 [node name="Main" type="MarginContainer"]
 theme_override_constants/margin_left = 20
@@ -61,7 +68,7 @@ layout_mode = 2
 [node name="U" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-button_mask = 3
+button_mask = 7
 text = "U"
 
 [node name="Sp2" type="Control" parent="C/UI/Grid"]
@@ -71,19 +78,19 @@ layout_mode = 2
 [node name="L" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-button_mask = 3
+button_mask = 7
 text = "L"
 
 [node name="F" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-button_mask = 3
+button_mask = 7
 text = "F"
 
 [node name="R" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-button_mask = 3
+button_mask = 7
 text = "R"
 
 [node name="Sp3" type="Control" parent="C/UI/Grid"]
@@ -93,7 +100,7 @@ layout_mode = 2
 [node name="D" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-button_mask = 3
+button_mask = 7
 text = "D"
 
 [node name="Sp4" type="Control" parent="C/UI/Grid"]
@@ -107,7 +114,7 @@ layout_mode = 2
 [node name="B" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-button_mask = 3
+button_mask = 7
 text = "B
 "
 
@@ -130,3 +137,25 @@ text = "Copy Cube"
 [node name="CopyMap" type="Button" parent="C/UI"]
 layout_mode = 2
 text = "Copy Map"
+
+[node name="Help" type="Button" parent="C/UI"]
+layout_mode = 2
+text = "Help"
+
+[node name="Info" type="AcceptDialog" parent="."]
+title = "Instructions"
+size = Vector2i(552, 389)
+theme_override_styles/panel = SubResource("StyleBoxFlat_h34t6")
+dialog_text = "Color Map
+Click on source tile then destination tile to swap colors.
+Only valid moves are possible.
+
+Cube
+Use the mouse or arrow keys to rotate the cube.
+Ctrl + mouse button to zoom or ZX keys.
+
+Control Panel
+Click on face button to rotate face clockwise.
+Shift click or right mouse button for anti-clockwise rotation.
+Crtl click or middle mouse button to align the cube with face forward.
+Esc to quit."

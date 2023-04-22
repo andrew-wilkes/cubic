@@ -30,3 +30,5 @@ func _on_button_pressed(bname, shift, ctrl):
 			$C/ColorMap.set_corner_colors(bc.get_corner_colors())
 		"CopyMap":
 			bc.apply_map($C/ColorMap.get_data())
+		"Help":
+			$Info.popup_centered()

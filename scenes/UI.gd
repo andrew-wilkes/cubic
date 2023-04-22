@@ -17,3 +17,8 @@ func _on_button_down(bname: String):
 	# Ctrl is used to change the function of buttons to align the cube with a face
 	var ctrl = Input.is_key_pressed(KEY_CTRL) or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)
 	emit_signal("button_pressed", bname, shift, ctrl)
+
+
+func _unhandled_input(_event):
+	if Input.is_key_pressed(KEY_ESCAPE):
+		get_tree().quit()
