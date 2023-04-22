@@ -19,7 +19,8 @@ config/icon="res://icon.svg"
 
 window/size/viewport_width=900
 window/size/viewport_height=450
+window/size/resizable=false
 
 [rendering]
 
-environment/defaults/default_clear_color=Color(0.737255, 0.737255, 0.737255, 1)
+environment/defaults/default_clear_color=Color(0.14902, 0.843137, 0.815686, 1)
