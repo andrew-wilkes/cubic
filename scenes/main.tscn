@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cs7xrk28v8act"]
+[gd_scene load_steps=6 format=3 uid="uid://cs7xrk28v8act"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_lbbsj"]
 [ext_resource type="PackedScene" uid="uid://duux08b0j1brq" path="res://scenes/big_cube.tscn" id="2_vrqpa"]
@@ -6,55 +6,41 @@
 [ext_resource type="Script" path="res://scenes/UI.gd" id="4_g6qdy"]
 [ext_resource type="PackedScene" uid="uid://dfknx5u3yhl8y" path="res://scenes/color_map.tscn" id="5_3m2rh"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2t5a"]
-albedo_color = Color(0.223529, 0.223529, 0.223529, 1)
-
-[node name="Main" type="Node3D"]
+[node name="Main" type="MarginContainer"]
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 script = ExtResource("1_lbbsj")
 
-[node name="BigCube" parent="." instance=ExtResource("2_vrqpa")]
-
-[node name="Pivot" type="Marker3D" parent="BigCube"]
-rotation_edit_mode = 2
-script = ExtResource("3_imujc")
-
-[node name="Camera" type="Camera3D" parent="BigCube/Pivot"]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
-
-[node name="Light1" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.707107, 0.5, 0.5, 0, 0.707107, -0.707107, -0.707107, 0.5, 0.5, 0, -2.58189, 10.3017)
-sky_mode = 1
-
-[node name="Light2" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, 0.5, -0.5, -10.8961, 0, -15.4989)
-sky_mode = 1
-
-[node name="TestCube" type="CSGBox3D" parent="."]
-visible = false
-size = Vector3(3, 3, 3)
-material = SubResource("StandardMaterial3D_s2t5a")
-
 [node name="C" type="HBoxContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 17.0
-offset_top = 20.0
-offset_right = -23.0
-offset_bottom = -20.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ColorMap" parent="C" instance=ExtResource("5_3m2rh")]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Spacer" type="Control" parent="C"]
+[node name="SVP" type="SubViewportContainer" parent="C"]
 layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
+
+[node name="VP" type="SubViewport" parent="C/SVP"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(400, 400)
+render_target_update_mode = 4
+
+[node name="BigCube" parent="C/SVP/VP" instance=ExtResource("2_vrqpa")]
+
+[node name="Pivot" type="Marker3D" parent="C/SVP/VP/BigCube"]
+rotation_edit_mode = 2
+script = ExtResource("3_imujc")
+
+[node name="Camera" type="Camera3D" parent="C/SVP/VP/BigCube/Pivot"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+
+[node name="Light" type="DirectionalLight3D" parent="C/SVP/VP/BigCube/Pivot/Camera"]
 
 [node name="UI" type="VBoxContainer" parent="C"]
 layout_mode = 2
