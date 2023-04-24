@@ -1,5 +1,7 @@
 extends Marker3D
 
+signal has_reset
+
 @export var ROTATION_SPEED = 0.01
 @export var PANNING_SPEED = 0.05
 @export var ZOOMING_SPEED = 0.05
@@ -7,6 +9,10 @@ extends Marker3D
 enum { ROTATING, PANNING, ZOOMING }
 
 var moving = false
+var rotating = false
+var amount
+var from_q
+var to_q
 
 func _process(delta):
 	delta *= 4
@@ -23,6 +29,12 @@ func _process(delta):
 		$Camera.position.z += delta
 	if (Input.is_key_pressed(KEY_X)):
 		$Camera.position.z -= delta
+	if rotating:
+		transform.basis = Basis(to_q.slerp(from_q, amount / 100.0))
+		amount -= delta * 30
+		if amount < 0.1:
+			transform.basis = Basis(to_q)
+			rotating = false
 
 
 func _unhandled_input(event):
@@ -44,20 +56,20 @@ func _unhandled_input(event):
 				$Camera.position.z += event.relative.y * ZOOMING_SPEED
 
 
-func reset():
-	transform.basis = Basis()
-
-
 func rotate_to_face(face_idx):
-	reset()
+	rotating = true
+	amount = 100.0
+	from_q = Quaternion(transform.basis)
+	var node = Node3D.new()
 	match face_idx:
 		0:
-			rotate_x(-PI/2)
+			node.rotate_x(-PI/2)
 		1:
-			rotate_y(-PI/2)
+			node.rotate_y(-PI/2)
 		3:
-			rotate_y(PI/2)
+			node.rotate_y(PI/2)
 		4:
-			rotate_x(PI/2)
+			node.rotate_x(PI/2)
 		5:
-			rotate_y(PI)
+			node.rotate_y(PI)
+	to_q = Quaternion(node.transform.basis)

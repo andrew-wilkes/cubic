@@ -41,6 +41,7 @@ render_target_update_mode = 4
 [node name="BigCube" parent="C/SVP/VP" instance=ExtResource("2_vrqpa")]
 
 [node name="Pivot" type="Marker3D" parent="C/SVP/VP/BigCube"]
+unique_name_in_owner = true
 rotation_edit_mode = 2
 script = ExtResource("3_imujc")
 
