@@ -174,10 +174,14 @@ func get_edge_positions():
 	var positions = []
 	for n in 12:
 		var cols = edges[n]
-		if !EDGE_FACE_MAP.has(cols):
-			cols = [cols[1], cols[0]]
-		positions.append(EDGE_FACE_MAP.find(cols))
+		positions.append(get_edge_position(cols))
 	return positions
+
+
+func get_edge_position(cols):
+	if !EDGE_FACE_MAP.has(cols):
+		cols = [cols[1], cols[0]]
+	return EDGE_FACE_MAP.find(cols)
 
 
 func get_corner_positions():

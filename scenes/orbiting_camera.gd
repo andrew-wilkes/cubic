@@ -1,6 +1,6 @@
 extends Marker3D
 
-signal has_reset
+signal rotation_complete
 
 @export var ROTATION_SPEED = 0.01
 @export var PANNING_SPEED = 0.05
@@ -35,6 +35,7 @@ func _process(delta):
 		if amount < 0.1:
 			transform.basis = Basis(to_q)
 			rotating = false
+			emit_signal("rotation_complete")
 
 
 func _unhandled_input(event):

@@ -2,6 +2,8 @@ extends Node3D
 
 class_name BigCube
 
+signal rotation_complete
+
 enum FACES { UP, LEFT, FRONT, RIGHT, DOWN, BACK }
 
 const PIVOT_POSITIONS = [
@@ -92,6 +94,7 @@ func _process(delta):
 			face_rotations[face_rotating_idx] = (offset + face_rotation_direction) % 4
 			face_rotating_idx = -1
 			reparent_to_origin()
+			emit_signal("rotation_complete")
 
 
 func solved():
