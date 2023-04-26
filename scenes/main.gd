@@ -96,7 +96,7 @@ func solve():
 					rotate_face(2, -1)
 				9:
 					if aligned:
-						solve_step = -1
+						solve_step = 6
 						solve()
 					else:
 						rotate_face(2, -1)
@@ -106,6 +106,163 @@ func solve():
 		5:
 			rotate_face(4, -1)
 			solve_step = 6
+		6:
+			%Pivot.rotate_to_face(3)
+			solve_step = 7
+		7:
+			# BLUE/ WHITE edge piece
+			var cols = [3,4]
+			# Get the edge position where it is now
+			var idx = get_edge_position(cols)
+			# Do something based on what edge it is on
+			match idx:
+				0, 1:
+					rotate_face(0, 1)
+				3, 5:
+					rotate_face(2, 1)
+				4:
+					rotate_face(5, -1)
+				8, 9:
+					rotate_face(4, 1)
+				11:
+					rotate_face(4, 1)
+				2, 6, 7, 10:
+					# Now on wanted face
+					solve_step = 8
+					solve()
+		8:
+			var cols = [3,4]
+			var idx = get_edge_position(cols)
+			var aligned = is_edge_aligned(cols, idx)
+			match idx:
+				2:
+					rotate_face(3, 1)
+				6:
+					if aligned:
+						rotate_face(3, -1)
+					else:
+						rotate_face(4, 1)
+						solve_step = 9
+				7:
+					rotate_face(3, 1)
+				10:
+					if aligned:
+						solve_step = 11
+						solve()
+					else:
+						rotate_face(3, -1)
+		9:
+			rotate_face(3, -1)
+			solve_step = 10
+		10:
+			rotate_face(4, -1)
+			solve_step = 11
+		11:
+			%Pivot.rotate_to_face(5)
+			solve_step = 12
+		12:
+			# ORANGE / WHITE edge piece
+			var cols = [5,4]
+			# Get the edge position where it is now
+			var idx = get_edge_position(cols)
+			# Do something based on what edge it is on
+			match idx:
+				1, 3:
+					rotate_face(0, 1)
+				2:
+					rotate_face(0, -1)
+				5, 8:
+					rotate_face(1, 1)
+				6:
+					rotate_face(3, 1)
+				9, 10:
+					rotate_face(4, 1)
+				0, 4, 7, 11:
+					# Now on wanted face
+					solve_step = 13
+					solve()
+		13:
+			var cols = [3,4]
+			var idx = get_edge_position(cols)
+			var aligned = is_edge_aligned(cols, idx)
+			match idx:
+				0:
+					rotate_face(5, 1)
+				4:
+					if aligned:
+						rotate_face(5, 1)
+					else:
+						rotate_face(4, 1)
+						solve_step = 14
+				5:
+					rotate_face(2, -1)
+				9:
+					if aligned:
+						solve_step = 16
+						solve()
+					else:
+						rotate_face(2, -1)
+		14:
+			rotate_face(1, -1)
+			solve_step = 15
+		15:
+			rotate_face(4, -1)
+			solve_step = 16
+		16:
+			%Pivot.rotate_to_face(5)
+			solve_step = 13
+		17:
+			# YELLOW / WHITE edge piece
+			var cols = [1,4]
+			# Get the edge position where it is now
+			var idx = get_edge_position(cols)
+			# Do something based on what edge it is on
+			match idx:
+				0, 2:
+					rotate_face(0, -1)
+				3:
+					rotate_face(0, 1)
+				6, 9:
+					rotate_face(2, 1)
+				7:
+					rotate_face(5, 1)
+				10:
+					rotate_face(4, -1)
+				11:
+					rotate_face(4, 1)
+				1, 4, 5, 8:
+					# Now on wanted face
+					solve_step = 18
+					solve()
+		18:
+			var cols = [1,4]
+			var idx = get_edge_position(cols)
+			var aligned = is_edge_aligned(cols, idx)
+			match idx:
+				1:
+					rotate_face(1, 1)
+				5:
+					if aligned:
+						rotate_face(1, 1)
+					else:
+						rotate_face(4, 1)
+						solve_step = 19
+				4:
+					rotate_face(1, -1)
+				8:
+					if aligned:
+						solve_step = -1
+						solve()
+					else:
+						rotate_face(1, -1)
+		19:
+			rotate_face(2, -1)
+			solve_step = 20
+		20:
+			rotate_face(4, -1)
+			solve_step = 21
+
+
 
 func get_edge_position(cols):
 	var idx = 0
