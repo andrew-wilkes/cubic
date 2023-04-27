@@ -35,6 +35,7 @@ func _process(delta):
 		if amount < 0.1:
 			transform.basis = Basis(to_q)
 			rotating = false
+			print("Camera rotation complete")
 			emit_signal("rotation_complete")
 
 
@@ -60,7 +61,7 @@ func _unhandled_input(event):
 func rotate_to_face(face_idx):
 	rotating = true
 	amount = 100.0
-	from_q = Quaternion(transform.basis)
+	from_q = Quaternion(transform.basis.orthonormalized())
 	var node = Node3D.new()
 	match face_idx:
 		0:

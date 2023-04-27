@@ -86,14 +86,15 @@ func reset():
 func _process(delta):
 	if face_rotating_idx > -1:
 		var offset = face_rotations[face_rotating_idx]
-		face_rotation_angle = clamp(face_rotation_angle + delta * rotation_speed, 0, PI / 2)
-		rotate_group(face_rotating_idx, face_rotation_angle * face_rotation_direction + offset * PI / 2)
-		if face_rotation_angle >= PI / 2:
+		face_rotation_angle = clamp(face_rotation_angle + delta * rotation_speed, 0, PI2)
+		rotate_group(face_rotating_idx, face_rotation_angle * face_rotation_direction + offset * PI2)
+		if face_rotation_angle >= PI2:
 			# Rotation complete
 			face_rotation_angle = 0
 			face_rotations[face_rotating_idx] = (offset + face_rotation_direction) % 4
 			face_rotating_idx = -1
 			reparent_to_origin()
+			print("Face rotation complete")
 			emit_signal("rotation_complete")
 
 
@@ -124,15 +125,22 @@ func rotate_face(idx, dir, bas):
 		var group = get_group(idx)
 		reparent_to_pivot(group)
 		face_rotating_idx = idx
+		face_rotation_direction = get_correct_dir(idx, dir)
+
+
+func get_correct_dir(idx, dir):
 		# Correct the rotation direction according to the front face orientation
-		face_rotation_direction = dir if idx in [FACES.BACK, FACES.DOWN, FACES.LEFT] else -dir
+		return dir if idx in [FACES.BACK, FACES.DOWN, FACES.LEFT] else -dir
 
 
 func rotate_face_immediate(idx, dir):
+	dir = get_correct_dir(idx, dir)
 	var group = get_group(idx)
 	reparent_to_pivot(group)
-	rotate_group(idx, PI / 2 * dir)
+	var offset = dir + face_rotations[idx]
+	rotate_group(idx, offset * PI2)
 	reparent_to_origin()
+	face_rotations[idx] = offset % 4
 
 
 func rotate_group(idx, rot_angle):
