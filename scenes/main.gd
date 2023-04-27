@@ -78,7 +78,7 @@ func solve():
 			# Get the edge position where it is now
 			var idx = get_edge_position(cols)
 			print(idx)
-			# Do something based on what edge it is on
+			# Move to green face
 			match idx:
 				0, 2:
 					rotate_face(0, 1)
@@ -210,7 +210,7 @@ func solve():
 			var idx = get_edge_position(cols)
 			print(idx)
 			# Avoid moving edges 9,10
-			# Do something based on what edge it is on
+			# Move to orange face
 			match idx:
 				1, 3:
 					rotate_face(0, 1)
@@ -230,6 +230,7 @@ func solve():
 			solve_step = 18
 		18:
 			rotate_face(2, 1)
+			solve_step = 16
 		19:
 			var cols = [5,4]
 			var idx = get_edge_position(cols)
@@ -262,35 +263,46 @@ func solve():
 			%Pivot.rotate_to_face(1)
 			solve_step = 23
 		23:
-			solve_step = -1
-"""
-		17:
 			# YELLOW / WHITE edge piece
 			var cols = [1,4]
+			print("YW")
 			# Get the edge position where it is now
 			var idx = get_edge_position(cols)
-			# Do something based on what edge it is on
+			print(idx)
+			# Move to yellow face
+			# Avoid moving edges 9,10,11
 			match idx:
 				0, 2:
 					rotate_face(0, -1)
 				3:
 					rotate_face(0, 1)
-				6, 9:
-					rotate_face(2, 1)
+				6:
+					rotate_face(3, 1)
+					solve_step = 24
 				7:
-					rotate_face(5, 1)
-				10:
-					rotate_face(4, -1)
-				11:
-					rotate_face(4, 1)
+					rotate_face(3, -1)
+					solve_step = 26
 				1, 4, 5, 8:
 					# Now on wanted face
-					solve_step = 18
+					solve_step = 28
 					solve()
-		18:
+		24:
+			rotate_face(0, 1)
+			solve_step = 25
+		25:
+			rotate_face(3, -1)
+			solve_step = 23
+		26:
+			rotate_face(0, 1)
+			solve_step = 27
+		27:
+			rotate_face(3, 1)
+			solve_step = 23
+		28:
 			var cols = [1,4]
 			var idx = get_edge_position(cols)
 			var aligned = is_edge_aligned(cols, idx)
+			prints(idx, aligned)
 			match idx:
 				1:
 					rotate_face(1, 1)
@@ -299,7 +311,7 @@ func solve():
 						rotate_face(1, 1)
 					else:
 						rotate_face(4, 1)
-						solve_step = 19
+						solve_step = 29
 				4:
 					rotate_face(1, -1)
 				8:
@@ -308,13 +320,12 @@ func solve():
 						solve()
 					else:
 						rotate_face(1, -1)
-		19:
+		29:
 			rotate_face(2, -1)
-			solve_step = 20
-		20:
+			solve_step = 30
+		30:
 			rotate_face(4, -1)
-			solve_step = 21
-"""
+			solve_step = 31
 
 
 func get_edge_position(cols):
