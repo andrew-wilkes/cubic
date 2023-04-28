@@ -42,7 +42,7 @@ func _on_button_pressed(bname, shift, ctrl):
 		"Solve":
 			if rotation_completed:
 				if solve_step < 0:
-					solve_step = 1
+					solve_step = 31
 					print("Solving")
 				solve()
 			#$Support.popup_centered()
@@ -316,7 +316,7 @@ func solve():
 					rotate_face(1, -1)
 				8:
 					if aligned:
-						solve_step = -1
+						solve_step = 31
 						solve()
 					else:
 						rotate_face(1, -1)
@@ -326,11 +326,109 @@ func solve():
 		30:
 			rotate_face(4, -1)
 			solve_step = 31
+		31:
+			# White corners
+			# Move the YELLOW/GREEN/WHITE corner to the red face
+			var cols = [1,2,4]
+			print("YGW")
+			# Get the edge position where it is now
+			var idx = get_corner_position(cols)
+			var aligned = is_corner_aligned(cols, idx)
+			prints(idx, aligned)
+			if aligned and idx == 5:
+				solve_step = 51
+				solve()
+			else:
+				# Move to corner 2
+				match idx:
+					0, 1:
+						rotate_face(0, -1)
+					2:
+						solve_step = 42
+						solve()
+					3:
+						rotate_face(0, 1)
+					4:
+						rotate_face(1, 1) # 4 > 0
+						solve_step = 32
+					5:
+						rotate_face(1, -1) # 5 > 2
+						solve_step = 35
+					6:
+						rotate_face(3, 1) # 6 > 3
+						solve_step = 37
+					7:
+						rotate_face(3, -1) # 7 > 1
+						solve_step = 40
+		32:
+			rotate_face(0, 1) # 0 > 1
+			solve_step = 33
+		33:
+			rotate_face(1, -1)
+		35:
+			rotate_face(0, 1) # 2 > 0
+			solve_step = 36
+		36:
+			rotate_face(1, 1)
+			solve_step = 31
+		37:
+			rotate_face(0, -1) # 3 > 1
+			solve_step = 38
+		38:
+			rotate_face(3, -1)
+			solve_step = 31
+		40:
+			rotate_face(0, -1) # 1 > 0
+			solve_step = 41
+		41:
+			rotate_face(3, 1)
+			solve_step = 31
+		42:
+			# On corner 2
+			var cols = [1,2,4]
+			var idx = get_corner_position(cols)
+			match cmap.corners[idx][1]:
+				1:
+					rotate_face(1, -1)
+					solve_step = 43
+				2:
+					rotate_face(1, -1)
+					solve_step = 47
+				4:
+					rotate_face(2, 1)
+					solve_step = 49
+		43:
+			rotate_face(0, -1)
+			solve_step = 44
+		44:
+			rotate_face(0, -1)
+			solve_step = 45
+		45:
+			rotate_face(1, 1)
+			solve_step = 46
+		46:
+			rotate_face(0, 1)
+			solve_step = 42
+		47:
+			rotate_face(0, -1)
+			solve_step = 48
+		48:
+			rotate_face(1, 1)
+			solve_step = 51
+		49:
+			rotate_face(0, 1)
+			solve_step = 50
+		50:
+			rotate_face(2, -1)
+			solve_step = 51
+		51:
+			print("Done")
+			solve_step = -1
 
 
 func get_edge_position(cols):
 	var idx = 0
-	for edge in cmap.get_edge_positions():
+	for n in 12:
 		if cmap.edges[idx].has(cols[0]) and cmap.edges[idx].has(cols[1]):
 			break
 		idx += 1
@@ -341,3 +439,18 @@ func is_edge_aligned(cols, idx):
 	# The face color is the common color
 	var fc = cols[0] if cmap.EDGE_FACE_MAP[idx].has(cols[0]) else cols[1]
 	return cmap.EDGE_FACE_MAP[idx].find(fc) == cmap.edges[idx].find(fc)
+
+
+func get_corner_position(cols):
+	var idx = 0
+	for n in 8:
+		if cmap.corners[idx].has(cols[0]) and cmap.corners[idx].has(cols[1]) and cmap.corners[idx].has(cols[2]):
+			break
+		idx += 1
+	return idx
+
+
+func is_corner_aligned(cols, idx):
+	# The face color is the common color
+	var fc = cols[0] if cmap.CORNER_FACE_MAP[idx].has(cols[0]) else cols[1] if cmap.CORNER_FACE_MAP[idx].has(cols[1]) else cols[2]
+	return cmap.CORNER_FACE_MAP[idx].find(fc) == cmap.corners[idx].find(fc)
