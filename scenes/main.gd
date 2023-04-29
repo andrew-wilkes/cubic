@@ -5,6 +5,10 @@ const FACE_BUTTONS = ["U", "L", "F", "R", "D", "B"]
 var bc
 var cmap
 var solve_step = -1
+var move_step = -1
+var colors
+var face_map
+var edge_map
 var rotation_completed = true
 
 func _ready():
@@ -65,6 +69,61 @@ func copy_cube():
 	$C/ColorMap.set_corner_colors(bc.get_corner_colors())
 
 
+func move_white_edge_to_face():
+	# Get the edge position where it is now
+	var idx = get_edge_position(colors)
+	prints("Edge:", idx)
+	# Move to green face
+	idx = edge_map[idx]
+	match idx:
+		0, 2:
+			rotate_sequence([[0,1]])
+		1:
+			rotate_sequence([[0,-1]])
+		4:
+			rotate_sequence([[1,-1]])
+		7:
+			rotate_sequence([[3,1]])
+		8, 11:
+			rotate_sequence([[4,1]])
+		10:
+			rotate_sequence([[4,-1]])
+		3, 5, 6, 9:
+			# Now on wanted face
+			solve_step += 1
+			solve()
+
+
+func move_white_edge_to_white_face():
+	var idx = get_edge_position(colors)
+	var aligned = is_edge_aligned(colors, idx)
+	prints("Edge:", idx, "Aligned:", aligned)
+	idx = edge_map[idx]
+	match idx:
+		3:
+			rotate_sequence([[2,1]])
+		6:
+			if aligned:
+				rotate_sequence([[2,1]])
+			else:
+				rotate_sequence([[4,1],[3,-1],[4,-1]])
+				if move_step < 0:
+					solve_step += 1
+		5:
+			if aligned:
+				rotate_face(2,-1)
+			else:
+				rotate_sequence([[4,-1],[1,1],[4,1]])
+				if move_step < 0:
+					solve_step += 1
+		9:
+			if aligned:
+				solve_step += 1
+				solve()
+			else:
+				rotate_sequence([[2,-1]])
+
+
 func solve():
 	# https://www.speedcube.com.au/pages/how-to-solve-a-rubiks-cube
 	match solve_step:
@@ -72,261 +131,62 @@ func solve():
 			%Pivot.rotate_to_face(2)
 			solve_step = 2
 		2:
-			# GREEN/ WHITE edge piece
-			print("GW")
-			var cols = [2,4]
-			# Get the edge position where it is now
-			var idx = get_edge_position(cols)
-			print(idx)
-			# Move to green face
-			match idx:
-				0, 2:
-					rotate_face(0, 1)
-				1:
-					rotate_face(0, -1)
-				4:
-					rotate_face(1, -1)
-				7:
-					rotate_face(3, 1)
-				8, 11:
-					rotate_face(4, 1)
-				10:
-					rotate_face(4, -1)
-				3, 5, 6, 9:
-					# Now on wanted face
-					solve_step = 3
-					solve()
+			if move_step < 0:
+				move_step = 0
+				face_map = [0,1,2,3,4,5]
+				edge_map = [0,1,2,3,4,5,6,7,8,9,10,11]
+				colors = [2,4]
+				# GREEN/ WHITE edge piece
+				print("GW")
+			move_white_edge_to_face()
 		3:
-			var cols = [2,4]
-			var idx = get_edge_position(cols)
-			var aligned = is_edge_aligned(cols, idx)
-			prints(idx, aligned)
-			match idx:
-				3:
-					rotate_face(2, 1)
-				6:
-					if aligned:
-						rotate_face(2, 1)
-					else:
-						rotate_face(4, 1)
-						solve_step = 4
-				5:
-					if aligned:
-						rotate_face(2, -1)
-					else:
-						rotate_face(4, -1)
-						solve_step = 6
-				9:
-					if aligned:
-						solve_step = 8
-						solve()
-					else:
-						rotate_face(2, -1)
+			move_white_edge_to_white_face()
 		4:
-			rotate_face(3, -1)
+			%Pivot.rotate_to_face(3)
 			solve_step = 5
 		5:
-			rotate_face(4, -1)
-			solve_step = 8
+			if move_step < 0:
+				move_step = 0
+				face_map = [0,1,2,3,4,5]
+				edge_map = [0,1,2,3,4,5,6,7,8,9,10,11]
+				colors = [3,4]
+				# BLUE/ WHITE edge piece
+				print("BW")
+			# Don't move edge 9
+			move_white_edge_to_face()
 		6:
-			rotate_face(1, 1)
-			solve_step = 7
+			move_white_edge_to_white_face()
 		7:
-			rotate_face(4, 1)
+			%Pivot.rotate_to_face(5)
 			solve_step = 8
 		8:
-			%Pivot.rotate_to_face(3)
-			solve_step = 9
+			if move_step < 0:
+				move_step = 0
+				face_map = [0,1,2,3,4,5]
+				edge_map = [0,1,2,3,4,5,6,7,8,9,10,11]
+				colors = [5,4]
+				# ORANGE / WHITE edge piece
+				print("OW")
+				# Avoid moving edges 9,10
+			move_white_edge_to_face()
 		9:
-			# BLUE/ WHITE edge piece
-			print("BW")
-			var cols = [3,4]
-			# Get the edge position where it is now
-			var idx = get_edge_position(cols)
-			print(idx)
-			# Move to blue face
-			# Don't move edge 9
-			match idx:
-				0, 1:
-					rotate_face(0, 1)
-				3:
-					rotate_face(0, -1)
-				4, 8:
-					rotate_face(1, 1)
-				5:
-					rotate_face(1, -1)
-				11:
-					rotate_face(5, 1)
-				2, 6, 7, 10:
-					# Now on wanted face
-					solve_step = 10
-					solve()
+			move_white_edge_to_white_face()
 		10:
-			var cols = [3,4]
-			var idx = get_edge_position(cols)
-			var aligned = is_edge_aligned(cols, idx)
-			prints(idx, aligned)
-			match idx:
-				2:
-					rotate_face(3, 1)
-				6:
-					if aligned:
-						rotate_face(3, -1)
-					else:
-						rotate_face(4, -1)
-						solve_step = 11
-				7:
-					if aligned:
-						rotate_face(3, 1)
-					else:
-						rotate_face(4, 1)
-						solve_step = 13
-				10:
-					if aligned:
-						solve_step = 15
-						solve()
-					else:
-						rotate_face(3, 1)
-		11:
-			rotate_face(2, 1)
-			solve_step = 12
-		12:
-			rotate_face(4, 1)
-			solve_step = 15
-		13:
-			rotate_face(5, -1)
-			solve_step = 14
-		14:
-			rotate_face(4, -1)
-			solve_step = 15
-		15:
-			%Pivot.rotate_to_face(5)
-			solve_step = 16
-		16:
-			# ORANGE / WHITE edge piece
-			var cols = [5,4]
-			print("OW")
-			# Get the edge position where it is now
-			var idx = get_edge_position(cols)
-			print(idx)
-			# Avoid moving edges 9,10
-			# Move to orange face
-			match idx:
-				1, 3:
-					rotate_face(0, 1)
-				2:
-					rotate_face(0, -1)
-				5, 8:
-					rotate_face(1, 1)
-				6:
-					rotate_face(2, -1)
-					solve_step = 17
-				0, 4, 7, 11:
-					# Now on wanted face
-					solve_step = 19
-					solve()
-		17:
-			rotate_face(0, 1)
-			solve_step = 18
-		18:
-			rotate_face(2, 1)
-			solve_step = 16
-		19:
-			var cols = [5,4]
-			var idx = get_edge_position(cols)
-			var aligned = is_edge_aligned(cols, idx)
-			prints(idx, aligned)
-			match idx:
-				0:
-					rotate_face(5, 1)
-				4:
-					if aligned:
-						rotate_face(5, 1)
-					else:
-						rotate_face(4, 1)
-						solve_step = 20
-				7:
-					rotate_face(2, -1)
-				11:
-					if aligned:
-						solve_step = 22
-						solve()
-					else:
-						rotate_face(5, -1)
-		20:
-			rotate_face(1, -1)
-			solve_step = 21
-		21:
-			rotate_face(4, -1)
-			solve_step = 22
-		22:
 			%Pivot.rotate_to_face(1)
-			solve_step = 23
-		23:
-			# YELLOW / WHITE edge piece
-			var cols = [1,4]
-			print("YW")
-			# Get the edge position where it is now
-			var idx = get_edge_position(cols)
-			print(idx)
-			# Move to yellow face
-			# Avoid moving edges 9,10,11
-			match idx:
-				0, 2:
-					rotate_face(0, -1)
-				3:
-					rotate_face(0, 1)
-				6:
-					rotate_face(3, 1)
-					solve_step = 24
-				7:
-					rotate_face(3, -1)
-					solve_step = 26
-				1, 4, 5, 8:
-					# Now on wanted face
-					solve_step = 28
-					solve()
-		24:
-			rotate_face(0, 1)
-			solve_step = 25
-		25:
-			rotate_face(3, -1)
-			solve_step = 23
-		26:
-			rotate_face(0, 1)
-			solve_step = 27
-		27:
-			rotate_face(3, 1)
-			solve_step = 23
-		28:
-			var cols = [1,4]
-			var idx = get_edge_position(cols)
-			var aligned = is_edge_aligned(cols, idx)
-			prints(idx, aligned)
-			match idx:
-				1:
-					rotate_face(1, 1)
-				5:
-					if aligned:
-						rotate_face(1, 1)
-					else:
-						rotate_face(4, 1)
-						solve_step = 29
-				4:
-					rotate_face(1, -1)
-				8:
-					if aligned:
-						solve_step = 31
-						solve()
-					else:
-						rotate_face(1, -1)
-		29:
-			rotate_face(2, -1)
-			solve_step = 30
-		30:
-			rotate_face(4, -1)
-			solve_step = 31
-		31:
+			solve_step = 11
+		11:
+			if move_step < 0:
+				move_step = 0
+				face_map = [0,1,2,3,4,5]
+				edge_map = [0,1,2,3,4,5,6,7,8,9,10,11]
+				colors = [1,4]
+				# YELLOW / WHITE edge piece
+				print("YW")
+				# Avoid moving edges 9,10,11
+			move_white_edge_to_face()
+		9:
+			move_white_edge_to_white_face()
+		10:
 			# White corners
 			# Move the YELLOW/GREEN/WHITE corner to the red face
 			var cols = [1,2,4]
@@ -454,3 +314,11 @@ func is_corner_aligned(cols, idx):
 	# The face color is the common color
 	var fc = cols[0] if cmap.CORNER_FACE_MAP[idx].has(cols[0]) else cols[1] if cmap.CORNER_FACE_MAP[idx].has(cols[1]) else cols[2]
 	return cmap.CORNER_FACE_MAP[idx].find(fc) == cmap.corners[idx].find(fc)
+
+
+func rotate_sequence(moves):
+	var move = moves[move_step]
+	rotate_face(face_map[move[0]], move[1])
+	move_step += 1
+	if move_step == moves.size():
+		move_step = -1 # Indicate end of move sequence
