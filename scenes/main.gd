@@ -6,6 +6,7 @@ var bc
 var cmap
 var solve_step = -1
 var move_step = -1
+var moves = []
 var colors
 var face_map
 var edge_map
@@ -46,7 +47,7 @@ func _on_button_pressed(bname, shift, ctrl):
 		"Solve":
 			if rotation_completed:
 				if solve_step < 0:
-					solve_step = 31
+					solve_step = 1
 					print("Solving")
 				solve()
 			#$Support.popup_centered()
@@ -77,17 +78,17 @@ func move_white_edge_to_face():
 	idx = edge_map[idx]
 	match idx:
 		0, 2:
-			rotate_sequence([[0,1]])
+			set_moves([[0,1]])
 		1:
-			rotate_sequence([[0,-1]])
+			set_moves([[0,-1]])
 		4:
-			rotate_sequence([[1,-1]])
+			set_moves([[1,-1]])
 		7:
-			rotate_sequence([[3,1]])
+			set_moves([[3,1]])
 		8, 11:
-			rotate_sequence([[4,1]])
+			set_moves([[4,1]])
 		10:
-			rotate_sequence([[4,-1]])
+			set_moves([[4,-1]])
 		3, 5, 6, 9:
 			# Now on wanted face
 			solve_step += 1
@@ -101,38 +102,36 @@ func move_white_edge_to_white_face():
 	idx = edge_map[idx]
 	match idx:
 		3:
-			rotate_sequence([[2,1]])
+			set_moves([[2,1]])
 		6:
 			if aligned:
-				rotate_sequence([[2,1]])
+				set_moves([[2,1]])
 			else:
-				rotate_sequence([[4,1],[3,-1],[4,-1]])
-				if move_step < 0:
-					solve_step += 1
+				set_moves([[4,1],[3,-1],[4,-1]])
 		5:
 			if aligned:
 				rotate_face(2,-1)
 			else:
-				rotate_sequence([[4,-1],[1,1],[4,1]])
-				if move_step < 0:
-					solve_step += 1
+				set_moves([[4,-1],[1,1],[4,1]])
 		9:
 			if aligned:
 				solve_step += 1
 				solve()
 			else:
-				rotate_sequence([[2,-1]])
+				set_moves([[2,-1]])
 
 
 func solve():
 	# https://www.speedcube.com.au/pages/how-to-solve-a-rubiks-cube
+	if move_step > -1:
+		apply_move()
+		return
 	match solve_step:
 		1:
 			%Pivot.rotate_to_face(2)
 			solve_step = 2
 		2:
 			if move_step < 0:
-				move_step = 0
 				face_map = [0,1,2,3,4,5]
 				edge_map = [0,1,2,3,4,5,6,7,8,9,10,11]
 				colors = [2,4]
@@ -146,9 +145,8 @@ func solve():
 			solve_step = 5
 		5:
 			if move_step < 0:
-				move_step = 0
-				face_map = [0,1,2,3,4,5]
-				edge_map = [0,1,2,3,4,5,6,7,8,9,10,11]
+				face_map = [0,2,3,5,4,1]
+				edge_map = [2,0,3,1,7,4,5,6,11,8,9,10]
 				colors = [3,4]
 				# BLUE/ WHITE edge piece
 				print("BW")
@@ -161,9 +159,8 @@ func solve():
 			solve_step = 8
 		8:
 			if move_step < 0:
-				move_step = 0
-				face_map = [0,1,2,3,4,5]
-				edge_map = [0,1,2,3,4,5,6,7,8,9,10,11]
+				face_map = [0,3,5,1,4,2]
+				edge_map = [3,2,1,0,6,7,4,5,10,11,8,9]
 				colors = [5,4]
 				# ORANGE / WHITE edge piece
 				print("OW")
@@ -176,9 +173,8 @@ func solve():
 			solve_step = 11
 		11:
 			if move_step < 0:
-				move_step = 0
-				face_map = [0,1,2,3,4,5]
-				edge_map = [0,1,2,3,4,5,6,7,8,9,10,11]
+				face_map = [0,5,1,2,4,3]
+				edge_map = [1,3,0,2,5,6,7,4,9,10,11,8]
 				colors = [1,4]
 				# YELLOW / WHITE edge piece
 				print("YW")
@@ -316,7 +312,13 @@ func is_corner_aligned(cols, idx):
 	return cmap.CORNER_FACE_MAP[idx].find(fc) == cmap.corners[idx].find(fc)
 
 
-func rotate_sequence(moves):
+func set_moves(seq):
+	moves = seq
+	move_step = 0
+	apply_move()
+
+
+func apply_move():
 	var move = moves[move_step]
 	rotate_face(face_map[move[0]], move[1])
 	move_step += 1
