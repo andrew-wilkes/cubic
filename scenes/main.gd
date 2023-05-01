@@ -79,6 +79,7 @@ func move_white_edge_to_face():
 	# Move to front face
 	# Map the idx depending on the front face
 	idx = edge_map[idx]
+	# set_moves will map the face index
 	match idx:
 		0, 2:
 			set_moves([[0,1]])
@@ -170,12 +171,13 @@ func move_corner_to_white_face():
 func solve():
 	# https://www.speedcube.com.au/pages/how-to-solve-a-rubiks-cube
 	if move_step > -1:
+		# We are in a rotation sequence
 		apply_move()
 		return
 	match solve_step:
 		1:
 			%Pivot.rotate_to_face(2)
-			solve_step = 2
+			solve_step += 1
 		2:
 			if move_step < 0:
 				face_map = [0,1,2,3,4,5]
@@ -188,7 +190,7 @@ func solve():
 			move_white_edge_to_white_face()
 		4:
 			%Pivot.rotate_to_face(3)
-			solve_step = 5
+			solve_step += 1
 		5:
 			if move_step < 0:
 				face_map = [0,2,3,5,4,1]
@@ -202,7 +204,7 @@ func solve():
 			move_white_edge_to_white_face()
 		7:
 			%Pivot.rotate_to_face(5)
-			solve_step = 8
+			solve_step += 1
 		8:
 			if move_step < 0:
 				face_map = [0,3,5,1,4,2]
@@ -216,7 +218,7 @@ func solve():
 			move_white_edge_to_white_face()
 		10:
 			%Pivot.rotate_to_face(1)
-			solve_step = 11
+			solve_step += 1
 		11:
 			if move_step < 0:
 				face_map = [0,5,1,2,4,3]
@@ -231,7 +233,7 @@ func solve():
 		13:
 			# White corners
 			%Pivot.rotate_to_face(2)
-			solve_step = 14
+			solve_step += 1
 		14:
 			# Move the YELLOW/GREEN/WHITE corner to the top face
 			colors = cmap.CORNER_FACE_MAP[5]
@@ -243,7 +245,7 @@ func solve():
 			move_corner_to_white_face()
 		16:
 			%Pivot.rotate_to_face(3)
-			solve_step = 17
+			solve_step += 1
 		17:
 			colors = cmap.CORNER_FACE_MAP[6]
 			corner_map = [1,3,0,2,7,4,5,6]
@@ -254,7 +256,7 @@ func solve():
 			move_corner_to_white_face()
 		19:
 			%Pivot.rotate_to_face(5)
-			solve_step = 20
+			solve_step += 1
 		20:
 			colors = cmap.CORNER_FACE_MAP[7]
 			corner_map = [3,2,1,0,6,7,4,5]
@@ -265,7 +267,7 @@ func solve():
 			move_corner_to_white_face()
 		22:
 			%Pivot.rotate_to_face(1)
-			solve_step = 23
+			solve_step += 1
 		23:
 			colors = cmap.CORNER_FACE_MAP[4]
 			corner_map = [2,0,3,1,5,6,7,4]
