@@ -10,6 +10,7 @@ var moves = []
 var colors
 var face_map
 var edge_map
+var corner_map
 var rotation_completed = true
 
 func _ready():
@@ -71,10 +72,12 @@ func copy_cube():
 
 
 func move_white_edge_to_face():
-	# Get the edge position where it is now
+	# Want to avoid disturbing already placed edges in the group: 8,9,10,11
+	# Get the edge position where the piece is now
 	var idx = get_edge_position(colors)
 	prints("Edge:", idx)
-	# Move to green face
+	# Move to front face
+	# Map the idx depending on the front face
 	idx = edge_map[idx]
 	match idx:
 		0, 2:
@@ -82,17 +85,18 @@ func move_white_edge_to_face():
 		1:
 			set_moves([[0,-1]])
 		4:
+			set_moves([[4,-1],[1,-1],[4,1]])
+		8:
 			set_moves([[1,-1]])
 		7:
-			set_moves([[3,1]])
-		8, 11:
-			set_moves([[4,1]])
+			set_moves([[4,1],[3,1],[4,-1]])
+		11:
+			set_moves([[5,1]])
 		10:
-			set_moves([[4,-1]])
+			set_moves([[3,1]])
 		3, 5, 6, 9:
 			# Now on wanted face
 			solve_step += 1
-			solve()
 
 
 func move_white_edge_to_white_face():
@@ -110,7 +114,7 @@ func move_white_edge_to_white_face():
 				set_moves([[4,1],[3,-1],[4,-1]])
 		5:
 			if aligned:
-				rotate_face(2,-1)
+				set_moves([[2,-1]])
 			else:
 				set_moves([[4,-1],[1,1],[4,1]])
 		9:
@@ -119,6 +123,48 @@ func move_white_edge_to_white_face():
 				solve()
 			else:
 				set_moves([[2,-1]])
+
+
+func move_corner_to_p2():
+	var idx = get_corner_position(colors)
+	prints("Corner:", idx)
+	var aligned = is_corner_aligned(colors, idx)
+	idx = corner_map[idx]
+	if aligned and idx == 5:
+		solve_step += 2
+		solve()
+	else:
+		match idx:
+			4:
+				set_moves([[1,1],[0,1],[1,-1]]) # 4 > 1
+			5:
+				set_moves([[1,-1],[0,-1],[1,1]]) # 5 > 3
+			6:
+				set_moves([[3,1],[0,1],[3,-1]]) # 6 > 2
+			7:
+				set_moves([[3,-1],[0,-1],[3,1]]) # 7 > 0
+			0:
+				set_moves([[0,-1]]) # 0 > 2
+			1:
+				set_moves([[0,-1],[0,-1]]) # 1 > 2
+			3:
+				set_moves([[0,1]]) # 3 > 2
+			2:
+				solve_step += 1
+				solve()
+
+
+func move_corner_to_white_face():
+	# On which face is the face color tile?
+	match colors.find(cmap.corners[corner_map.find(2)][1]):
+		0:
+			set_moves([[1,-1],[0,-1],[0,-1],[1,1],[0,1]])
+		1:
+			set_moves([[1,-1],[0,-1],[1,1]])
+			solve_step += 1
+		2:
+			set_moves([[2,1],[0,1],[2,-1]])
+			solve_step += 1
 
 
 func solve():
@@ -180,104 +226,55 @@ func solve():
 				print("YW")
 				# Avoid moving edges 9,10,11
 			move_white_edge_to_face()
-		9:
+		12:
 			move_white_edge_to_white_face()
-		10:
+		13:
 			# White corners
-			# Move the YELLOW/GREEN/WHITE corner to the red face
-			var cols = [1,2,4]
+			%Pivot.rotate_to_face(2)
+			solve_step = 14
+		14:
+			# Move the YELLOW/GREEN/WHITE corner to the top face
+			colors = cmap.CORNER_FACE_MAP[5]
+			corner_map = [0,1,2,3,4,5,6,7]
+			face_map = [0,1,2,3,4,5]
 			print("YGW")
-			# Get the edge position where it is now
-			var idx = get_corner_position(cols)
-			var aligned = is_corner_aligned(cols, idx)
-			prints(idx, aligned)
-			if aligned and idx == 5:
-				solve_step = 51
-				solve()
-			else:
-				# Move to corner 2
-				match idx:
-					0, 1:
-						rotate_face(0, -1)
-					2:
-						solve_step = 42
-						solve()
-					3:
-						rotate_face(0, 1)
-					4:
-						rotate_face(1, 1) # 4 > 0
-						solve_step = 32
-					5:
-						rotate_face(1, -1) # 5 > 2
-						solve_step = 35
-					6:
-						rotate_face(3, 1) # 6 > 3
-						solve_step = 37
-					7:
-						rotate_face(3, -1) # 7 > 1
-						solve_step = 40
-		32:
-			rotate_face(0, 1) # 0 > 1
-			solve_step = 33
-		33:
-			rotate_face(1, -1)
-		35:
-			rotate_face(0, 1) # 2 > 0
-			solve_step = 36
-		36:
-			rotate_face(1, 1)
-			solve_step = 31
-		37:
-			rotate_face(0, -1) # 3 > 1
-			solve_step = 38
-		38:
-			rotate_face(3, -1)
-			solve_step = 31
-		40:
-			rotate_face(0, -1) # 1 > 0
-			solve_step = 41
-		41:
-			rotate_face(3, 1)
-			solve_step = 31
-		42:
-			# On corner 2
-			var cols = [1,2,4]
-			var idx = get_corner_position(cols)
-			match cmap.corners[idx][1]:
-				1:
-					rotate_face(1, -1)
-					solve_step = 43
-				2:
-					rotate_face(1, -1)
-					solve_step = 47
-				4:
-					rotate_face(2, 1)
-					solve_step = 49
-		43:
-			rotate_face(0, -1)
-			solve_step = 44
-		44:
-			rotate_face(0, -1)
-			solve_step = 45
-		45:
-			rotate_face(1, 1)
-			solve_step = 46
-		46:
-			rotate_face(0, 1)
-			solve_step = 42
-		47:
-			rotate_face(0, -1)
-			solve_step = 48
-		48:
-			rotate_face(1, 1)
-			solve_step = 51
-		49:
-			rotate_face(0, 1)
-			solve_step = 50
-		50:
-			rotate_face(2, -1)
-			solve_step = 51
-		51:
+			move_corner_to_p2()
+		15:
+			move_corner_to_white_face()
+		16:
+			%Pivot.rotate_to_face(3)
+			solve_step = 17
+		17:
+			colors = cmap.CORNER_FACE_MAP[6]
+			corner_map = [1,3,0,2,7,4,5,6]
+			face_map = [0,2,3,5,4,1]
+			print("GBW")
+			move_corner_to_p2()
+		18:
+			move_corner_to_white_face()
+		19:
+			%Pivot.rotate_to_face(5)
+			solve_step = 20
+		20:
+			colors = cmap.CORNER_FACE_MAP[7]
+			corner_map = [3,2,1,0,6,7,4,5]
+			face_map = [0,3,5,1,4,2]
+			print("BOW")
+			move_corner_to_p2()
+		21:
+			move_corner_to_white_face()
+		22:
+			%Pivot.rotate_to_face(1)
+			solve_step = 23
+		23:
+			colors = cmap.CORNER_FACE_MAP[4]
+			corner_map = [2,0,3,1,5,6,7,4]
+			face_map = [0,5,1,2,4,3]
+			print("YGW")
+			move_corner_to_p2()
+		24:
+			move_corner_to_white_face()
+		25:
 			print("Done")
 			solve_step = -1
 
