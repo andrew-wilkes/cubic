@@ -26,6 +26,7 @@ func _ready():
 func rotation_done():
 	rotation_completed = true
 	copy_cube()
+	solve()
 
 
 func _on_button_pressed(bname, shift, ctrl):
@@ -50,7 +51,7 @@ func _on_button_pressed(bname, shift, ctrl):
 		"Solve":
 			if rotation_completed:
 				if solve_step < 0:
-					solve_step = 35
+					solve_step = 1
 					print("Solving")
 				solve()
 			#$Support.popup_centered()
@@ -255,6 +256,30 @@ func align_top_edges():
 					set_moves([[3,1],[0,1],[3,-1],[0,1],[3,1],[0,1],[0,1],[3,-1]])
 
 
+func position_top_corners():
+	var correct_corners = []
+	for idx in 4:
+		if get_corner_position(cmap.CORNER_FACE_MAP[idx]) == idx:
+			correct_corners.append(idx)
+	if correct_corners.size() == 4:
+		solve_step += 1
+		solve()
+	else:
+		if correct_corners.size() > 0:
+			face_map = FACE_MAPS[[2,1,3,0][correct_corners[0]]]
+		else:
+			face_map = FACE_MAPS[2]
+		set_moves([[0,1],[3,1],[0,-1],[1,-1],[0,1],[3,-1],[0,-1],[1,1]])
+
+
+func rotate_top_right_corner():
+	if cmap.CORNER_FACE_MAP[3][0] == cmap.corners[3][0]:
+		solve_step += 1
+		solve()
+	else:
+		set_moves([[3,-1],[4,-1],[3,1],[4,1],[3,-1],[4,-1],[3,1],[4,1]])
+
+
 func solve():
 	# https://www.speedcube.com.au/pages/how-to-solve-a-rubiks-cube
 	if move_step > -1:
@@ -401,6 +426,7 @@ func solve():
 			move_mid_edge()
 		33:
 			%Pivot.rotate_to_face(2)
+			solve_step += 1
 		34:
 			face_map = FACE_MAPS[0]
 			form_top_cross()
@@ -408,6 +434,32 @@ func solve():
 			face_map = FACE_MAPS[0]
 			align_top_edges()
 		36:
+			position_top_corners()
+		37:
+			%Pivot.rotate_to_face(2)
+			face_map = FACE_MAPS[0]
+			solve_step += 1
+		38:
+			set_moves([[0,-1]])
+			solve_step += 1
+		39:
+			rotate_top_right_corner()
+		40:
+			set_moves([[0,-1]])
+			solve_step += 1
+		41:
+			rotate_top_right_corner()
+		42:
+			set_moves([[0,-1]])
+			solve_step += 1
+		43:
+			rotate_top_right_corner()
+		44:
+			set_moves([[0,-1]])
+			solve_step += 1
+		45:
+			rotate_top_right_corner()
+		46:
 			print("Done")
 			solve_step = -1
 
