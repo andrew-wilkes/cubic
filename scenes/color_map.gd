@@ -6,7 +6,7 @@ const COLORS = [Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.WHITE, C
 # The _FACE_MAP constants are indexing the faces
 # Copies of the FACE_MAP constants are indexing the changing colors on the faces of the pieces
 const CORNER_FACE_MAP = [[0,1,5],[0,5,3],[0,2,1],[0,3,2],[5,1,4],[1,2,4],[2,3,4],[3,5,4]]
-const EDGE_FACE_MAP = [[5,0],[1,0],[3,0],[2,0],[1,5],[1,2],[3,2],[3,5],[1,4],[2,4],[3,4],[5,4]]
+const EDGE_FACE_MAP = [[5,0],[1,0],[3,0],[2,0],[5,1],[1,2],[3,2],[3,5],[1,4],[2,4],[3,4],[5,4]]
 # FACE_ maps contain a list of edge/corner indices of parts on a face
 const FACE_CORNER_MAP = [[0,1,2,3],[0,2,4,5],[2,3,5,6],[3,1,6,7],[5,6,4,7],[4,7,0,1]]
 const FACE_EDGE_MAP = [[0,1,2,3],[1,4,5,8],[3,5,6,9],[2,6,7,10],[9,8,10,11],[11,4,7,0]]
