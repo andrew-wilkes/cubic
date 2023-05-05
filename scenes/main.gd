@@ -3,6 +3,7 @@ extends Control
 const FACE_BUTTONS = ["U", "L", "F", "R", "D", "B"]
 const FACE_MAPS = [[0,1,2,3,4,5],[0,2,3,5,4,1],[0,3,5,1,4,2],[0,5,1,2,4,3]] # G,B,O,Y
 const EDGE_MAPS = [[0,1,2,3,4,5,6,7,8,9,10,11],[2,0,3,1,7,4,5,6,11,8,9,10],[3,2,1,0,6,7,4,5,10,11,8,9],[1,3,0,2,5,6,7,4,9,10,11,8]]
+const CORNER_MAPS = [[0,1,2,3,4,5,6,7],[1,3,0,2,7,4,5,6],[3,2,1,0,6,7,4,5],[2,0,3,1,5,6,7,4]]
 
 var bc
 var cmap
@@ -89,18 +90,19 @@ func move_white_edge_to_face():
 		1:
 			set_moves([[0,-1]])
 		4:
-			set_moves([[4,-1],[1,-1],[4,1]])
+			set_moves([[1,1],[0,-1],[1,-1]])
 		8:
 			set_moves([[1,-1]])
 		7:
-			set_moves([[4,1],[3,1],[4,-1]])
+			set_moves([[3,-1],[0,1],[3,1]])
 		11:
-			set_moves([[5,1]])
+			set_moves([[5,1],[5,1]])
 		10:
 			set_moves([[3,1]])
 		3, 5, 6, 9:
 			# Now on wanted face
 			solve_step += 1
+			solve()
 
 
 func move_white_edge_to_white_face():
@@ -164,10 +166,10 @@ func move_corner_to_white_face():
 		0:
 			set_moves([[1,-1],[0,-1],[0,-1],[1,1],[0,1]])
 		1:
-			set_moves([[1,-1],[0,-1],[1,1]])
+			set_moves([[1,-1],[0,-1],[1,1]]) # Face color is forward
 			solve_step += 1
 		2:
-			set_moves([[2,1],[0,1],[2,-1]])
+			set_moves([[2,1],[0,1],[2,-1]]) # White is forward
 			solve_step += 1
 
 
@@ -349,8 +351,8 @@ func solve():
 		14:
 			# Move the YELLOW/GREEN/WHITE corner to the top face
 			colors = cmap.CORNER_FACE_MAP[5]
-			corner_map = [0,1,2,3,4,5,6,7]
-			face_map = [0,1,2,3,4,5]
+			corner_map = CORNER_MAPS[0]
+			face_map = FACE_MAPS[0]
 			print("YGW")
 			move_corner_to_p2()
 		15:
@@ -360,8 +362,8 @@ func solve():
 			solve_step += 1
 		17:
 			colors = cmap.CORNER_FACE_MAP[6]
-			corner_map = [1,3,0,2,7,4,5,6]
-			face_map = [0,2,3,5,4,1]
+			corner_map = CORNER_MAPS[1]
+			face_map = FACE_MAPS[1]
 			print("GBW")
 			move_corner_to_p2()
 		18:
@@ -371,8 +373,8 @@ func solve():
 			solve_step += 1
 		20:
 			colors = cmap.CORNER_FACE_MAP[7]
-			corner_map = [3,2,1,0,6,7,4,5]
-			face_map = [0,3,5,1,4,2]
+			corner_map = CORNER_MAPS[2]
+			face_map = FACE_MAPS[2]
 			print("BOW")
 			move_corner_to_p2()
 		21:
@@ -382,8 +384,8 @@ func solve():
 			solve_step += 1
 		23:
 			colors = cmap.CORNER_FACE_MAP[4]
-			corner_map = [2,0,3,1,5,6,7,4]
-			face_map = [0,5,1,2,4,3]
+			corner_map = CORNER_MAPS[3]
+			face_map = FACE_MAPS[3]
 			print("YGW")
 			move_corner_to_p2()
 		24:
