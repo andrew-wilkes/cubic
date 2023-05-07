@@ -7,6 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://dfknx5u3yhl8y" path="res://scenes/color_map.tscn" id="5_3m2rh"]
 [ext_resource type="Script" path="res://scenes/Support.gd" id="6_yx4e8"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h34t6"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.141176, 0.141176, 0.141176, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oc1xb"]
 content_margin_left = 5.0
 content_margin_top = 5.0
@@ -17,13 +24,6 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h34t6"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0.141176, 0.141176, 0.141176, 1)
 
 [node name="Main" type="MarginContainer"]
 theme_override_constants/margin_left = 20
@@ -41,6 +41,7 @@ layout_mode = 2
 size_flags_vertical = 4
 
 [node name="SVP" type="SubViewportContainer" parent="C"]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="VP" type="SubViewport" parent="C/SVP"]
@@ -61,16 +62,6 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
 
 [node name="Light" type="DirectionalLight3D" parent="C/SVP/VP/BigCube/Pivot/Camera"]
-
-[node name="C" type="CenterContainer" parent="C/SVP"]
-custom_minimum_size = Vector2(400, 0)
-layout_mode = 2
-
-[node name="Note" type="Label" parent="C/SVP/C"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_oc1xb")
-text = "Text"
 
 [node name="UI" type="VBoxContainer" parent="C"]
 layout_mode = 2
@@ -209,5 +200,58 @@ Andrew Wilkes"
 wait_time = 3.0
 one_shot = true
 
+[node name="Overlay" type="CanvasLayer" parent="."]
+
+[node name="SUI" type="VBoxContainer" parent="Overlay"]
+unique_name_in_owner = true
+offset_right = 400.0
+offset_bottom = 123.0
+mouse_filter = 2
+
+[node name="Gap" type="Control" parent="Overlay/SUI"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="C" type="CenterContainer" parent="Overlay/SUI"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="Note" type="Label" parent="Overlay/SUI/C"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_oc1xb")
+text = "Text"
+
+[node name="SP" type="Control" parent="Overlay/SUI"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="C2" type="CenterContainer" parent="Overlay/SUI"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="HB" type="HBoxContainer" parent="Overlay/SUI/C2"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Step" type="Button" parent="Overlay/SUI/C2/HB"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Step"
+
+[node name="Play" type="Button" parent="Overlay/SUI/C2/HB"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Play"
+
+[node name="Stop" type="Button" parent="Overlay/SUI/C2/HB"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Stop"
+
 [connection signal="meta_clicked" from="Support/Text" to="Support" method="_on_text_meta_clicked"]
 [connection signal="timeout" from="NoteTimer" to="." method="_on_note_timer_timeout"]
+[connection signal="pressed" from="Overlay/SUI/C2/HB/Step" to="." method="_on_step_pressed"]
+[connection signal="pressed" from="Overlay/SUI/C2/HB/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Overlay/SUI/C2/HB/Stop" to="." method="_on_stop_pressed"]

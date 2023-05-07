@@ -5,6 +5,8 @@ const FACE_MAPS = [[0,1,2,3,4,5],[0,2,3,5,4,1],[0,3,5,1,4,2],[0,5,1,2,4,3]] # G,
 const EDGE_MAPS = [[0,1,2,3,4,5,6,7,8,9,10,11],[2,0,3,1,7,4,5,6,11,8,9,10],[3,2,1,0,6,7,4,5,10,11,8,9],[1,3,0,2,5,6,7,4,9,10,11,8]]
 const CORNER_MAPS = [[0,1,2,3,4,5,6,7],[1,3,0,2,7,4,5,6],[3,2,1,0,6,7,4,5],[2,0,3,1,5,6,7,4]]
 
+enum { STOPPED, PLAYING, STEPPING }
+
 var bc
 var cmap
 var solve_step = -1
@@ -15,6 +17,7 @@ var face_map
 var edge_map
 var corner_map
 var rotation_completed = true
+var play_state = STOPPED
 
 func _ready():
 	$C/UI.button_pressed.connect(_on_button_pressed)
@@ -22,13 +25,20 @@ func _ready():
 	cmap = $C/ColorMap
 	%Pivot.connect("rotation_complete", rotation_done)
 	bc.connect("rotation_complete", rotation_done)
-	%Note.hide()
+	%SUI.hide()
+	call_deferred("set_sui_transform")
+
+
+func set_sui_transform():
+	%SUI.size = %SVP.size
+	%SUI.position = %SVP.position
 
 
 func rotation_done():
 	rotation_completed = true
 	copy_cube()
-	solve()
+	if play_state == PLAYING:
+		solve()
 
 
 func _on_button_pressed(bname, shift, ctrl):
@@ -38,27 +48,34 @@ func _on_button_pressed(bname, shift, ctrl):
 			bc.get_node("Pivot").rotate_to_face(button_idx)
 		else:
 			var direction = -1 if shift else 1
-			solve_step = -1
+			stop_solving()
 			rotate_face(button_idx, direction, bc.get_node("Pivot").transform.basis)
 	match bname:
 		"Reset":
 			bc.reset()
 			copy_cube()
-			solve_step = -1
+			stop_solving()
 		"Scramble":
 			for n in randi_range(10, 15):
 				bc.rotate_face_immediate(randi() % 6, 1 if randf() > 0.5 else -1)
 			copy_cube()
-			solve_step = -1
+			stop_solving()
 		"Solve":
 			if rotation_completed:
 				if solve_step < 0:
 					solve_step = 1
-				solve()
+					play_state = STEPPING
+					%SUI.show()
+				if play_state == PLAYING:
+					stop_solving()
+				else:
+					solve()
 			#$Support.popup_centered()
 		"CopyCube":
+			stop_solving()
 			copy_cube()
 		"CopyMap":
+			stop_solving()
 			bc.apply_map($C/ColorMap.get_data())
 		"Help":
 			$Info.popup_centered()
@@ -476,7 +493,7 @@ func solve():
 			add_note("Rotate top-right corner 4")
 		46:
 			add_note("Completed!")
-			solve_step = -1
+			stop_solving()
 
 
 func get_edge_position(cols):
@@ -530,9 +547,38 @@ func add_note(txt):
 
 
 func hide_note():
-	%Note.text = ""
 	%Note.hide()
 
 
 func _on_note_timer_timeout():
 	hide_note()
+
+
+func _on_step_pressed():
+	solve()
+
+
+func _on_play_pressed():
+	if play_state == PLAYING:
+		%Play.text = "Play"
+		%Step.disabled = false
+		play_state = STEPPING
+	else:
+		%Play.text = "Pause"
+		%Step.disabled = true
+		play_state = PLAYING
+	solve()
+
+
+func _on_stop_pressed():
+	%SUI.hide()
+	play_state = STOPPED
+	stop_solving()
+
+
+func stop_solving():
+	solve_step = -1
+	play_state = STOPPED
+	%SUI.hide()
+	%Play.text = "Play"
+	%Step.disabled = false
