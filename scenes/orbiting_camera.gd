@@ -57,20 +57,14 @@ func _unhandled_input(event):
 				$Camera.position.z += event.relative.y * ZOOMING_SPEED
 
 
-func rotate_to_face(face_idx):
+func rotate_to_face(face_weights):
 	rotating = true
 	amount = 100.0
 	from_q = Quaternion(transform.basis.orthonormalized())
 	var node = Node3D.new()
-	match face_idx:
-		0:
-			node.rotate_x(-PI/2)
-		1:
-			node.rotate_y(-PI/2)
-		3:
-			node.rotate_y(PI/2)
-		4:
-			node.rotate_x(PI/2)
-		5:
-			node.rotate_y(PI)
+	node.rotate_x(-PI/2 * face_weights[0])
+	node.rotate_y(-PI/2 * face_weights[1])
+	node.rotate_y(PI/2 * face_weights[3])
+	node.rotate_x(PI/2 * face_weights[4])
+	node.rotate_y(PI * face_weights[5])
 	to_q = Quaternion(node.transform.basis)

@@ -45,7 +45,9 @@ func _on_button_pressed(bname, shift, ctrl):
 	if FACE_BUTTONS.has(bname):
 		var button_idx = FACE_BUTTONS.find(bname)
 		if ctrl:
-			bc.get_node("Pivot").rotate_to_face(button_idx)
+			var face_weights = [0,0,0,0,0,0]
+			face_weights[button_idx] = 1.0
+			bc.get_node("Pivot").rotate_to_face(face_weights)
 		else:
 			var direction = -1 if shift else 1
 			stop_solving()
@@ -302,7 +304,7 @@ func solve():
 		return
 	match solve_step:
 		1:
-			%Pivot.rotate_to_face(2)
+			%Pivot.rotate_to_face([0,0,1.0,0,0,0])
 			solve_step += 1
 			add_note("Solving")
 		2:
@@ -317,7 +319,7 @@ func solve():
 			move_white_edge_to_white_face()
 			add_note("Making white cross\nMoving green/white edge to white face")
 		4:
-			%Pivot.rotate_to_face(3)
+			%Pivot.rotate_to_face([0,0,0,1.0,0,0])
 			solve_step += 1
 		5:
 			if move_step < 0:
@@ -332,7 +334,7 @@ func solve():
 			move_white_edge_to_white_face()
 			add_note("Moving blue/white edge to white face")
 		7:
-			%Pivot.rotate_to_face(5)
+			%Pivot.rotate_to_face([0,0,0,0,0,1.0])
 			solve_step += 1
 		8:
 			if move_step < 0:
@@ -347,7 +349,7 @@ func solve():
 			move_white_edge_to_white_face()
 			add_note("Moving orange/white edge to white face")
 		10:
-			%Pivot.rotate_to_face(1)
+			%Pivot.rotate_to_face([0,1.0,0,0,0,0])
 			solve_step += 1
 		11:
 			if move_step < 0:
@@ -363,7 +365,7 @@ func solve():
 			add_note("Moving yellow/white edge to white face")
 		13:
 			# White corners
-			%Pivot.rotate_to_face(2)
+			%Pivot.rotate_to_face([0,0,1.0,0,0,0])
 			solve_step += 1
 			add_note("Placing white corners")
 		14:
@@ -377,7 +379,7 @@ func solve():
 			move_corner_to_white_face()
 			add_note("Moving yellow/green/white corner\n to bottom/left corner")
 		16:
-			%Pivot.rotate_to_face(3)
+			%Pivot.rotate_to_face([0,0,0,1.0,0,0])
 			solve_step += 1
 		17:
 			colors = cmap.CORNER_FACE_MAP[6]
@@ -389,7 +391,7 @@ func solve():
 			move_corner_to_white_face()
 			add_note("Moving green/blue/white corner\n to bottom/left corner")
 		19:
-			%Pivot.rotate_to_face(5)
+			%Pivot.rotate_to_face([0,0,0,0,0,1.0])
 			solve_step += 1
 		20:
 			colors = cmap.CORNER_FACE_MAP[7]
@@ -401,7 +403,7 @@ func solve():
 			move_corner_to_white_face()
 			add_note("Moving blue/orange/white corner\n to bottom/left corner")
 		22:
-			%Pivot.rotate_to_face(1)
+			%Pivot.rotate_to_face([0,1.0,0,0,0,0])
 			solve_step += 1
 		23:
 			colors = cmap.CORNER_FACE_MAP[4]
@@ -413,7 +415,7 @@ func solve():
 			move_corner_to_white_face()
 			add_note("Moving orange/yellow/white corner\n to bottom/left corner")
 		25:
-			%Pivot.rotate_to_face(1)
+			%Pivot.rotate_to_face([0,1.0,0,0,0,0])
 			solve_step += 1
 			add_note("Complete middle layer")
 		26:
@@ -423,7 +425,7 @@ func solve():
 			move_mid_edge()
 			add_note("Move orange/yellow edge")
 		27:
-			%Pivot.rotate_to_face(2)
+			%Pivot.rotate_to_face([0,0,1.0,0,0,0])
 			solve_step += 1
 		28:
 			face_map = FACE_MAPS[0]
@@ -432,7 +434,7 @@ func solve():
 			move_mid_edge()
 			add_note("Move yellow/green edge")
 		29:
-			%Pivot.rotate_to_face(3)
+			%Pivot.rotate_to_face([0,0,0,1.0,0,0])
 			solve_step += 1
 		30:
 			face_map = FACE_MAPS[1]
@@ -441,7 +443,7 @@ func solve():
 			move_mid_edge()
 			add_note("Move green/blue edge")
 		31:
-			%Pivot.rotate_to_face(5)
+			%Pivot.rotate_to_face([0,0,0,0,0,1.0])
 			solve_step += 1
 		32:
 			face_map = FACE_MAPS[2]
@@ -450,7 +452,7 @@ func solve():
 			move_mid_edge()
 			add_note("Move blue/orange edge")
 		33:
-			%Pivot.rotate_to_face(2)
+			%Pivot.rotate_to_face([0,0,1.0,0,0,0])
 			solve_step += 1
 			add_note("Form top cross")
 		34:
@@ -464,7 +466,7 @@ func solve():
 			position_top_corners()
 			add_note("Position top corners")
 		37:
-			%Pivot.rotate_to_face(2)
+			%Pivot.rotate_to_face([0,0,1.0,0,0,0])
 			face_map = FACE_MAPS[0]
 			solve_step += 1
 		38:
