@@ -186,11 +186,9 @@ offset_top = 5.0
 offset_right = 547.0
 offset_bottom = 295.0
 bbcode_enabled = true
-text = "Solving
+text = "Support My Work
 
-This is a feature that I am yet to add. The idea is to animate how to solve the cube puzzle in stages to teach how to do it.
-
-But, in the meantime: how about supporting the development of this project by [url]Buying me a Coffee[/url]?
+If you liked this project by [url]Buying me a Coffee[/url]?
 
 Best regards,
 

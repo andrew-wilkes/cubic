@@ -492,7 +492,10 @@ func solve():
 			rotate_top_right_corner()
 			add_note("Rotate top-right corner 4")
 		46:
+			# Not sure why, but this delay is needed in order to see the next message
+			await get_tree().create_timer(0.5).timeout
 			add_note("Completed!")
+			await get_tree().create_timer(3.0).timeout
 			stop_solving()
 
 
@@ -543,6 +546,7 @@ func apply_move():
 func add_note(txt):
 	%Note.text = txt
 	%Note.show()
+	$NoteTimer.stop()
 	$NoteTimer.start()
 
 
