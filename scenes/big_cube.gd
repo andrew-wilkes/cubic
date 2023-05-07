@@ -94,7 +94,6 @@ func _process(delta):
 			face_rotations[face_rotating_idx] = (offset + face_rotation_direction) % 4
 			face_rotating_idx = -1
 			reparent_to_origin()
-			print("Face rotation complete")
 			emit_signal("rotation_complete")
 
 

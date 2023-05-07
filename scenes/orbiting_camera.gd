@@ -35,7 +35,6 @@ func _process(delta):
 		if amount < 0.1:
 			transform.basis = Basis(to_q)
 			rotating = false
-			print("Camera rotation complete")
 			emit_signal("rotation_complete")
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cs7xrk28v8act"]
+[gd_scene load_steps=9 format=3 uid="uid://cs7xrk28v8act"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_lbbsj"]
 [ext_resource type="PackedScene" uid="uid://duux08b0j1brq" path="res://scenes/big_cube.tscn" id="2_vrqpa"]
@@ -6,6 +6,17 @@
 [ext_resource type="Script" path="res://scenes/UI.gd" id="4_g6qdy"]
 [ext_resource type="PackedScene" uid="uid://dfknx5u3yhl8y" path="res://scenes/color_map.tscn" id="5_3m2rh"]
 [ext_resource type="Script" path="res://scenes/Support.gd" id="6_yx4e8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oc1xb"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.227451, 0.517647, 0.541176, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h34t6"]
 content_margin_left = 5.0
@@ -50,6 +61,16 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
 
 [node name="Light" type="DirectionalLight3D" parent="C/SVP/VP/BigCube/Pivot/Camera"]
+
+[node name="C" type="CenterContainer" parent="C/SVP"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="Note" type="Label" parent="C/SVP/C"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_oc1xb")
+text = "Text"
 
 [node name="UI" type="VBoxContainer" parent="C"]
 layout_mode = 2
@@ -184,4 +205,9 @@ Best regards,
 
 Andrew Wilkes"
 
+[node name="NoteTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="meta_clicked" from="Support/Text" to="Support" method="_on_text_meta_clicked"]
+[connection signal="timeout" from="NoteTimer" to="." method="_on_note_timer_timeout"]

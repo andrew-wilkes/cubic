@@ -22,6 +22,7 @@ func _ready():
 	cmap = $C/ColorMap
 	%Pivot.connect("rotation_complete", rotation_done)
 	bc.connect("rotation_complete", rotation_done)
+	%Note.hide()
 
 
 func rotation_done():
@@ -53,7 +54,6 @@ func _on_button_pressed(bname, shift, ctrl):
 			if rotation_completed:
 				if solve_step < 0:
 					solve_step = 1
-					print("Solving")
 				solve()
 			#$Support.popup_centered()
 		"CopyCube":
@@ -65,7 +65,6 @@ func _on_button_pressed(bname, shift, ctrl):
 
 
 func rotate_face(face_idx, direction, bas = Basis()):
-	prints(face_idx, direction)
 	bc.rotate_face(face_idx, direction, bas)
 	rotation_completed = false
 
@@ -79,7 +78,6 @@ func move_white_edge_to_face():
 	# Want to avoid disturbing already placed edges in the group: 8,9,10,11
 	# Get the edge position where the piece is now
 	var idx = get_edge_position(colors)
-	prints("Edge:", idx)
 	# Move to front face
 	# Map the idx depending on the front face
 	idx = edge_map[idx]
@@ -108,7 +106,6 @@ func move_white_edge_to_face():
 func move_white_edge_to_white_face():
 	var idx = get_edge_position(colors)
 	var aligned = is_edge_aligned(colors, idx)
-	prints("Edge:", idx, "Aligned:", aligned)
 	idx = edge_map[idx]
 	match idx:
 		3:
@@ -133,7 +130,6 @@ func move_white_edge_to_white_face():
 
 func move_corner_to_p2():
 	var idx = get_corner_position(colors)
-	prints("Corner:", idx)
 	var aligned = is_corner_aligned(colors, idx)
 	idx = corner_map[idx]
 	if aligned and idx == 5:
@@ -176,7 +172,6 @@ func move_corner_to_white_face():
 func move_mid_edge():
 	var idx = get_edge_position(colors)
 	var aligned = is_edge_aligned(colors, idx)
-	prints("Edge:", idx)
 	var eidx = [5,6,7,4].find(idx)
 	idx = edge_map[idx]
 	if aligned and idx == 5:
@@ -292,16 +287,18 @@ func solve():
 		1:
 			%Pivot.rotate_to_face(2)
 			solve_step += 1
+			add_note("Solving")
 		2:
 			if move_step < 0:
 				face_map = FACE_MAPS[0]
 				edge_map = EDGE_MAPS[0]
 				colors = [2,4]
 				# GREEN/ WHITE edge piece
-				print("GW")
 			move_white_edge_to_face()
+			add_note("Moving green/white edge to green face")
 		3:
 			move_white_edge_to_white_face()
+			add_note("Making white cross\nMoving green/white edge to white face")
 		4:
 			%Pivot.rotate_to_face(3)
 			solve_step += 1
@@ -311,11 +308,12 @@ func solve():
 				edge_map = EDGE_MAPS[1]
 				colors = [3,4]
 				# BLUE/ WHITE edge piece
-				print("BW")
 			# Don't move edge 9
 			move_white_edge_to_face()
+			add_note("Moving blue/white edge to blue face")
 		6:
 			move_white_edge_to_white_face()
+			add_note("Moving blue/white edge to white face")
 		7:
 			%Pivot.rotate_to_face(5)
 			solve_step += 1
@@ -325,11 +323,12 @@ func solve():
 				edge_map = EDGE_MAPS[2]
 				colors = [5,4]
 				# ORANGE / WHITE edge piece
-				print("OW")
 				# Avoid moving edges 9,10
 			move_white_edge_to_face()
+			add_note("Moving orange/white edge to orange face")
 		9:
 			move_white_edge_to_white_face()
+			add_note("Moving orange/white edge to white face")
 		10:
 			%Pivot.rotate_to_face(1)
 			solve_step += 1
@@ -339,24 +338,27 @@ func solve():
 				edge_map = EDGE_MAPS[3]
 				colors = [1,4]
 				# YELLOW / WHITE edge piece
-				print("YW")
 				# Avoid moving edges 9,10,11
 			move_white_edge_to_face()
+			add_note("Moving yellow/white edge to yellow face")
 		12:
 			move_white_edge_to_white_face()
+			add_note("Moving yellow/white edge to white face")
 		13:
 			# White corners
 			%Pivot.rotate_to_face(2)
 			solve_step += 1
+			add_note("Placing white corners")
 		14:
 			# Move the YELLOW/GREEN/WHITE corner to the top face
 			colors = cmap.CORNER_FACE_MAP[5]
 			corner_map = CORNER_MAPS[0]
 			face_map = FACE_MAPS[0]
-			print("YGW")
 			move_corner_to_p2()
+			add_note("Moving yellow/green/white corner\n to top/left corner")
 		15:
 			move_corner_to_white_face()
+			add_note("Moving yellow/green/white corner\n to bottom/left corner")
 		16:
 			%Pivot.rotate_to_face(3)
 			solve_step += 1
@@ -364,10 +366,11 @@ func solve():
 			colors = cmap.CORNER_FACE_MAP[6]
 			corner_map = CORNER_MAPS[1]
 			face_map = FACE_MAPS[1]
-			print("GBW")
 			move_corner_to_p2()
+			add_note("Moving green/blue/white corner\n to top/left corner")
 		18:
 			move_corner_to_white_face()
+			add_note("Moving green/blue/white corner\n to bottom/left corner")
 		19:
 			%Pivot.rotate_to_face(5)
 			solve_step += 1
@@ -375,10 +378,11 @@ func solve():
 			colors = cmap.CORNER_FACE_MAP[7]
 			corner_map = CORNER_MAPS[2]
 			face_map = FACE_MAPS[2]
-			print("BOW")
 			move_corner_to_p2()
+			add_note("Moving blue/orange/white corner\n to top/left corner")
 		21:
 			move_corner_to_white_face()
+			add_note("Moving blue/orange/white corner\n to bottom/left corner")
 		22:
 			%Pivot.rotate_to_face(1)
 			solve_step += 1
@@ -386,57 +390,62 @@ func solve():
 			colors = cmap.CORNER_FACE_MAP[4]
 			corner_map = CORNER_MAPS[3]
 			face_map = FACE_MAPS[3]
-			print("YGW")
 			move_corner_to_p2()
+			add_note("Moving orange/yellow/white corner\n to top/left corner")
 		24:
 			move_corner_to_white_face()
+			add_note("Moving orange/yellow/white corner\n to bottom/left corner")
 		25:
 			%Pivot.rotate_to_face(1)
 			solve_step += 1
+			add_note("Complete middle layer")
 		26:
-			print("OY")
 			face_map = FACE_MAPS[3]
 			edge_map = EDGE_MAPS[3]
 			colors = cmap.EDGE_FACE_MAP[4]
 			move_mid_edge()
+			add_note("Move orange/yellow edge")
 		27:
 			%Pivot.rotate_to_face(2)
 			solve_step += 1
 		28:
-			print("YG")
 			face_map = FACE_MAPS[0]
 			edge_map = EDGE_MAPS[0]
 			colors = cmap.EDGE_FACE_MAP[5]
 			move_mid_edge()
+			add_note("Move yellow/green edge")
 		29:
 			%Pivot.rotate_to_face(3)
 			solve_step += 1
 		30:
-			print("GB")
 			face_map = FACE_MAPS[1]
 			edge_map = EDGE_MAPS[1]
 			colors = cmap.EDGE_FACE_MAP[6]
 			move_mid_edge()
+			add_note("Move green/blue edge")
 		31:
 			%Pivot.rotate_to_face(5)
 			solve_step += 1
 		32:
-			print("BO")
 			face_map = FACE_MAPS[2]
 			edge_map = EDGE_MAPS[2]
 			colors = cmap.EDGE_FACE_MAP[7]
 			move_mid_edge()
+			add_note("Move blue/orange edge")
 		33:
 			%Pivot.rotate_to_face(2)
 			solve_step += 1
+			add_note("Form top cross")
 		34:
 			face_map = FACE_MAPS[0]
 			form_top_cross()
+			add_note("Now 2/4 edge pieces are\n in the correct position.\nAlign them.")
 		35:
 			face_map = FACE_MAPS[0]
 			align_top_edges()
 		36:
 			position_top_corners()
+			add_note("Position top corners")
 		37:
 			%Pivot.rotate_to_face(2)
 			face_map = FACE_MAPS[0]
@@ -446,23 +455,27 @@ func solve():
 			solve_step += 1
 		39:
 			rotate_top_right_corner()
+			add_note("Rotate top-right corner 1")
 		40:
 			set_moves([[0,-1]])
 			solve_step += 1
 		41:
 			rotate_top_right_corner()
+			add_note("Rotate top-right corner 2")
 		42:
 			set_moves([[0,-1]])
 			solve_step += 1
 		43:
 			rotate_top_right_corner()
+			add_note("Rotate top-right corner 3")
 		44:
 			set_moves([[0,-1]])
 			solve_step += 1
 		45:
 			rotate_top_right_corner()
+			add_note("Rotate top-right corner 4")
 		46:
-			print("Done")
+			add_note("Completed!")
 			solve_step = -1
 
 
@@ -508,3 +521,18 @@ func apply_move():
 	move_step += 1
 	if move_step == moves.size():
 		move_step = -1 # Indicate end of move sequence
+
+
+func add_note(txt):
+	%Note.text = txt
+	%Note.show()
+	$NoteTimer.start()
+
+
+func hide_note():
+	%Note.text = ""
+	%Note.hide()
+
+
+func _on_note_timer_timeout():
+	hide_note()
