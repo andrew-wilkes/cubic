@@ -157,7 +157,7 @@ func move_corner_to_p2():
 	var aligned = is_corner_aligned(colors, idx)
 	idx = corner_map[idx]
 	if aligned and idx == 5:
-		solve_step += 2
+		solve_step += 3
 		solve()
 	else:
 		match idx:
@@ -225,6 +225,7 @@ func move_mid_edge():
 
 
 func form_top_cross():
+	# Formed when edges 0,1,2,3 have face 0 as idx 1 of the edge
 	var pattern = [0,0,0,0]
 	for idx in 4:
 		pattern[idx] = clampi(cmap.edges[idx][1], 0, 1)
@@ -232,12 +233,12 @@ func form_top_cross():
 		[0,0,0,0]:
 			solve_step += 1
 			solve()
-		[0,1,0,1]:
+		[0,1,0,1], [0,1,1,0]:
 			set_moves([[0,-1]])
 		[1,1,0,0]:
 			set_moves([[0,1],[0,1]])
-		[0,1,1,0]:
-			set_moves([[0,-1]])
+		[1,0,1,0]:
+			set_moves([[0,1]])
 		_:
 			set_moves([[2,1],[3,1],[0,1],[3,-1],[0,-1],[2,-1]])
 
@@ -264,6 +265,7 @@ func align_top_edges():
 			var faces = [[5,1],[1,2],[2,3],[3,5]]
 			var pos = -1
 			var idx = 0
+			# Find the position around the cube of the pair of faces
 			for pair in pairs:
 				if faces.find([pattern[pair[0]], pattern[pair[1]]]) > -1:
 					pos = idx
@@ -282,6 +284,7 @@ func align_top_edges():
 
 
 func position_top_corners():
+	# 0, 1 or ALL the corner pieces will be in their correct positions
 	var correct_corners = []
 	for idx in 4:
 		if get_corner_position(cmap.CORNER_FACE_MAP[idx]) == idx:
@@ -291,6 +294,7 @@ func position_top_corners():
 		solve()
 	else:
 		if correct_corners.size() > 0:
+			# Pick face map for face where correct corner is in top right
 			face_map = FACE_MAPS[[2,1,3,0][correct_corners[0]]]
 		else:
 			face_map = FACE_MAPS[2]
@@ -384,7 +388,7 @@ func solve():
 			move_white_edge_to_white_face()
 		17:
 			add_note("Placing white corners")
-			await get_tree().create_timer(2.0).timeout
+			await get_tree().create_timer(1.0).timeout
 			add_note("Moving yellow/green/white corner\n to top/left corner")
 			%Pivot.rotate_to_face(Vector2(-0.3, -0.3))
 			solve_step += 1
@@ -492,37 +496,37 @@ func solve():
 			form_top_cross()
 		43:
 			align_top_edges()
-		41:
+		44:
 			add_note("Position top corners")
 			position_top_corners()
-		44:
+		45:
 			set_moves([[0,-1]])
 			solve_step += 1
-		45:
+		46:
 			add_note("Rotate top-right corner 1")
 			rotate_top_right_corner()
-		46:
+		47:
 			set_moves([[0,-1]])
 			solve_step += 1
-		47:
+		48:
 			add_note("Rotate top-right corner 2")
 			rotate_top_right_corner()
-		48:
+		49:
 			set_moves([[0,-1]])
 			solve_step += 1
-		49:
+		50:
 			add_note("Rotate top-right corner 3")
 			rotate_top_right_corner()
-		50:
+		51:
 			set_moves([[0,-1]])
 			solve_step += 1
-		51:
+		52:
 			add_note("Rotate top-right corner 4")
 			rotate_top_right_corner()
-		52:
+		53:
 			%Pivot.rotate_to_face(Vector2(-0.5, -0.5))
 			solve_step += 1
-		53:
+		54:
 			add_note("Completed!")
 			await get_tree().create_timer(3.0).timeout
 			stop_solving()
