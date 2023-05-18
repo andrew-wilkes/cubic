@@ -11,8 +11,6 @@ The camera is rotated around its x-axis followed by its y-axis.
 
 Hold down the CTRL key and left mouse button to zoom when moving the mouse.
 
-Hold down the Shift key and left mouse button to pan when moving the mouse. *This feature may be removed in the future*.
-
 ## UI Control Panel
 
 ![Control Panel](media/control-panel.png)
