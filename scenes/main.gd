@@ -503,6 +503,7 @@ func solve():
 			set_moves([[0,-1]])
 			solve_step += 1
 		46:
+			face_map = FACE_MAPS[0]
 			add_note("Rotate top-right corner 1")
 			rotate_top_right_corner()
 		47:
