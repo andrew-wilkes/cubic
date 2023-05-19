@@ -240,6 +240,7 @@ text = "Step"
 
 [node name="Play" type="Button" parent="Overlay/SUI/C2/HB"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
 layout_mode = 2
 text = "Play"
 

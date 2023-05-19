@@ -594,7 +594,8 @@ func _on_note_timer_timeout():
 
 
 func _on_step_pressed():
-	solve()
+	if rotation_completed:
+		solve()
 
 
 func _on_play_pressed():
@@ -606,7 +607,8 @@ func _on_play_pressed():
 		%Play.text = "Pause"
 		%Step.disabled = true
 		play_state = PLAYING
-	solve()
+		if rotation_completed:
+			solve()
 
 
 func _on_stop_pressed():
