@@ -73,7 +73,6 @@ func _on_button_pressed(bname, shift, ctrl):
 					stop_solving()
 				else:
 					solve()
-			#$Support.popup_centered()
 		"CopyCube":
 			stop_solving()
 			copy_cube()
@@ -529,6 +528,7 @@ func solve():
 			solve_step += 1
 		54:
 			add_note("Completed!")
+			solve_step += 1
 			await get_tree().create_timer(3.0).timeout
 			stop_solving()
 
@@ -580,17 +580,11 @@ func apply_move():
 func add_note(txt):
 	%Note.text = txt
 	%Note.show()
-	$NoteTimer.stop()
-	$NoteTimer.start()
 
 
 func hide_note():
 	await get_tree().create_timer(0.5).timeout
 	%Note.hide()
-
-
-func _on_note_timer_timeout():
-	pass #hide_note()
 
 
 func _on_step_pressed():

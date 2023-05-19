@@ -194,10 +194,6 @@ Best regards,
 
 Andrew Wilkes"
 
-[node name="NoteTimer" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true
-
 [node name="Overlay" type="CanvasLayer" parent="."]
 
 [node name="SUI" type="VBoxContainer" parent="Overlay"]
@@ -250,7 +246,6 @@ layout_mode = 2
 text = "Stop"
 
 [connection signal="meta_clicked" from="Support/Text" to="Support" method="_on_text_meta_clicked"]
-[connection signal="timeout" from="NoteTimer" to="." method="_on_note_timer_timeout"]
 [connection signal="pressed" from="Overlay/SUI/C2/HB/Step" to="." method="_on_step_pressed"]
 [connection signal="pressed" from="Overlay/SUI/C2/HB/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Overlay/SUI/C2/HB/Stop" to="." method="_on_stop_pressed"]
