@@ -1,0 +1,7 @@
+convert media/icon-cube.png -resize 64 icon.png
+
+https://www.howtogeek.com/109369/how-to-quickly-resize-convert-modify-images-from-the-linux-terminal/
+
+Creating an ICO file
+
+convert media/icon-cube.png -define icon:auto-resize=256,128,64,48,32,16 builds/windows/icon.ico

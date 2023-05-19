@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dfknx5u3yhl8y"]
 
 [ext_resource type="Script" path="res://scenes/color_map.gd" id="1_ln6vs"]
-[ext_resource type="Texture2D" uid="uid://bvpm6eq6ugoog" path="res://media/black-button-small.png" id="2_mywfy"]
+[ext_resource type="Texture2D" uid="uid://bvpm6eq6ugoog" path="res://scenes/black-button-small.png" id="2_s5l0w"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s3ton"]
 bg_color = Color(0, 0, 0, 1)
@@ -67,7 +67,7 @@ layout_mode = 2
 
 [node name="Coffee" type="Button" parent="Grid"]
 layout_mode = 2
-icon = ExtResource("2_mywfy")
+icon = ExtResource("2_s5l0w")
 
 [node name="B" type="GridContainer" parent="Grid"]
 layout_mode = 2

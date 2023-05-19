@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmqdragc4rn0w"
-path="res://.godot/imported/black-button.png-7950d52c2c0ec41a59c3c573e0fac5fd.ctex"
+uid="uid://bvpm6eq6ugoog"
+path="res://.godot/imported/black-button-small.png-26d3d6ebde0d727d6a22848e890f82b6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/black-button.png"
-dest_files=["res://.godot/imported/black-button.png-7950d52c2c0ec41a59c3c573e0fac5fd.ctex"]
+source_file="res://scenes/black-button-small.png"
+dest_files=["res://.godot/imported/black-button-small.png-26d3d6ebde0d727d6a22848e890f82b6.ctex"]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
