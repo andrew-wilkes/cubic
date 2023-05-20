@@ -3,6 +3,8 @@ Godot 4 Rubik Cube Simulator
 
 ![Cube](media/cube1.png)
 
+Downloads: [Cubic - Rubik Cube Simulator on Itch.io](https://andrew-wilkes.itch.io/cubic)
+
 ## Camera Control
 
 Move around the cube by holding the left mouse button and moving the mouse.
