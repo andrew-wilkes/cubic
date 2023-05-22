@@ -29,7 +29,7 @@ The *Reset* button restores the faces of the cube to the *solved* positions.
 
 The *Scramble* button causes the cube faces to be rotated randomly to scramble the puzzle.
 
-The *Solve* button is intended to initiate a solving animation at a later date.
+The *Solve* button initiates a solving animation that may be stepped through, played, paused or stopped to learn how to solve a cube puzzle.
 
 *Copy Cube* copies that tile colors of the cube to the map.
 
