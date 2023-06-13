@@ -19,6 +19,8 @@ var corner_map
 var rotation_completed = true
 var play_state = STOPPED
 var the_log = []
+var repeat_sequence = []
+var order_count = 0
 
 func _ready():
 	$C/UI.button_pressed.connect(_on_button_pressed)
@@ -27,22 +29,56 @@ func _ready():
 	%Pivot.connect("rotation_complete", rotation_done)
 	bc.connect("rotation_complete", rotation_done)
 	%SUI.hide()
+	%CounterContainer.hide()
+	$Sequence.connect("play_sequence", play_sequence)
 	call_deferred("set_sui_transform")
+
+
+func play_sequence(seq, repeat):
+	if seq.size() < 1:
+		return
+	if repeat:
+		apply_reset()
+		repeat_sequence = seq
+		%CounterContainer.show()
+		set_order_count(0)
+	face_map = FACE_MAPS[0]
+	set_moves(seq)
+	play_state = PLAYING
+	solve_step = 100
+
+
+func set_order_count(n):
+	order_count = n
+	%Counter.text = "Order count: " + str(n)
 
 
 func set_sui_transform():
 	%SUI.size = %SVP.size
 	%SUI.position = %SVP.position
+	%CounterContainer.position = %SVP.position + Vector2(0, 20)
+	%CounterContainer.size.x = %SVP.size.x
 
 
 func rotation_done():
 	rotation_completed = true
 	copy_cube()
-	if play_state == PLAYING:
-		solve()
+	if repeat_sequence.size() > 0 and move_step < 0:
+		set_order_count(order_count + 1)
+		if cmap.solved():
+			repeat_sequence.clear()
+		else:
+			set_moves(repeat_sequence)
+	elif play_state == PLAYING:
+		# solve() and set_moves() call apply_move()
+		# so need to avoid calling apply_move() twice in this function
+		solve() 
 
 
 func _on_button_pressed(bname, shift, ctrl):
+	if not rotation_completed:
+		return
+	%CounterContainer.hide()
 	if FACE_BUTTONS.has(bname):
 		var button_idx = FACE_BUTTONS.find(bname)
 		if ctrl:
@@ -54,33 +90,40 @@ func _on_button_pressed(bname, shift, ctrl):
 			rotate_face(button_idx, direction, bc.get_node("Pivot").transform.basis)
 	match bname:
 		"Reset":
-			bc.reset()
-			copy_cube()
-			stop_solving()
+			apply_reset()
 		"Scramble":
 			for n in randi_range(10, 15):
 				bc.rotate_face_immediate(randi() % 6, 1 if randf() > 0.5 else -1)
 			copy_cube()
 			stop_solving()
 		"Solve":
-			if rotation_completed:
-				if solve_step < 0:
-					solve_step = 1
-					play_state = STEPPING
-					the_log.clear()
-					%SUI.show()
-				if play_state == PLAYING:
-					stop_solving()
-				else:
-					solve()
+			if solve_step < 0:
+				solve_step = 1
+				play_state = STEPPING
+				the_log.clear()
+				%SUI.show()
+			if play_state == PLAYING:
+				stop_solving()
+			else:
+				solve()
 		"CopyCube":
 			stop_solving()
 			copy_cube()
 		"CopyMap":
 			stop_solving()
 			bc.apply_map($C/ColorMap.get_data())
+		"Sequence":
+			$Sequence.popup_centered()
 		"Help":
 			$Info.popup_centered()
+
+
+func apply_reset():
+	bc.reset()
+	copy_cube()
+	stop_solving()
+	repeat_sequence.clear()
+	move_step = -1
 
 
 func rotate_face(face_idx, direction, bas = Basis()):
@@ -531,6 +574,10 @@ func solve():
 			solve_step += 1
 			await get_tree().create_timer(3.0).timeout
 			stop_solving()
+		100:
+			# Deal with end of sequence
+			solve_step = -1
+			play_state = STOPPED
 
 
 func get_edge_position(cols):
@@ -628,3 +675,8 @@ func write_to_log():
 func save_log():
 	var file = FileAccess.open("res://log.txt", FileAccess.WRITE)
 	file.store_string("\n".join(the_log))
+
+
+func _on_stop_counting_pressed():
+	repeat_sequence.clear()
+	move_step = -1

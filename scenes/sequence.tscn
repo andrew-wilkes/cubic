@@ -1,0 +1,76 @@
+[gd_scene load_steps=2 format=3 uid="uid://0djlny363s4d"]
+
+[ext_resource type="Script" path="res://scenes/sequence.gd" id="1_yc8bs"]
+
+[node name="Sequence" type="PopupPanel"]
+size = Vector2i(300, 400)
+visible = true
+script = ExtResource("1_yc8bs")
+
+[node name="M" type="MarginContainer" parent="."]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 296.0
+offset_bottom = 396.0
+theme_override_constants/margin_left = 21
+theme_override_constants/margin_top = 21
+theme_override_constants/margin_right = 21
+theme_override_constants/margin_bottom = 21
+
+[node name="VB" type="VBoxContainer" parent="M"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="S1" type="HBoxContainer" parent="M/VB"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="M/VB/S1"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Move top pieces
+F R U R' U' F'"
+
+[node name="Play" type="Button" parent="M/VB/S1"]
+layout_mode = 2
+text = "Play"
+
+[node name="S2" type="HBoxContainer" parent="M/VB"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="M/VB/S2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Order 1260
+RU2D'BD'"
+
+[node name="Play" type="Button" parent="M/VB/S2"]
+layout_mode = 2
+text = "Play"
+
+[node name="S3" type="HBoxContainer" parent="M/VB"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Custom" type="LineEdit" parent="M/VB/S3"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Custom sequence"
+
+[node name="Play" type="Button" parent="M/VB/S3"]
+layout_mode = 2
+text = "Play"
+
+[node name="Spacer" type="Control" parent="M/VB"]
+layout_mode = 2
+
+[node name="Repeat" type="CheckBox" parent="M/VB"]
+layout_mode = 2
+text = "Repeat until solved"
+
+[node name="Close" type="Button" parent="M/VB"]
+layout_mode = 2
+text = "Close"
+
+[connection signal="pressed" from="M/VB/Close" to="." method="_on_close_pressed"]

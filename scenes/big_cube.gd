@@ -97,17 +97,6 @@ func _process(delta):
 			emit_signal("rotation_complete")
 
 
-func solved():
-	return get_cube_state_signature() < 0.1
-
-
-func get_cube_state_signature():
-	var sum = Vector3.ZERO
-	for cube in get_children():
-		sum = cube.rotation + sum
-	return sum.length_squared()
-
-
 func rotate_faces_in_map(old_map, faces, offset):
 	var new_map = old_map.duplicate()
 	if offset > 0:

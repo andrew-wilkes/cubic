@@ -46,6 +46,10 @@ func reset():
 			color_idx += 1
 
 
+func solved():
+	return edges.hash() == EDGE_FACE_MAP.hash() && corners.hash() == CORNER_FACE_MAP.hash()
+
+
 func handle_click(ev: InputEvent, clicked_tile):
 	if ev is InputEventMouseButton and ev.pressed:
 		if source_tile:

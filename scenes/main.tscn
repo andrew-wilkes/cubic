@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cs7xrk28v8act"]
+[gd_scene load_steps=10 format=3 uid="uid://cs7xrk28v8act"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_lbbsj"]
 [ext_resource type="PackedScene" uid="uid://duux08b0j1brq" path="res://scenes/big_cube.tscn" id="2_vrqpa"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://scenes/UI.gd" id="4_g6qdy"]
 [ext_resource type="PackedScene" uid="uid://dfknx5u3yhl8y" path="res://scenes/color_map.tscn" id="5_3m2rh"]
 [ext_resource type="Script" path="res://scenes/Support.gd" id="6_yx4e8"]
+[ext_resource type="StyleBox" uid="uid://c8yjwixda7sfl" path="res://scenes/label.stylebox" id="7_fv5dd"]
+[ext_resource type="PackedScene" uid="uid://0djlny363s4d" path="res://scenes/sequence.tscn" id="7_kilku"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h34t6"]
 content_margin_left = 5.0
@@ -13,17 +15,6 @@ content_margin_top = 5.0
 content_margin_right = 5.0
 content_margin_bottom = 5.0
 bg_color = Color(0.141176, 0.141176, 0.141176, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oc1xb"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0.227451, 0.517647, 0.541176, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 
 [node name="Main" type="MarginContainer"]
 theme_override_constants/margin_left = 20
@@ -152,6 +143,10 @@ text = "Copy Cube"
 layout_mode = 2
 text = "Copy Map"
 
+[node name="Sequence" type="Button" parent="C/UI"]
+layout_mode = 2
+text = "Run Sequence"
+
 [node name="Help" type="Button" parent="C/UI"]
 layout_mode = 2
 text = "Help"
@@ -213,7 +208,7 @@ layout_mode = 2
 [node name="Note" type="Label" parent="Overlay/SUI/C"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_oc1xb")
+theme_override_styles/normal = ExtResource("7_fv5dd")
 text = "Text"
 
 [node name="SP" type="Control" parent="Overlay/SUI"]
@@ -245,7 +240,38 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Stop"
 
+[node name="CounterContainer" type="HBoxContainer" parent="Overlay"]
+unique_name_in_owner = true
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 654.0
+offset_bottom = 46.0
+theme_override_constants/separation = 10
+
+[node name="Sp1" type="Control" parent="Overlay/CounterContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Counter" type="Label" parent="Overlay/CounterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/normal = ExtResource("7_fv5dd")
+text = "Count 12"
+
+[node name="StopCounting" type="Button" parent="Overlay/CounterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Stop"
+
+[node name="Sp2" type="Control" parent="Overlay/CounterContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Sequence" parent="." instance=ExtResource("7_kilku")]
+visible = false
+
 [connection signal="meta_clicked" from="Support/Text" to="Support" method="_on_text_meta_clicked"]
 [connection signal="pressed" from="Overlay/SUI/C2/HB/Step" to="." method="_on_step_pressed"]
 [connection signal="pressed" from="Overlay/SUI/C2/HB/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Overlay/SUI/C2/HB/Stop" to="." method="_on_stop_pressed"]
+[connection signal="pressed" from="Overlay/CounterContainer/StopCounting" to="." method="_on_stop_counting_pressed"]
