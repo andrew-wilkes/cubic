@@ -135,10 +135,6 @@ text = "Scramble"
 layout_mode = 2
 text = "Solve"
 
-[node name="CopyCube" type="Button" parent="C/UI"]
-layout_mode = 2
-text = "Copy Cube"
-
 [node name="CopyMap" type="Button" parent="C/UI"]
 layout_mode = 2
 text = "Copy Map"

@@ -106,9 +106,6 @@ func _on_button_pressed(bname, shift, ctrl):
 				stop_solving()
 			else:
 				solve()
-		"CopyCube":
-			stop_solving()
-			copy_cube()
 		"CopyMap":
 			stop_solving()
 			bc.apply_map($C/ColorMap.get_data())
