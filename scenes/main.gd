@@ -26,6 +26,7 @@ func _ready():
 	$C/UI.button_pressed.connect(_on_button_pressed)
 	bc = $C/SVP/VP/BigCube
 	cmap = $C/ColorMap
+	cmap.connect("map_changed", copy_map_to_cube)
 	%Pivot.connect("rotation_complete", rotation_done)
 	bc.connect("rotation_complete", rotation_done)
 	%SUI.hide()
@@ -72,7 +73,7 @@ func rotation_done():
 	elif play_state == PLAYING:
 		# solve() and set_moves() call apply_move()
 		# so need to avoid calling apply_move() twice in this function
-		solve() 
+		solve()
 
 
 func _on_button_pressed(bname, shift, ctrl):
@@ -100,19 +101,23 @@ func _on_button_pressed(bname, shift, ctrl):
 			if solve_step < 0:
 				solve_step = 1
 				play_state = STEPPING
+				cmap.solving = true
 				the_log.clear()
 				%SUI.show()
 			if play_state == PLAYING:
 				stop_solving()
 			else:
 				solve()
-		"CopyMap":
-			stop_solving()
-			bc.apply_map($C/ColorMap.get_data())
 		"Sequence":
 			$Sequence.popup_centered()
 		"Help":
 			$Info.popup_centered()
+
+
+func copy_map_to_cube():
+	if play_state != STOPPED:
+		stop_solving()
+	bc.apply_map($C/ColorMap.get_data())
 
 
 func apply_reset():
@@ -658,6 +663,7 @@ func _on_stop_pressed():
 func stop_solving():
 	solve_step = -1
 	play_state = STOPPED
+	cmap.solving = false
 	%SUI.hide()
 	%Play.text = "Play"
 	%Step.disabled = false

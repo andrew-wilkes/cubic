@@ -1,5 +1,7 @@
 extends Control
 
+signal map_changed
+
 const COLORS = [Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.WHITE, Color.ORANGE]
 
 # See coordinates diagram for index relationships in media folder
@@ -16,6 +18,7 @@ const GRID_FACE_MAP = [1,3,4,5,7,10]
 var source_tile = null
 var edges = [] # 12 sets of 2 colors
 var corners = [] # 8 sets of 3 colors
+var solving = false
 
 func _ready():
 	# Set up the tiles
@@ -51,7 +54,7 @@ func solved():
 
 
 func handle_click(ev: InputEvent, clicked_tile):
-	if ev is InputEventMouseButton and ev.pressed:
+	if ev is InputEventMouseButton and ev.pressed and not solving:
 		if source_tile:
 			source_tile.color = COLORS[source_tile.get_meta("id").face]
 			try_move(source_tile, clicked_tile)
@@ -105,6 +108,7 @@ func try_move(from_tile, to_tile):
 			for face_idx in 3:
 				set_corner_color(corner1, face_idx)
 				set_corner_color(corner2, face_idx)
+	emit_signal("map_changed")
 
 
 func get_rotated_faces(corner1, from_idx, corner2, to_idx):
