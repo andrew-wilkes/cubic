@@ -24,7 +24,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="341.07143"
+     inkscape:cx="239.28571"
      inkscape:cy="298.57143"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -76,26 +76,26 @@
        x="330"
        y="200" />
     <rect
-       style="fill:#ff0000;stroke-width:4;stroke-linecap:square;stroke:none"
+       style="fill:#ff0000;stroke:none;stroke-width:4;stroke-linecap:square"
        id="rect233-3"
-       width="110"
-       height="110"
-       x="330"
-       y="90" />
-    <rect
-       style="fill:#ffff00;stroke-width:4;stroke-linecap:square;stroke:none"
-       id="rect233-6"
        width="110"
        height="110"
        x="220"
        y="200" />
     <rect
-       style="fill:#0000ff;stroke-width:4;stroke-linecap:square;stroke:none"
+       style="fill:#ffff00;stroke:none;stroke-width:4;stroke-linecap:square"
+       id="rect233-6"
+       width="110"
+       height="110"
+       x="330"
+       y="90" />
+    <rect
+       style="fill:#0000ff;stroke:none;stroke-width:4;stroke-linecap:square"
        id="rect233-7"
        width="110"
        height="110"
-       x="440"
-       y="200" />
+       x="330"
+       y="420" />
     <rect
        style="fill:#ffffff;stroke-width:4;stroke-linecap:square;stroke:none"
        id="rect233-5"
@@ -104,12 +104,12 @@
        x="330"
        y="310" />
     <rect
-       style="fill:#ff7f00;stroke-width:4;stroke-linecap:square;fill-opacity:1;stroke:none"
+       style="fill:#ff7f00;fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:square"
        id="rect233-35"
        width="110"
        height="110"
-       x="330"
-       y="420" />
+       x="440"
+       y="200" />
     <text
        xml:space="preserve"
        style="font-size:29.3333px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke:none"

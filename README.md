@@ -31,9 +31,7 @@ The *Scramble* button causes the cube faces to be rotated randomly to scramble t
 
 The *Solve* button initiates a solving animation that may be stepped through, played, paused or stopped to learn how to solve a cube puzzle.
 
-*Copy Cube* copies that tile colors of the cube to the map.
-
-*Copy Map* aligns the tiles to match the pattern on the map.
+The *Run Sequence* button opens a panel that lists some sequences of moves that may be played.
 
 ## Color Map
 

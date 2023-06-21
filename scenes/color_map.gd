@@ -2,7 +2,7 @@ extends Control
 
 signal map_changed
 
-const COLORS = [Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.WHITE, Color.ORANGE]
+const COLORS = [Color.YELLOW, Color.RED, Color.GREEN, Color.ORANGE, Color.WHITE, Color.BLUE]
 
 # See coordinates diagram for index relationships in media folder
 # The _FACE_MAP constants are indexing the faces

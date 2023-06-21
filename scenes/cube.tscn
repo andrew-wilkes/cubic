@@ -6,21 +6,21 @@ metallic_specular = 1.0
 roughness = 0.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f6k7k"]
-albedo_color = Color(1, 0, 0, 1)
+albedo_color = Color(1, 1, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qlh4n"]
-albedo_color = Color(1, 1, 0, 1)
+albedo_color = Color(1, 0, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xf32x"]
 albedo_color = Color(0.215686, 1, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ryo3x"]
-albedo_color = Color(0, 0, 1, 1)
+albedo_color = Color(1, 0.498039, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xb2pd"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kvb4p"]
-albedo_color = Color(1, 0.517647, 0, 1)
+albedo_color = Color(0, 0, 1, 1)
 
 [node name="Cube" type="CSGBox3D"]
 rotation_edit_mode = 2
