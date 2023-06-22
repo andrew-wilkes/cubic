@@ -198,6 +198,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 color = Color(0, 0, 0, 0)
+edit_alpha = false
 
 [node name="Info" type="AcceptDialog" parent="."]
 title = "Instructions"

@@ -2,7 +2,7 @@ extends Control
 
 signal map_changed
 
-const COLORS = [Color.YELLOW, Color.RED, Color.GREEN, Color.ORANGE, Color.WHITE, Color.BLUE]
+var COLORS = [Color.YELLOW, Color.RED, Color.GREEN, 0, Color.WHITE, Color.BLUE]
 
 # See coordinates diagram for index relationships in media folder
 # The _FACE_MAP constants are indexing the faces
@@ -27,6 +27,7 @@ func _ready():
 	# Set up the tiles
 	var tile = ColorRect.new()
 	tile.custom_minimum_size = Vector2(32, 32)
+	COLORS[3] = Color.hex(0xff6500ff)
 	var idx = 0
 	for node in $Grid.get_children():
 		if node is GridContainer:
