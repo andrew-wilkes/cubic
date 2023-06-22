@@ -222,9 +222,15 @@ func set_edges(map_data):
 		var edge_idx = map_data.edge_positions.find(idx)
 		var pos = EDGE_POSITIONS[edge_idx]
 		node.position = Vector3(pos[0], pos[1], pos[2])
+		set_cube_face_visibility(node, map_data.edge_visibility[edge_idx])
 		# Rotate the cube to align the faces correctly
 		rotate_cube(node, map_data.edge_face_map[edge_idx], map_data.edge_colors[edge_idx])
 		idx += 1
+
+
+func set_cube_face_visibility(cube, enable):
+	for face in cube.get_children():
+		face.scale = Vector3(1,1,1) if enable else Vector3.ZERO
 
 
 func rotate_cube(node, face_map, tile_colors):
@@ -251,6 +257,7 @@ func set_corners(map_data):
 		var corner_idx = map_data.corner_positions.find(idx)
 		var pos = CORNER_POSITIONS[corner_idx]
 		node.position = Vector3(pos[0], pos[1], pos[2])
+		set_cube_face_visibility(node, map_data.corner_visibility[corner_idx])
 		rotate_cube(node, map_data.corner_face_map[corner_idx], map_data.corner_colors[corner_idx])
 		idx += 1
 

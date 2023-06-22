@@ -39,7 +39,7 @@ This will be used to edit and track the state of the faces of the cube. For exam
 
 ![Color Map](media/color-map.png)
 
-Click on a cell (it is shaded darker), then click on another cell to try to move the first cell to the new position. If the move is valid, other cells will also be updated to reflect the changed positions of the puzzle pieces.
+Click on a cell (it is shaded darker), then click on another cell to try to move the first cell to the new position. If the move is valid, other cells will also be updated to reflect the changed positions of the puzzle pieces. Note that it's possible to set up impossible cube configurations in a similar manner to manually repositioning a corner in place.
 
 ## Coordinate System
 

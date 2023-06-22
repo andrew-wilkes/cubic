@@ -18,6 +18,9 @@ const GRID_FACE_MAP = [1,3,4,5,7,10]
 var source_tile = null
 var edges = [] # 12 sets of 2 colors
 var corners = [] # 8 sets of 3 colors
+var center_visibility = []
+var edge_visibility = []
+var corner_visibility = []
 var solving = false
 
 func _ready():
@@ -41,6 +44,12 @@ func reset():
 	# Need deep copy so that inner arrays may be modified
 	edges = EDGE_FACE_MAP.duplicate(true)
 	corners = CORNER_FACE_MAP.duplicate(true)
+	center_visibility.resize(6)
+	center_visibility.fill(true)
+	edge_visibility.resize(12)
+	edge_visibility.fill(true)
+	corner_visibility.resize(8)
+	corner_visibility.fill(true)
 	var color_idx = 0
 	for node in $Grid.get_children():
 		if node is GridContainer:
@@ -55,6 +64,7 @@ func solved():
 
 func handle_click(ev: InputEvent, clicked_tile):
 	if ev is InputEventMouseButton and ev.pressed and not solving:
+		# If shift is pressed, toggle the visibility of the tile
 		if source_tile:
 			source_tile.color = COLORS[source_tile.get_meta("id").face]
 			try_move(source_tile, clicked_tile)
@@ -137,14 +147,14 @@ func set_edge_color(edge_idx, face_idx):
 	var face = EDGE_FACE_MAP[edge_idx][face_idx]
 	# Get the tile idx within the face
 	var tile = FACE_EDGE_MAP[face].find(edge_idx) * 2 + 1
-	var color = edges[edge_idx][face_idx]
+	var color = edges[edge_idx][face_idx] if edge_visibility[edge_idx] else Color.BLACK
 	set_tile_color(face, tile, color)
 
 
 func set_corner_color(corner_idx, face_idx):
 	var face = CORNER_FACE_MAP[corner_idx][face_idx]
 	var tile = FACE_CORNER_MAP[face].find(corner_idx) * 3 / 2 * 2
-	var color = corners[corner_idx][face_idx]
+	var color = corners[corner_idx][face_idx] if corner_visibility[corner_idx] else Color.BLACK
 	set_tile_color(face, tile, color)
 
 
@@ -211,5 +221,8 @@ func get_data():
 		"edge_face_map": EDGE_FACE_MAP,
 		"corner_positions": get_corner_positions(),
 		"corner_colors": corners,
-		"corner_face_map": CORNER_FACE_MAP
+		"corner_face_map": CORNER_FACE_MAP,
+		"center_visibility": center_visibility,
+		"edge_visibility": edge_visibility,
+		"corner_visibility": corner_visibility
 	}

@@ -92,7 +92,7 @@ func _on_button_pressed(bname, shift, ctrl):
 		var button_idx = FACE_BUTTONS.find(bname)
 		if ctrl:
 			var rotations = [Vector2(-1.0, 0.0), Vector2(0.0, -1.0), Vector2(0.0, 0.0), Vector2(0.0, 1.0), Vector2(1.0, 0.0), Vector2(0.0, 2.0)]
-			bc.get_node("Pivot").rotate_to_face(rotations[button_idx], bas)
+			bc.get_node("Pivot").rotate_to_face(rotations[button_idx])
 		else:
 			var direction = -1 if shift else 1
 			stop_solving()
