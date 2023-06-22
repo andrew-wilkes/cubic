@@ -180,6 +180,14 @@ text = "Run Sequence"
 layout_mode = 2
 text = "Help"
 
+[node name="SpeedSlider" type="HSlider" parent="C/UI"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Rotation Speed"
+min_value = 1.0
+max_value = 9.0
+value = 1.0
+
 [node name="Info" type="AcceptDialog" parent="."]
 title = "Instructions"
 size = Vector2i(552, 389)
@@ -299,6 +307,7 @@ size_flags_horizontal = 3
 [node name="Sequence" parent="." instance=ExtResource("7_kilku")]
 visible = false
 
+[connection signal="value_changed" from="C/UI/SpeedSlider" to="." method="_on_speed_slider_value_changed"]
 [connection signal="meta_clicked" from="Support/Text" to="Support" method="_on_text_meta_clicked"]
 [connection signal="pressed" from="Overlay/SUI/C2/HB/Step" to="." method="_on_step_pressed"]
 [connection signal="pressed" from="Overlay/SUI/C2/HB/Play" to="." method="_on_play_pressed"]

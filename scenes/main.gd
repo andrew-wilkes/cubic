@@ -32,6 +32,8 @@ func _ready():
 	%SUI.hide()
 	%CounterContainer.hide()
 	$Sequence.connect("play_sequence", play_sequence)
+	%SpeedSlider.value = bc.rotation_speed
+	%Pivot.speed = bc.rotation_speed
 	call_deferred("set_sui_transform")
 
 
@@ -710,3 +712,8 @@ func save_log():
 func _on_stop_counting_pressed():
 	repeat_sequence.clear()
 	move_step = -1
+
+
+func _on_speed_slider_value_changed(value):
+	bc.rotation_speed = value
+	%Pivot.speed = value

@@ -13,9 +13,10 @@ var rotating = false
 var amount
 var from_q
 var to_q
+var speed = 3
 
 func _process(delta):
-	delta *= 4
+	delta *= (speed + 1)
 	var b = transform.basis
 	if (Input.is_key_pressed(KEY_DOWN)):
 		rotate(b.x.normalized(), delta)
