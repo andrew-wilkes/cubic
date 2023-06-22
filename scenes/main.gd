@@ -34,6 +34,7 @@ func _ready():
 	$Sequence.connect("play_sequence", play_sequence)
 	%SpeedSlider.value = bc.rotation_speed
 	%Pivot.speed = bc.rotation_speed
+	%ColorPicker.color = RenderingServer.get_default_clear_color()
 	call_deferred("set_sui_transform")
 
 
@@ -717,3 +718,7 @@ func _on_stop_counting_pressed():
 func _on_speed_slider_value_changed(value):
 	bc.rotation_speed = value
 	%Pivot.speed = value
+
+
+func _on_color_picker_color_changed(color):
+	RenderingServer.set_default_clear_color(color)
