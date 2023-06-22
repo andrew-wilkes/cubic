@@ -1,13 +1,18 @@
-[gd_scene load_steps=10 format=3 uid="uid://cs7xrk28v8act"]
+[gd_scene load_steps=15 format=3 uid="uid://cs7xrk28v8act"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_lbbsj"]
 [ext_resource type="PackedScene" uid="uid://duux08b0j1brq" path="res://scenes/big_cube.tscn" id="2_vrqpa"]
 [ext_resource type="Script" path="res://scenes/orbiting_camera.gd" id="3_imujc"]
 [ext_resource type="Script" path="res://scenes/UI.gd" id="4_g6qdy"]
 [ext_resource type="PackedScene" uid="uid://dfknx5u3yhl8y" path="res://scenes/color_map.tscn" id="5_3m2rh"]
+[ext_resource type="Texture2D" uid="uid://dqoxntu2lo6y6" path="res://assets/mid-edge.png" id="6_rgmga"]
 [ext_resource type="Script" path="res://scenes/Support.gd" id="6_yx4e8"]
+[ext_resource type="Texture2D" uid="uid://bark3whhet5bm" path="res://assets/cross.png" id="7_cufek"]
 [ext_resource type="StyleBox" uid="uid://c8yjwixda7sfl" path="res://scenes/label.stylebox" id="7_fv5dd"]
 [ext_resource type="PackedScene" uid="uid://0djlny363s4d" path="res://scenes/sequence.tscn" id="7_kilku"]
+[ext_resource type="Texture2D" uid="uid://bwxs1ppsxt7hm" path="res://assets/top-edges.png" id="8_40gr6"]
+[ext_resource type="Texture2D" uid="uid://vtgsknbn1yy" path="res://assets/top-corners.png" id="9_sr31l"]
+[ext_resource type="Texture2D" uid="uid://b4e5cqklbbmvh" path="res://assets/top-corner.png" id="10_n0pko"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h34t6"]
 content_margin_left = 5.0
@@ -69,6 +74,7 @@ columns = 3
 [node name="Sp" type="Control" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="U" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
@@ -79,10 +85,12 @@ text = "U"
 [node name="Sp2" type="Control" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="L" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+size_flags_horizontal = 8
 button_mask = 7
 text = "L"
 
@@ -95,6 +103,7 @@ text = "F"
 [node name="R" type="Button" parent="C/UI/Grid"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+size_flags_horizontal = 0
 button_mask = 7
 text = "R"
 
@@ -134,6 +143,34 @@ text = "Scramble"
 [node name="Solve" type="Button" parent="C/UI"]
 layout_mode = 2
 text = "Solve"
+
+[node name="Tools" type="HBoxContainer" parent="C/UI"]
+layout_mode = 2
+
+[node name="MidEdges" type="Button" parent="C/UI/Tools"]
+layout_mode = 2
+tooltip_text = "2nd layer edges"
+icon = ExtResource("6_rgmga")
+
+[node name="Cross" type="Button" parent="C/UI/Tools"]
+layout_mode = 2
+tooltip_text = "Yellow cross"
+icon = ExtResource("7_cufek")
+
+[node name="TopEdges" type="Button" parent="C/UI/Tools"]
+layout_mode = 2
+tooltip_text = "Top edges"
+icon = ExtResource("8_40gr6")
+
+[node name="TopCorners" type="Button" parent="C/UI/Tools"]
+layout_mode = 2
+tooltip_text = "Top cornet positions"
+icon = ExtResource("9_sr31l")
+
+[node name="CornerSpin" type="Button" parent="C/UI/Tools"]
+layout_mode = 2
+tooltip_text = "Top corner orientation"
+icon = ExtResource("10_n0pko")
 
 [node name="Sequence" type="Button" parent="C/UI"]
 layout_mode = 2

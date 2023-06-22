@@ -107,7 +107,6 @@ func rotate_faces_in_map(old_map, faces, offset):
 
 func rotate_face(idx, dir, bas):
 	if face_rotating_idx < 0:
-		bas = bas.inverse()
 		var face_map = get_face_map_from_basis(bas)
 		idx = face_map[idx]
 		var group = get_group(idx)
@@ -321,7 +320,7 @@ func get_sector(v):
 
 
 func get_face_map_from_basis(b):
-	var key = encode_basis(b)
+	var key = encode_basis(b.inverse())
 	if faces_dict.has(key):
 		last_face_key = key
 	return faces_dict[last_face_key]

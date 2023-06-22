@@ -44,6 +44,10 @@ func play_sequence(seq, repeat):
 		%CounterContainer.show()
 		set_order_count(0)
 	face_map = FACE_MAPS[0]
+	set_sequence(seq)
+
+
+func set_sequence(seq):
 	set_moves(seq)
 	play_state = PLAYING
 	solve_step = 100
@@ -80,19 +84,22 @@ func _on_button_pressed(bname, shift, ctrl):
 	if not rotation_completed:
 		return
 	%CounterContainer.hide()
+	var bas = bc.get_node("Pivot").transform.basis
+	face_map = bc.get_face_map_from_basis(bas)
 	if FACE_BUTTONS.has(bname):
 		var button_idx = FACE_BUTTONS.find(bname)
 		if ctrl:
 			var rotations = [Vector2(-1.0, 0.0), Vector2(0.0, -1.0), Vector2(0.0, 0.0), Vector2(0.0, 1.0), Vector2(1.0, 0.0), Vector2(0.0, 2.0)]
-			bc.get_node("Pivot").rotate_to_face(rotations[button_idx])
+			bc.get_node("Pivot").rotate_to_face(rotations[button_idx], bas)
 		else:
 			var direction = -1 if shift else 1
 			stop_solving()
-			rotate_face(button_idx, direction, bc.get_node("Pivot").transform.basis)
+			rotate_face(button_idx, direction, bas)
 	match bname:
 		"Reset":
 			apply_reset()
 		"Scramble":
+			apply_reset()
 			for n in randi_range(10, 15):
 				bc.rotate_face_immediate(randi() % 6, 1 if randf() > 0.5 else -1)
 			copy_cube()
@@ -112,6 +119,26 @@ func _on_button_pressed(bname, shift, ctrl):
 			$Sequence.popup_centered()
 		"Help":
 			$Info.popup_centered()
+		"MidEdges":
+			var seq = [[0,-1],[1,-1],[0,1],[1,1],[0,1],[2,1],[0,-1],[2,-1]] if shift else \
+				[[0,1],[3,1],[0,-1],[3,-1],[0,-1],[2,-1],[0,1],[2,1]]
+			set_sequence(seq)
+		"Cross":
+			print(face_map)
+			var seq = [[2,1],[3,1],[0,1],[3,-1],[0,-1],[2,-1]] if shift else \
+				[[2,1],[0,1],[3,1],[0,-1],[3,-1],[2,-1]]
+			set_sequence(seq)
+		"TopEdges":
+			var seq = [[3,1],[0,1],[3,-1],[0,1],[3,1],[0,1],[0,1],[3,-1]]
+			set_sequence(seq)
+		"TopCorners":
+			var seq = [[1,-1],[0,1],[3,1],[0,-1],[1,1],[0,1],[3,-1],[0,-1]] if shift else \
+				[[0,1],[3,1],[0,-1],[1,-1],[0,1],[3,-1],[0,-1],[1,1]]
+			set_sequence(seq)
+		"CornerSpin":
+			var seq = [[3,-1],[4,-1],[3,1],[4,1],[3,-1],[4,-1],[3,1],[4,1]] if shift else \
+				[[4,-1],[3,-1],[4,1],[3,1],[4,-1],[3,-1],[4,1],[3,1]]
+			set_sequence(seq)
 
 
 func copy_map_to_cube():

@@ -6,6 +6,7 @@ signal button_pressed(id, shift, ctrl)
 func _ready():
 	var nodes = $Grid.get_children()
 	nodes.append_array(self.get_children())
+	nodes.append_array($Tools.get_children())
 	for node in nodes:
 		if node is Button:
 			node.button_down.connect(_on_button_down.bind(node.name))
