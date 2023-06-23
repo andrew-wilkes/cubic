@@ -15,7 +15,7 @@ albedo_color = Color(1, 0, 0, 1)
 albedo_color = Color(0.215686, 1, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ryo3x"]
-albedo_color = Color(1, 0.396078, 0, 1)
+albedo_color = Color(1, 0.27, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xb2pd"]
 

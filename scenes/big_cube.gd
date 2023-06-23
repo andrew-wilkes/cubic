@@ -30,6 +30,7 @@ const Y_AXIS_FACES = [FACES.LEFT, FACES.FRONT, FACES.RIGHT, FACES.BACK]
 
 const EDGE_POSITIONS = [[0,1,-1],[-1,1,0],[1,1,0],[0,1,1],[-1,0,-1],[-1,0,1],[1,0,1],[1,0,-1],[-1,-1,0],[0,-1,1],[1,-1, 0],[0,-1,-1]]
 const CORNER_POSITIONS = [[-1,1,-1],[1,1,-1],[-1,1,1],[1,1,1],[-1,-1,-1],[-1,-1,1],[1,-1,1],[1,-1,-1]]
+const CENTER_POSITIONS = [[0,1,0],[-1,0,0],[0,0,1],[1,0,0],[0,-1,0],[0,0,-1]]
 
 const ROTATIONS = [0, 1, 2, -1]
 
@@ -200,6 +201,15 @@ func get_corner_nodes():
 	return corner_nodes
 
 
+func get_center_nodes():
+	var center_nodes = []
+	for pos in CENTER_POSITIONS:
+		for node in get_children():
+			if (node.position - Vector3(pos[0], pos[1], pos[2])).length_squared() < 0.1:
+				center_nodes.append(node)
+	return center_nodes
+
+
 func get_colors_of_cube(node):
 	var colors = []
 	for tile_idx in 6:
@@ -225,6 +235,13 @@ func set_edges(map_data):
 		set_cube_face_visibility(node, map_data.edge_visibility[edge_idx])
 		# Rotate the cube to align the faces correctly
 		rotate_cube(node, map_data.edge_face_map[edge_idx], map_data.edge_colors[edge_idx])
+		idx += 1
+
+
+func set_centers(map_data):
+	var idx = 0
+	for node in get_center_nodes():
+		set_cube_face_visibility(node, map_data.center_visibility[idx])
 		idx += 1
 
 
@@ -266,6 +283,7 @@ func apply_map(map_data):
 	reset()
 	set_edges(map_data)
 	set_corners(map_data)
+	set_centers(map_data)
 
 
 func get_face_position(node, face_idx):

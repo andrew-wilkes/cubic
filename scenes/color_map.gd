@@ -2,7 +2,7 @@ extends Control
 
 signal map_changed
 
-var COLORS = [Color.YELLOW, Color.RED, Color.GREEN, 0, Color.WHITE, Color.BLUE]
+const COLORS = [Color.YELLOW, Color.RED, Color.GREEN, Color.ORANGE_RED, Color.WHITE, Color.BLUE, Color.DARK_GRAY]
 
 # See coordinates diagram for index relationships in media folder
 # The _FACE_MAP constants are indexing the faces
@@ -14,6 +14,7 @@ const FACE_CORNER_MAP = [[0,1,2,3],[0,2,4,5],[2,3,5,6],[3,1,6,7],[5,6,4,7],[4,7,
 const FACE_EDGE_MAP = [[0,1,2,3],[1,4,5,8],[3,5,6,9],[2,6,7,10],[9,8,10,11],[11,4,7,0]]
 # This indexes the positions of faces under the Grid node
 const GRID_FACE_MAP = [1,3,4,5,7,10]
+const BLACK_IDX = 6
 
 var source_tile = null
 var edges = [] # 12 sets of 2 colors
@@ -27,15 +28,14 @@ func _ready():
 	# Set up the tiles
 	var tile = ColorRect.new()
 	tile.custom_minimum_size = Vector2(32, 32)
-	COLORS[3] = Color.hex(0xff6500ff)
 	var idx = 0
 	for node in $Grid.get_children():
 		if node is GridContainer:
 			for n in 9:
 				var new_tile = tile.duplicate()
 				new_tile.set_meta("id", { "face": idx, "tile": n })
-				if n != 4: # Don't connect the immovable middle cells
-					new_tile.gui_input.connect(handle_click.bind(new_tile))
+				# immovable middle cell when n == 4
+				new_tile.gui_input.connect(handle_click.bind(new_tile, n != 4))
 				node.add_child(new_tile)
 			idx += 1
 	reset()
@@ -63,16 +63,34 @@ func solved():
 	return edges.hash() == EDGE_FACE_MAP.hash() && corners.hash() == CORNER_FACE_MAP.hash()
 
 
-func handle_click(ev: InputEvent, clicked_tile):
+func handle_click(ev: InputEvent, clicked_tile, moveable):
 	if ev is InputEventMouseButton and ev.pressed and not solving:
 		# If shift is pressed, toggle the visibility of the tile
-		if source_tile:
-			source_tile.color = COLORS[source_tile.get_meta("id").face]
-			try_move(source_tile, clicked_tile)
-			source_tile = null
-		else:
-			source_tile = clicked_tile
-			source_tile.color = clicked_tile.color.darkened(0.2)
+		if Input.is_key_pressed(KEY_SHIFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+			var id = clicked_tile.get_meta("id")
+			if is_edge(id.tile):
+				var edge_idx = get_edge(id.face, id.tile)
+				edge_visibility[edge_idx] = !edge_visibility[edge_idx]
+				set_edge_color(edge_idx, 0)
+				set_edge_color(edge_idx, 1)
+			elif is_corner(id.tile):
+				var corner_idx = get_corner(id.face, id.tile)
+				corner_visibility[corner_idx] = !corner_visibility[corner_idx]
+				for n in 3:
+					set_corner_color(corner_idx, n)
+			else:
+				center_visibility[id.face] = !center_visibility[id.face]
+				var color_idx = id.face if center_visibility[id.face] else BLACK_IDX
+				set_tile_color(id.face, id.tile, color_idx)
+			emit_signal("map_changed")
+		elif moveable:
+			if source_tile:
+				source_tile.color = COLORS[source_tile.get_meta("id").face]
+				try_move(source_tile, clicked_tile)
+				source_tile = null
+			else:
+				source_tile = clicked_tile
+				source_tile.color = clicked_tile.color.darkened(0.2)
 
 
 func try_move(from_tile, to_tile):
@@ -132,7 +150,7 @@ func is_edge(n):
 
 
 func is_corner(n):
-	return n % 2 == 0 # Even number
+	return n in [0,2,6,8]
 
 
 func get_edge(face, n):
@@ -148,14 +166,14 @@ func set_edge_color(edge_idx, face_idx):
 	var face = EDGE_FACE_MAP[edge_idx][face_idx]
 	# Get the tile idx within the face
 	var tile = FACE_EDGE_MAP[face].find(edge_idx) * 2 + 1
-	var color = edges[edge_idx][face_idx] if edge_visibility[edge_idx] else Color.BLACK
+	var color = edges[edge_idx][face_idx] if edge_visibility[edge_idx] else BLACK_IDX
 	set_tile_color(face, tile, color)
 
 
 func set_corner_color(corner_idx, face_idx):
 	var face = CORNER_FACE_MAP[corner_idx][face_idx]
 	var tile = FACE_CORNER_MAP[face].find(corner_idx) * 3 / 2 * 2
-	var color = corners[corner_idx][face_idx] if corner_visibility[corner_idx] else Color.BLACK
+	var color = corners[corner_idx][face_idx] if corner_visibility[corner_idx] else BLACK_IDX
 	set_tile_color(face, tile, color)
 
 
