@@ -182,7 +182,8 @@ func set_tile_color(face_idx, tile_idx, color_idx):
 
 
 # Input array of arrays of 6 cube face colors
-func set_edge_colors(edge_cube_colors):
+func set_edge_colors(edge_cube_colors, _edge_visibility):
+	edge_visibility = _edge_visibility
 	var idx = 0
 	for ec in edge_cube_colors:
 		# We want to extract the 2 face colors of the edge from the 6 faces of the cube
@@ -194,7 +195,8 @@ func set_edge_colors(edge_cube_colors):
 
 
 # Input array of arrays of 6 cube face colors
-func set_corner_colors(corner_cube_colors):
+func set_corner_colors(corner_cube_colors, _corner_visibility):
+	corner_visibility = _corner_visibility
 	var idx = 0
 	for cc in corner_cube_colors:
 		corners[idx] = []

@@ -49,12 +49,16 @@ var face_rotation_direction := 1
 var rotation_dict = {}
 var faces_dict = {}
 var last_face_key = 0
+var edge_visibility = []
+var corner_visibility = []
 
 func _ready():
 	var cube_instance: Node3D = piece.instantiate()
 	fill_rotation_dict(cube_instance)
 	last_face_key = rotation_dict.keys()[0]
 	build_cube(cube_instance)
+	edge_visibility.resize(12)
+	corner_visibility.resize(8)
 	reset()
 
 
@@ -171,15 +175,21 @@ func reparent_to_origin():
 
 func get_edge_colors():
 	var edge_colors = []
+	var idx = 0
 	for node in get_edge_nodes():
+		edge_visibility[idx] = true if node.get_child(0).scale.x > 0.1 else false
 		edge_colors.append(get_colors_of_cube(node))
+		idx += 1
 	return edge_colors
 
 
 func get_corner_colors():
 	var corner_colors = []
+	var idx = 0
 	for node in get_corner_nodes():
+		corner_visibility[idx] = true if node.get_child(0).scale.x > 0.1 else false
 		corner_colors.append(get_colors_of_cube(node))
+		idx += 1
 	return corner_colors
 
 

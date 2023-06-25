@@ -164,8 +164,8 @@ func rotate_face(face_idx, direction, bas = Basis()):
 
 
 func copy_cube():
-	$C/ColorMap.set_edge_colors(bc.get_edge_colors())
-	$C/ColorMap.set_corner_colors(bc.get_corner_colors())
+	$C/ColorMap.set_edge_colors(bc.get_edge_colors(), bc.edge_visibility)
+	$C/ColorMap.set_corner_colors(bc.get_corner_colors(), bc.corner_visibility)
 
 
 func move_white_edge_to_face():

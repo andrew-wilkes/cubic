@@ -5,7 +5,7 @@ albedo_color = Color(0, 0, 0, 1)
 metallic_specular = 1.0
 roughness = 0.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f6k7k"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fsex3"]
 albedo_color = Color(1, 1, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qlh4n"]
@@ -29,7 +29,7 @@ material = SubResource("StandardMaterial3D_ln8s7")
 [node name="Up" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.53, 0)
 size = Vector3(0.8, 0.06, 0.8)
-material = SubResource("StandardMaterial3D_f6k7k")
+material = SubResource("StandardMaterial3D_fsex3")
 
 [node name="Left" type="CSGBox3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.53, 0, 0)
