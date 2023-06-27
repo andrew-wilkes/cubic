@@ -85,6 +85,7 @@ func reset():
 		if cube is CSGBox3D:
 			cube.transform.basis = Basis()
 			cube.position = cube.get_meta("initial_position")
+			cube.set_grey(false)
 
 
 # Animate the cube group rotation
