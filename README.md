@@ -5,6 +5,8 @@ Godot 4 Rubik Cube Simulator
 
 Downloads: [Cubic - Rubik Cube Simulator on Itch.io](https://andrew-wilkes.itch.io/cubic)
 
+![Latest](media/screenshot.png)
+
 ## Camera Control
 
 Move around the cube by holding the left mouse button and moving the mouse.
@@ -30,6 +32,8 @@ The *Reset* button restores the faces of the cube to the *solved* positions.
 The *Scramble* button causes the cube faces to be rotated randomly to scramble the puzzle.
 
 The *Solve* button initiates a solving animation that may be stepped through, played, paused or stopped to learn how to solve a cube puzzle.
+
+Various buttons are provided to play the moves associated with the *beginner* solving method by layers.
 
 The *Run Sequence* button opens a panel that lists some sequences of moves that may be played.
 
