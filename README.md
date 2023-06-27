@@ -37,6 +37,8 @@ Various buttons are provided to play the moves associated with the *beginner* so
 
 The *Run Sequence* button opens a panel that lists some sequences of moves that may be played.
 
+The slider adjusts the playback speed of animations, and next to that is a button to open a background color selector panel.
+
 ## Color Map
 
 This will be used to edit and track the state of the faces of the cube. For example: to copy the state of a physical Rubik Cube in order to run the solver on it. Or to copy the image for reference.
