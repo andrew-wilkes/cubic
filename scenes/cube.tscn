@@ -1,59 +1,184 @@
-[gd_scene load_steps=8 format=3 uid="uid://3jtj0nkocrsc"]
+[gd_scene load_steps=15 format=3 uid="uid://3jtj0nkocrsc"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ln8s7"]
+[ext_resource type="Script" path="res://scenes/cube.gd" id="1_b7lff"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o04uo"]
 albedo_color = Color(0, 0, 0, 1)
 metallic_specular = 1.0
 roughness = 0.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fsex3"]
-albedo_color = Color(1, 1, 0, 1)
+[sub_resource type="Shader" id="Shader_kkp6o"]
+code = "shader_type spatial;
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qlh4n"]
-albedo_color = Color(1, 0, 0, 1)
+uniform vec3 color: source_color;
+uniform vec3 grey_color: source_color;
+uniform bool grey = false;
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xf32x"]
-albedo_color = Color(0.215686, 1, 0, 1)
+void fragment() {
+	if (grey) {
+		ALBEDO = grey_color;
+	} else {
+		ALBEDO = color;
+	}
+}
+"
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ryo3x"]
-albedo_color = Color(1, 0.27, 0, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ch7rs"]
+resource_local_to_scene = true
+render_priority = 0
+shader = SubResource("Shader_kkp6o")
+shader_parameter/color = Color(1, 1, 0, 1)
+shader_parameter/grey_color = Color(0.152941, 0.152941, 0.152941, 1)
+shader_parameter/grey = false
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xb2pd"]
+[sub_resource type="Shader" id="Shader_go3hg"]
+code = "shader_type spatial;
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kvb4p"]
-albedo_color = Color(0, 0, 1, 1)
+uniform vec3 color: source_color;
+uniform vec3 grey_color: source_color;
+uniform bool grey = false;
+
+void fragment() {
+	if (grey) {
+		ALBEDO = grey_color;
+	} else {
+		ALBEDO = color;
+	}
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k5jdc"]
+render_priority = 0
+shader = SubResource("Shader_go3hg")
+shader_parameter/color = Color(1, 0, 0, 1)
+shader_parameter/grey_color = Color(0.152941, 0.152941, 0.152941, 1)
+shader_parameter/grey = false
+
+[sub_resource type="Shader" id="Shader_1a2nl"]
+code = "shader_type spatial;
+
+uniform vec3 color: source_color;
+uniform vec3 grey_color: source_color;
+uniform bool grey = false;
+
+void fragment() {
+	if (grey) {
+		ALBEDO = grey_color;
+	} else {
+		ALBEDO = color;
+	}
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_87eps"]
+render_priority = 0
+shader = SubResource("Shader_1a2nl")
+shader_parameter/color = Color(0, 1, 0, 1)
+shader_parameter/grey_color = Color(0.152941, 0.152941, 0.152941, 1)
+shader_parameter/grey = false
+
+[sub_resource type="Shader" id="Shader_qvb0n"]
+code = "shader_type spatial;
+
+uniform vec3 color: source_color;
+uniform vec3 grey_color: source_color;
+uniform bool grey = false;
+
+void fragment() {
+	if (grey) {
+		ALBEDO = grey_color;
+	} else {
+		ALBEDO = color;
+	}
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ximad"]
+render_priority = 0
+shader = SubResource("Shader_qvb0n")
+shader_parameter/color = Color(1, 0.270588, 0, 1)
+shader_parameter/grey_color = Color(0.152941, 0.152941, 0.152941, 1)
+shader_parameter/grey = false
+
+[sub_resource type="Shader" id="Shader_seqtf"]
+code = "shader_type spatial;
+
+uniform vec3 color: source_color;
+uniform vec3 grey_color: source_color;
+uniform bool grey = false;
+
+void fragment() {
+	if (grey) {
+		ALBEDO = grey_color;
+	} else {
+		ALBEDO = color;
+	}
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3jo01"]
+render_priority = 0
+shader = SubResource("Shader_seqtf")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/grey_color = Color(0.152941, 0.152941, 0.152941, 1)
+shader_parameter/grey = false
+
+[sub_resource type="Shader" id="Shader_y40kv"]
+code = "shader_type spatial;
+
+uniform vec3 color: source_color;
+uniform vec3 grey_color: source_color;
+uniform bool grey = false;
+
+void fragment() {
+	if (grey) {
+		ALBEDO = grey_color;
+	} else {
+		ALBEDO = color;
+	}
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ooyp5"]
+render_priority = 0
+shader = SubResource("Shader_y40kv")
+shader_parameter/color = Color(0, 0, 1, 1)
+shader_parameter/grey_color = Color(0.152941, 0.152941, 0.152941, 1)
+shader_parameter/grey = false
 
 [node name="Cube" type="CSGBox3D"]
 rotation_edit_mode = 2
-material = SubResource("StandardMaterial3D_ln8s7")
+material = SubResource("StandardMaterial3D_o04uo")
+script = ExtResource("1_b7lff")
 
 [node name="Up" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.53, 0)
 size = Vector3(0.8, 0.06, 0.8)
-material = SubResource("StandardMaterial3D_fsex3")
+material = SubResource("ShaderMaterial_ch7rs")
 
 [node name="Left" type="CSGBox3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.53, 0, 0)
 size = Vector3(0.8, 0.06, 0.8)
-material = SubResource("StandardMaterial3D_qlh4n")
+material = SubResource("ShaderMaterial_k5jdc")
 
 [node name="Front" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.00567235, 0.999984, 0, -0.999984, -0.00567235, 0, 0, 0.53)
 size = Vector3(0.8, 0.06, 0.8)
-material = SubResource("StandardMaterial3D_xf32x")
+material = SubResource("ShaderMaterial_87eps")
 
 [node name="Right" type="CSGBox3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.53, 0, 0)
 size = Vector3(0.8, 0.06, 0.8)
-material = SubResource("StandardMaterial3D_ryo3x")
+material = SubResource("ShaderMaterial_ximad")
 
 [node name="Down" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.53, 0)
 size = Vector3(0.8, 0.06, 0.8)
-material = SubResource("StandardMaterial3D_xb2pd")
+material = SubResource("ShaderMaterial_3jo01")
 
 [node name="Back" type="CSGBox3D" parent="."]
 transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, -0.53)
 size = Vector3(0.8, 0.06, 0.8)
-material = SubResource("StandardMaterial3D_kvb4p")
+material = SubResource("ShaderMaterial_ooyp5")
 
 [node name="Cubes" type="Node3D" parent="."]

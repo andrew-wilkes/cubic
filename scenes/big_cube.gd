@@ -256,8 +256,7 @@ func set_centers(map_data):
 
 
 func set_cube_face_visibility(cube, enable):
-	for face in cube.get_children():
-		face.scale = Vector3(1,1,1) if enable else Vector3.ZERO
+	cube.set_grey(not enable)
 
 
 func rotate_cube(node, face_map, tile_colors):
