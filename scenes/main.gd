@@ -127,7 +127,6 @@ func _on_button_pressed(bname, shift, ctrl):
 				[[0,1],[3,1],[0,-1],[3,-1],[0,-1],[2,-1],[0,1],[2,1]]
 			set_sequence(seq)
 		"Cross":
-			print(face_map)
 			var seq = [[2,1],[3,1],[0,1],[3,-1],[0,-1],[2,-1]] if shift else \
 				[[2,1],[0,1],[3,1],[0,-1],[3,-1],[2,-1]]
 			set_sequence(seq)
@@ -139,8 +138,8 @@ func _on_button_pressed(bname, shift, ctrl):
 				[[0,1],[3,1],[0,-1],[1,-1],[0,1],[3,-1],[0,-1],[1,1]]
 			set_sequence(seq)
 		"CornerSpin":
-			var seq = [[3,-1],[4,-1],[3,1],[4,1],[3,-1],[4,-1],[3,1],[4,1]] if shift else \
-				[[4,-1],[3,-1],[4,1],[3,1],[4,-1],[3,-1],[4,1],[3,1]]
+			var seq = [[3,-1],[4,-1],[3,1],[4,1]] if shift else \
+				[[4,-1],[3,-1],[4,1],[3,1]]
 			set_sequence(seq)
 
 

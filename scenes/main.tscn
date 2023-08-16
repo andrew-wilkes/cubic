@@ -164,7 +164,7 @@ icon = ExtResource("8_40gr6")
 
 [node name="TopCorners" type="Button" parent="C/UI/Tools"]
 layout_mode = 2
-tooltip_text = "Top cornet positions"
+tooltip_text = "Top corner positions"
 icon = ExtResource("9_sr31l")
 
 [node name="CornerSpin" type="Button" parent="C/UI/Tools"]
