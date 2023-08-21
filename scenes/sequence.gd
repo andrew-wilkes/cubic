@@ -41,7 +41,7 @@ func parse_sequence(txt):
 			if txt[idx] == "2":
 				seq.append([face, dir])
 				idx += 1
-			if txt[idx] == "'":
+			elif txt[idx] == "'":
 				dir = -1
 				idx += 1
 		seq.append([face, dir])
