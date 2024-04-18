@@ -55,7 +55,7 @@ var corner_visibility = []
 func _ready():
 	var cube_instance: Node3D = piece.instantiate()
 	fill_rotation_dict(cube_instance)
-	last_face_key = rotation_dict.keys()[0]
+	last_face_key = faces_dict.keys()[0]
 	build_cube(cube_instance)
 	edge_visibility.resize(12)
 	corner_visibility.resize(8)
